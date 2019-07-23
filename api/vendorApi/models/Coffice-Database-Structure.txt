@@ -1,0 +1,74 @@
+workspaceDetails 
+
+{
+	_id 					: xxxx,
+	nameOfCafe 		: String,
+	address 			: String,
+	landmark 			: String,
+	area 					: String,
+	city					: String,
+	state 				: String,
+	country 			: String,
+	pincode 			: String,
+	lat 					: String,
+	long 					: String,
+	numberOfSeats : Number,
+	facilities 		: [string1,string1,string1,string1,string1],
+	cafeAdmin  		: user_id,
+}
+
+
+
+subscriptionPlans = {
+	_id 				 :  xxx,
+	planName  	 :  String,
+	description	 :  String,
+	maxCheckIns	 :  Number,
+	price 			 :  Number,
+	validityDays :  String,
+	createdBy 	 :  user_id,
+	createAt 		 :  timestamp,
+	updatedBy 	 :  user_id,
+	lastUpdateAt :  timestamp,
+}
+
+
+subscription = {
+	_id 				 :  xxx,
+	plan_id   	 :  xxx,
+	user_id 		 :  xxx,
+	maxCheckIns	 :  Number,
+	startDate		 :  Date,
+	endDate			 :  Date,
+	status 			 :  String,
+	createdBy 	 :  user_id,
+	createAt 		 :  timestamp,
+}
+
+
+seatBooking = {
+	_id 				 :  xxx,
+	workSpace_id :  xxx,
+	user_id 		 :  xxx,
+	date 				 :  Date,
+	checkInTime	 :  timestamp,
+	checkOutTime :  timestamp,
+	createdBy 	 :  user_id,
+	createAt 		 :  timestamp,
+}
+
+menuOrders = {
+	_id 	:  xxx,
+	workSpace_id  : xxx,
+	user_id 			: xxx,
+	date 					: Date,
+	itemsOrdered 	: [
+		{item: String, price: Number, isDelivered: Boolean, orderedAt: timestamp,}
+		{item: String, price: Number, isDelivered: Boolean, orderedAt: timestamp,}
+		{item: String, price: Number, isDelivered: Boolean, orderedAt: timestamp,}
+	]
+}
+
+
+
+

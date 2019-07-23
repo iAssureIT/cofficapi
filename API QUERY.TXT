@@ -1,0 +1,58 @@
+1.
+The following aggregation operation selects documents with status equal to "A", groups the matching documents by the cust_id field and calculates the total for each cust_id field from the sum of the amount field, and sorts the results by the total field in descending order:
+
+db.orders.aggregate([
+                     { $match: { status: "A" } },
+                     { $group: { _id: "$cust_id", total: { $sum: "$amount" } } },
+                     { $sort: { total: -1 } }
+                   ])
+
+
+*************************
+1.
+$not	Negation logical operator
+	{"field" : {"$not" : val}}
+2.
+$in	Match any value in array	
+{"field" : {"$in" : [value1, value2, ...]}}
+3.
+$nin	Not match any value in array	
+{"field" : {"$nin" : [value1, value2, ...]}}
+4.
+$regex	Match field	{"field" : {"$regex" : ".*"}}
+5.
+$or	Logical operator	{"$or": [{"status": "GOLD"}, {"status": "SILVER"}]}
+6.
+$and	Logical operator	{"$and": [{"status": "GOLD"}, {"sales": 1000}]}
+
+
+Conditional operators
+
+
+$gt	>	{"salary": {"$gt": 10000}}
+
+$gte	>=	{"salary": {"$gte": 10000}}
+
+$lt	<	{"salary": {"$lt": 10000}}
+$lte	<=	{"salary": {"$lte": 10000}}
+
+$bt	>= value <=	{"salary": {"$bt": [5000, 7500]}}
+
+$exists	Check if field exists	{"field": {"$exists": true|false}}
+
+$exists (array)	Check if array field exists or is empty	{"field.0": {"$exists": true|false}}
+
+$elemMatch	Array element matching	{"contact":{"$elemMatch":{"name":"Anderson", age:35}}}
+
+
+$distinct	Array with unique element values	{"$distinct": "name"}
+
+
+
+Date operator
+
+
+/ between two dates
+{"_changed":{"$gt":{"$date":"2016-08-01"},"$lt":{"$date":"2016-08-05"}}}
+
+

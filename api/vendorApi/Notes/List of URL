@@ -1,0 +1,46 @@
+
+
+1.Collection Name:workspaceDetails
+
+POST  : /api/workspacedetails
+PATCH : /api/workspacedetails
+GET   : /api/workspacedetails/list
+GET   : /api/workspacedetails/:workspaceID
+DELETE: /api/workspacedetails/:workspaceID
+
+2.Collection Name:subscription
+
+POST  : /api/subscription
+PATCH : /api/subscription
+GET   : /api/subscription/list
+GET   : /api/subscription/:subscriptionID
+DELETE: /api/subscription/:subscriptionID
+
+3.Collection Name:orders
+ 
+POST  : /api/orders
+PATCH : /api/orders
+GET   : /api/orders/list
+GET   : /api/orders/:ordersID
+DELETE: /api/orders/:ordersID
+
+4.Collection Name:subscriptionPlan
+
+POST  : /api/subscriptionPlan
+PATCH : /api/subscriptionPlan
+GET   : /api/subscriptionPlan/list
+GET   : /api/subscriptionPlan/:subscriptionPlanID
+DELETE: /api/subscriptionPlan/:subscriptionPlanID
+
+5.Collection Name:seatBooking
+
+POST  : /api/seatBooking
+PATCH : /api/seatBooking
+GET   : /api/seatBooking/list
+GET   : /api/seatBooking/:seatBookingID
+DELETE: /api/seatBooking/:seatBookingID
+
+
+
+
+
