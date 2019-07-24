@@ -3,7 +3,7 @@ const router 	= express.Router();
 
 /*1st table*/
 
-const workspaceController = require('../controllers/workspace');
+const workspaceController = require('../controllers/workspaceDetails');
 
 
 router.post('/', workspaceController.create_workspace);

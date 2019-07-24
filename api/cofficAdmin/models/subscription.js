@@ -12,8 +12,8 @@ const subscriptionSchema = mongoose.Schema({
     Validity                        :  Number
 	endDate			 				:  Date,
 	status 			 				:  String,
-	createdBy 	 					:  user_id,
-	createAt 		 				:  new Date(),
+	createdBy 	 					:  String,
+	createAt 		 				:  Date,
 
 });
 

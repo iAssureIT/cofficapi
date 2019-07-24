@@ -16,9 +16,9 @@ const workspaceDetailsSchema = mongoose.Schema({
     facilities             : [],
     cafeAdmin              : String,
     createdBy               :  String,
-    createAt                :  new Date(),
+    createAt                :  Date,
     updatedBy               :  String,
-    lastUpdateAt            :  new Date(),
+    lastUpdateAt            :  Date,
 });
 
 module.exports = mongoose.model('workspaceDetails',workspaceDetailsSchema);
