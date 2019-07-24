@@ -40,7 +40,7 @@
 	//============  Make Changes Below  =================
 	// Routes which should handle requests
 	
-	const workspaceDetailsurl 	= require("./api/vendorApi/routes/workspaceDetails");
+	/*const workspaceDetailsurl 	= require("./api/vendorApi/routes/workspaceDetails");
 	app.use("/api/workspaceDetails",workspaceDetailsurl);
 
 	const subscriptionsurl 	= require("./api/vendorApi/routes/subscription");
@@ -53,7 +53,20 @@
 	app.use("/api/orders",ordersurl);
 
 	const subscriptionPlanurl 	= require("./api/vendorApi/routes/subscriptionPlan");
-	app.use("/api/subscriptionPlan",subscriptionPlanurl);
+	app.use("/api/subscriptionPlan",subscriptionPlanurl);*/
+
+
+	/*ROUTES FOR ADMIN*/
+
+	const workspaceDetailsurl 	= require("./api/cofficAdmin/routes/workspaceDetails");
+	app.use("/api/workspaceDetails",workspaceDetailsurl);
+
+	const subscriptionsurl 	= require("./api/cofficAdmin/routes/workspaceDetails");
+	app.use("/api/subscription",workspaceDetailsurl);
+
+
+   
+
 
      
 

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+/*const mongoose = require('mongoose');
 
 const workspaceDetailsSchema = mongoose.Schema({
 	_id			            : mongoose.Schema.Types.ObjectId,
@@ -22,3 +22,4 @@ const workspaceDetailsSchema = mongoose.Schema({
 });
 
 module.exports = mongoose.model('workspaceDetails',workspaceDetailsSchema);
+*/
