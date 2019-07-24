@@ -62,7 +62,7 @@
 	app.use("/api/workspaceDetails",workspaceDetailsurl);
 
 	const subscriptionsurl 	= require("./api/cofficAdmin/routes/workspaceDetails");
-	app.use("/api/subscription",workspaceDetailsurl);
+	app.use("/api/subscription",subscriptionsurl);
 
 
    
