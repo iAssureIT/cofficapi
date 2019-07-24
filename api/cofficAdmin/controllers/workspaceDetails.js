@@ -17,7 +17,9 @@ exports.create_workspace = (req,res,next)=>{
                 lat                    : req.body.lat,
                 long                   : req.body.long,
                 numberOfSeats          : req.body.numberOfSeats,
-                facilities             : req.body.facilities ,
+                Name                   : req.body.Name,
+                Mobile                 : req.body.Mobile,
+                Email                  : req.body.Email ,
                 createdBy              : req.body.createdBy ,
                 createAt               : new Date(),
         });
