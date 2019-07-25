@@ -7,7 +7,6 @@
     const dbname = "qacoffic";
 	global.JWT_KEY = "secret";	
 	
-
 	mongoose.connect('mongodb://localhost/'+dbname,{
         useNewUrlParser: true
     })
@@ -58,8 +57,6 @@
     });
 
     module.exports = app;
-
-
 
 
 
