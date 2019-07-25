@@ -11,7 +11,7 @@ router.post('/', subscriptionController.create_workspace);
 router.get('/list',subscriptionController.list_subscription);
 
 
-router.get('/:subscriptionID',subscriptionController.single_subscription);
+// router.get('/:subscriptionID',subscriptionController.single_subscription);
 
 
 router.patch('/', subscriptionController.update_subscription);

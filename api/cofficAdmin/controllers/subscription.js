@@ -4,20 +4,19 @@ const Subscription = require('../models/subscription');
 
 exports.create_workspace = (req,res,next)=>{
 
-        const subscriptionVar = new Subscription({
+        const subscription = new Subscription({
                 _id                     : new mongoose.Types.ObjectId(),
-                sub
                 user_id                 :  req.body.user_id,
-                SubscriptionName        :  req.body.SubscriptionName,
+                subscriptionName        :  req.body.subscriptionName,
                 maxCheckIns             :  req.body.maxCheckIns,
                 Cost                    :  req.body.Cost,
-                Validity                :  req.body.Validity
-                status                  :  req.body.status,
+                Validity                :  req.body.Validity,
                 createdBy               :  req.body.createdBy,
                 createAt                :  new Date(),
         });
         Subscription.save()
                         .then(data=>{
+                            console.log('data', data);
                             res.status(200).json("subscription Details Submitted Successfully");
                         })
                         .catch(err =>{
@@ -29,7 +28,7 @@ exports.create_workspace = (req,res,next)=>{
 };
 
 exports.detail_subscription = (req,res,next)=>{
-    subscription.findOne({propertyID:req.params.subscriptionlID})
+    Subscription.findOne({propertyID:req.params.subscriptionlID})
         .exec()
         .then(data=>{
             if(data){
@@ -48,7 +47,7 @@ exports.detail_subscription = (req,res,next)=>{
 
 exports.list_subscription = (req,res,next)=>{
     console.log('list');
-    subscription.find({})
+    Subscription.find()
         .exec()
         .then(data=>{
             if(data){
@@ -68,7 +67,7 @@ exports.list_subscription = (req,res,next)=>{
 
 
 exports.update_subscription = (req,res,next)=>{
-        subscription.updateOne(
+        Subscription.updateOne(
             { _id:req.body.subscription_ID},  
             {
                 $set:{
@@ -105,7 +104,7 @@ exports.update_subscription = (req,res,next)=>{
 }
 
 exports.delete_subscription = (req,res,next)=>{
-    subscription.deleteOne({_id:req.params.subscriptionID})
+    Subscription.deleteOne({_id:req.params.subscriptionID})
         .exec()
         .then(data=>{
             res.status(200).json("subscription deleted");

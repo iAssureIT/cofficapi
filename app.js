@@ -31,13 +31,13 @@
     });
 
     
-    const workspaceDetailsurl 	       = require("./api/cofficAdmin/routes/workspaceDetails");
-    const subscriptionsurl      	   = require("./api/cofficAdmin/routes/workspaceDetails");
+    const WorkspaceDetailsurl 	       = require("./api/cofficAdmin/routes/workspaceDetails");
+    const Subscriptionsurl             = require("./api/cofficAdmin/routes/subscription");
 
 
 
-	app.use("/api/workspaceDetails",workspaceDetailsurl);
-	app.use("/api/subscription",subscriptionsurl);
+	app.use("/api/workspaceDetails",WorkspaceDetailsurl);
+    app.use("/api/subscription",Subscriptionsurl);
 
 
 

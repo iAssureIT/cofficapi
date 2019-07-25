@@ -1,20 +1,20 @@
 const mongoose = require('mongoose');
 
-const subscriptionSchema = mongoose.Schema({
-	_id			            : mongoose.Schema.Types.ObjectId,
+const SubscriptionSchema = mongoose.Schema({
 
-	plan_id   	          		    :  String,
-	subscriptionName   	            :  String,
-	user_id 		          	    :  String,
-	maxCheckIns	         	        :  Number,
-	startDate		 				:  Date,
-	Cost                            :  Number,
-    Validity                        :  Number
-	endDate			 				:  Date,
-	status 			 				:  String,
-	createdBy 	 					:  String,
-	createAt 		 				:  Date,
+					_id			                    : mongoose.Schema.Types.ObjectId,
+					subscriptionName   	            :  String,
+					user_id 		          	    :  String,
+					maxCheckIns	         	        :  Number,
+					Cost                            :  Number,
+				    Validity                        :  Number,
+					createdBy 	 					:  String,
+					createAt 		 				:  Date,
+					// endDate			 				:  Date,
+					// status 			 				:  String,
+					// plan_id   	          		    :  String,
+					// startDate		 				:  Date,
 
 });
 
-module.exports = mongoose.model('subscription',subscriptionSchema);
+module.exports = mongoose.model('subscription',SubscriptionSchema);

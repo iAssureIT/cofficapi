@@ -1,0 +1,39 @@
+1. Insert Workspace Details
+2. Update Workspace Details
+3. Fetch specific Workspace Details
+4. Fetch all Workspace Details
+5. Detete specific Workspace Details
+6. Delete All Workspace Details
+
+------------------------------------------------------------------------------------------
+                        1. Insert Workspace Details
+------------------------------------------------------------------------------------------
+1. Insert Workspace Details
+
+    Method      : POST
+    
+    URL         : /api/workspacedetails
+
+    Input       : 
+                    {
+                        nameOfCafe             : String,
+					    address                : String,
+					    landmark               : String,
+					    area                   : String,
+					    city                   : String,
+					    state                  : String,
+					    country                : String,
+					    pincode                : String,
+					    lat                    : String,
+					    long                   : String,
+					    numberOfSeats          : Number,
+					    cafeAdmin              : String,
+					    createdBy              :  String,
+                    }
+
+    Output      : 
+                    {
+                        "message": "Workspace Details inserted",
+                        "ID": String
+                    }
+                  

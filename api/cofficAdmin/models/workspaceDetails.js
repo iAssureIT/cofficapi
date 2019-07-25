@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-const workspaceDetailsSchema = mongoose.Schema({
-    _id                     : mongoose.Schema.Types.ObjectId,
+const WorkspaceDetailsSchema = mongoose.Schema({
+    _id                    : mongoose.Schema.Types.ObjectId,
     nameOfCafe             : String,
     address                : String,
     landmark               : String,
@@ -13,12 +13,14 @@ const workspaceDetailsSchema = mongoose.Schema({
     lat                    : String,
     long                   : String,
     numberOfSeats          : Number,
-    facilities             : [],
-    cafeAdmin              : String,
-    createdBy               :  String,
-    createAt                :  Date,
-    updatedBy               :  String,
-    lastUpdateAt            :  Date,
+    // facilities             : [],
+    Mobile                 : Number,
+    Email                  : String,
+    Name                   : String,
+    createdBy              :  String,
+    createAt               :  Date,
+    updatedBy              :  {type: mongoose.Schema.Types.ObjectId, ref : 'users'},
+    lastUpdateAt           :  Date,
 });
 
-module.exports = mongoose.model('workspaceDetails',workspaceDetailsSchema);
+module.exports = mongoose.model('workspaceDetails',WorkspaceDetailsSchema);

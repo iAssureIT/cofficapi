@@ -21,11 +21,13 @@ exports.create_workspace = (req,res,next)=>{
                 Mobile                 : req.body.Mobile,
                 Email                  : req.body.Email ,
                 createdBy              : req.body.createdBy ,
-                createAt               : new Date(),
+                createAt               : new  Date(),
+                updatedBy              : req.body.createdBy,
+                lastUpdateAt           : new Date(),
         });
         workspaceDetails.save()
                         .then(data=>{
-                            res.status(200).json("Workspace Details Submitted Successfully");
+                            res.status(200).json({ message: "Workspace Details Submitted Successfully",ID:data._id});
                         })
                         .catch(err =>{
                             console.log(err);
@@ -36,7 +38,7 @@ exports.create_workspace = (req,res,next)=>{
 };
 
 exports.list_workspace = (req,res,next)=>{
-    workspace.findOne({propertyID:req.params.workspaceID})
+    workspaceDetails.findOne({propertyID:req.params.workspaceID})
         .exec()
         .then(data=>{
             if(data){
@@ -55,7 +57,7 @@ exports.list_workspace = (req,res,next)=>{
 
 exports.single_workspace = (req,res,next)=>{
     console.log('list');
-    workspace.find({})
+    workspaceDetails.find({})
         .exec()
         .then(data=>{
             if(data){
@@ -73,7 +75,7 @@ exports.single_workspace = (req,res,next)=>{
 }
 
 exports.update_workspace = (req,res,next)=>{
-    workspace.updateOne(
+    workspaceDetails.updateOne(
             { _id:req.body.workspace_ID},  
             {
                 $set:{
@@ -89,7 +91,7 @@ exports.update_workspace = (req,res,next)=>{
                 lat                    : req.body.lat,
                 long                   : req.body.long,
                 numberOfSeats          : req.body.numberOfSeats,
-                facilities             : req.body.facilities ,
+                // facilities             : req.body.facilities ,
                 createdBy              : req.body.createdBy ,
                 createAt               : new Date(),
                 }
@@ -119,7 +121,7 @@ exports.update_workspace = (req,res,next)=>{
 
 
 exports.delete_workspace = (req,res,next)=>{
-    workspace.deleteOne({_id:req.params.workspaceID})
+    workspaceDetails.deleteOne({_id:req.params.workspaceID})
         .exec()
         .then(data=>{
             res.status(200).json("workspace deleted");

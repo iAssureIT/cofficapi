@@ -1,0 +1,36 @@
+1. Insert subscription Details
+2. Update subscription Details
+3. Fetch specific Subscription Details
+4. Fetch all subscription Details
+5. Detete specifc subscription Details
+6. Delete All subscription Details
+
+------------------------------------------------------------------------------------------
+                        1. Insert subscription Details
+------------------------------------------------------------------------------------------
+1. Insert subscription Details
+
+    Method      : POST
+    
+    URL         : /api/subscription
+
+    Input       : 
+                    {
+					 subscriptionName  :  String,
+					 user_id 		   :  String,
+					 maxCheckIns	   :  Number,
+					 Cost              :  Number,
+					 Validity          :  Number
+					 createdBy 	 	   :  String,
+					 createAt 		   :  Date,
+                    }
+
+    Output      : 
+                    {
+                        "message": "Subscription Details inserted",
+                        "ID": String
+                    }
+                  
+
+                    
+                  
