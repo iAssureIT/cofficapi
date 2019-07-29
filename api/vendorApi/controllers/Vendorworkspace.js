@@ -1,10 +1,10 @@
-const mongoose  = require("mongoose");
+const mongoose	= require("mongoose");
 
-const WorkspaceDetails = require('../models/workspaceDetails');
+const Vendorworkspace = require('../models/Vendorworkspace');
 
-exports.create_workspace = (req,res,next)=>{
+exports.create_Vendorworkspace = (req,res,next)=>{
 
-        const workspaceDetailsvar = new workspaceDetails({
+        const vendorworkspace  = new Vendorworkspace({
                 _id                    : new mongoose.Types.ObjectId(),
                 nameOfCafe             : req.body.nameOfCafe,
                 address                : req.body.address,
@@ -17,17 +17,13 @@ exports.create_workspace = (req,res,next)=>{
                 lat                    : req.body.lat,
                 long                   : req.body.long,
                 numberOfSeats          : req.body.numberOfSeats,
-                Name                   : req.body.Name,
-                Mobile                 : req.body.Mobile,
-                Email                  : req.body.Email ,
+                facilities             : req.body.facilities ,
                 createdBy              : req.body.createdBy ,
-                createAt               : new  Date(),
-                updatedBy              : req.body.createdBy,
-                lastUpdateAt           : new Date(),
+                createAt               : new Date(),
         });
-        workspaceDetails.save()
+        vendorworkspace.save()
                         .then(data=>{
-                            res.status(200).json({ message: "Workspace Details Submitted Successfully",ID:data._id});
+                            res.status(200).json("vendor Workspace Details Submitted Successfully");
                         })
                         .catch(err =>{
                             console.log(err);
@@ -37,8 +33,8 @@ exports.create_workspace = (req,res,next)=>{
                         });
 };
 
-exports.list_workspace = (req,res,next)=>{
-    workspaceDetails.findOne({propertyID:req.params.workspaceID})
+exports.list_Vendorworkspace = (req,res,next)=>{
+    workspace.findOne({propertyID:req.params.workspaceID})
         .exec()
         .then(data=>{
             if(data){
@@ -55,9 +51,9 @@ exports.list_workspace = (req,res,next)=>{
         });
 }
 
-exports.single_workspace = (req,res,next)=>{
+exports.single_Vendorworkspace = (req,res,next)=>{
     console.log('list');
-    workspaceDetails.find({})
+    workspace.find({})
         .exec()
         .then(data=>{
             if(data){
@@ -74,8 +70,8 @@ exports.single_workspace = (req,res,next)=>{
         });
 }
 
-exports.update_workspace = (req,res,next)=>{
-    workspaceDetails.updateOne(
+exports.update_Vendorworkspace = (req,res,next)=>{
+    workspace.updateOne(
             { _id:req.body.workspace_ID},  
             {
                 $set:{
@@ -91,7 +87,7 @@ exports.update_workspace = (req,res,next)=>{
                 lat                    : req.body.lat,
                 long                   : req.body.long,
                 numberOfSeats          : req.body.numberOfSeats,
-                // facilities             : req.body.facilities ,
+                facilities             : req.body.facilities ,
                 createdBy              : req.body.createdBy ,
                 createAt               : new Date(),
                 }
@@ -120,8 +116,8 @@ exports.update_workspace = (req,res,next)=>{
 
 
 
-exports.delete_workspace = (req,res,next)=>{
-    workspaceDetails.deleteOne({_id:req.params.workspaceID})
+exports.delete_Vendorworkspace = (req,res,next)=>{
+    workspace.deleteOne({_id:req.params.workspaceID})
         .exec()
         .then(data=>{
             res.status(200).json("workspace deleted");

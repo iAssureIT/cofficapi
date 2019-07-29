@@ -1,22 +1,22 @@
 const mongoose	= require("mongoose");
 
-const Subscription = require('../models/subscription');
+const Vendorsubscription = require('../models/Vendorsubscription');
 
-exports.create_workspace = (req,res,next)=>{
+exports.create_Vendorsubscription = (req,res,next)=>{
 
-        const subscription = new Subscription({
+        const vendorsubscription = new Vendorsubscription({
                 _id                     : new mongoose.Types.ObjectId(),
+               plan_id                  :  req.body.plan_id,
                 user_id                 :  req.body.user_id,
-                subscriptionName        :  req.body.subscriptionName,
                 maxCheckIns             :  req.body.maxCheckIns,
-                Cost                    :  req.body.Cost,
-                Validity                :  req.body.Validity,
+                startDate               :  req.body.startDate,
+                endDate                 :  req.body.endDate,
+                status                  :  req.body.status,
                 createdBy               :  req.body.createdBy,
                 createAt                :  new Date(),
         });
-        subscription.save()
+        vendorsubscription.save()
                         .then(data=>{
-                            console.log('data', data);
                             res.status(200).json("subscription Details Submitted Successfully");
                         })
                         .catch(err =>{
@@ -27,8 +27,8 @@ exports.create_workspace = (req,res,next)=>{
                         });
 };
 
-exports.detail_subscription = (req,res,next)=>{
-    Subscription.findOne({propertyID:req.params.subscriptionlID})
+exports.detail_Vendorsubscription = (req,res,next)=>{
+    subscription.findOne({propertyID:req.params.SellRecidentialID})
         .exec()
         .then(data=>{
             if(data){
@@ -45,9 +45,9 @@ exports.detail_subscription = (req,res,next)=>{
         });
 }
 
-exports.list_subscription = (req,res,next)=>{
+exports.list_Vendorsubscription = (req,res,next)=>{
     console.log('list');
-    Subscription.find()
+    subscription.find({})
         .exec()
         .then(data=>{
             if(data){
@@ -66,8 +66,8 @@ exports.list_subscription = (req,res,next)=>{
 
 
 
-exports.update_subscription = (req,res,next)=>{
-        Subscription.updateOne(
+exports.update_Vendorsubscription = (req,res,next)=>{
+        subscription.updateOne(
             { _id:req.body.subscription_ID},  
             {
                 $set:{
@@ -103,8 +103,8 @@ exports.update_subscription = (req,res,next)=>{
         });
 }
 
-exports.delete_subscription = (req,res,next)=>{
-    Subscription.deleteOne({_id:req.params.subscriptionID})
+exports.delete_Vendorsubscription = (req,res,next)=>{
+    subscription.deleteOne({_id:req.params.subscriptionID})
         .exec()
         .then(data=>{
             res.status(200).json("subscription deleted");

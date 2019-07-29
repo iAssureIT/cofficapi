@@ -33,11 +33,23 @@
     
     const WorkspaceDetailsurl 	       = require("./api/cofficAdmin/routes/workspaceDetails");
     const Subscriptionsurl             = require("./api/cofficAdmin/routes/subscription");
+    const ProjectSettingsurl           = require("./api/cofficAdmin/routes/projectSettings");
+    const Vendorworkspaceurl           = require("./api/vendorApi/routes/Vendorworkspace");
+    const Vendorsubscriptionurl        = require("./api/vendorApi/routes/Vendorsubscription");
+    // const SubscriptionPlanurl          = require("./api/vendorApi/routes/subscriptionPlan");
+    // const SeatBookingurl               = require("./api/vendorApi/routes/seatBooking");
+    // const Ordersurl                    = require("./api/vendorApi/routes/orders");
 
 
 
 	app.use("/api/workspaceDetails",WorkspaceDetailsurl);
     app.use("/api/subscription",Subscriptionsurl);
+    app.use("/api/projectSettings",ProjectSettingsurl);
+    app.use("/api/Vendorworkspace",Vendorworkspaceurl);
+    app.use("/api/Vendorsubscription",Vendorsubscriptionurl);
+    // app.use("/api/seatBoking",SeatBookingurl);
+    // app.use("/api/subscriptionPlan",SubscriptionPlanurl);
+    // app.use("/api/orders",Ordersurl);
 
 
 

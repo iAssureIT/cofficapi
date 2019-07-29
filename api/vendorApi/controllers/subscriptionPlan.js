@@ -1,23 +1,24 @@
 const mongoose	= require("mongoose");
 
-const Subscription = require('../models/subscription');
+const SubscriptionPlan = require('../models/subscriptionPlan');
 
 exports.create_workspace = (req,res,next)=>{
 
-        const subscription = new Subscription({
-                _id                     : new mongoose.Types.ObjectId(),
-                user_id                 :  req.body.user_id,
-                subscriptionName        :  req.body.subscriptionName,
+        const subscriptionPlan = new SubscriptionPlan({
+                _id                    : new mongoose.Types.ObjectId(),
+                planName               :  req.body.planName,,
+                description             :  req.body.description,
                 maxCheckIns             :  req.body.maxCheckIns,
-                Cost                    :  req.body.Cost,
-                Validity                :  req.body.Validity,
+                price                   :  req.body.price,
+                validityDays            :  req.body.validityDays,
                 createdBy               :  req.body.createdBy,
                 createAt                :  new Date(),
+                updatedBy               :  req.body.planName,
+                lastUpdateAt            :  new Date(),
         });
-        subscription.save()
+        subscriptionPlan.save()
                         .then(data=>{
-                            console.log('data', data);
-                            res.status(200).json("subscription Details Submitted Successfully");
+                            res.status(200).json("subscriptionPlan Details Submitted Successfully");
                         })
                         .catch(err =>{
                             console.log(err);
@@ -27,14 +28,14 @@ exports.create_workspace = (req,res,next)=>{
                         });
 };
 
-exports.detail_subscription = (req,res,next)=>{
-    Subscription.findOne({propertyID:req.params.subscriptionlID})
+exports.detail_subscriptionPlan = (req,res,next)=>{
+    subscriptionPlan.findOne({propertyID:req.params.subscriptionPlanID})
         .exec()
         .then(data=>{
             if(data){
                 res.status(200).json(data);
             }else{
-                res.status(404).json('Company Details not found');
+                res.status(404).json('subscriptionPlans Details not found');
             }
         })
         .catch(err =>{
@@ -45,15 +46,15 @@ exports.detail_subscription = (req,res,next)=>{
         });
 }
 
-exports.list_subscription = (req,res,next)=>{
+exports.list_subscriptionPlans = (req,res,next)=>{
     console.log('list');
-    Subscription.find()
+    subscriptionPlans.find({})
         .exec()
         .then(data=>{
             if(data){
                 res.status(200).json(data);
             }else{
-                res.status(404).json('Company Details not found');
+                res.status(404).json('subscriptionPlans Details not found');
             }
         })
         .catch(err =>{
@@ -66,20 +67,21 @@ exports.list_subscription = (req,res,next)=>{
 
 
 
-exports.update_subscription = (req,res,next)=>{
-        Subscription.updateOne(
-            { _id:req.body.subscription_ID},  
+exports.update_subscriptionPlans = (req,res,next)=>{
+    subscriptionPlans.updateOne(
+            { _id:req.body.asubscriptionPlans_ID},  
             {
                 $set:{
-                _id                     : new mongoose.Types.ObjectId(),
-               plan_id                  :  req.body.plan_id,
-                user_id                 :  req.body.user_id,
+                _id                    : new mongoose.Types.ObjectId(),
+                planName               :  req.body.planName,,
+                description             :  req.body.description,
                 maxCheckIns             :  req.body.maxCheckIns,
-                startDate               :  req.body.startDate,
-                endDate                 :  req.body.endDate,
-                status                  :  req.body.status,
+                price                   :  req.body.price,
+                validityDays            :  req.body.validityDays,
                 createdBy               :  req.body.createdBy,
                 createAt                :  new Date(),
+                updatedBy               :  req.body.planName,
+                lastUpdateAt            :  new Date(),
                 }
             }
         )
@@ -87,11 +89,11 @@ exports.update_subscription = (req,res,next)=>{
         .then(data=>{
             if(data.nModified == 1){
                 res.status(200).json({
-                    "message": "subscription Updated Successfully."
+                    "message": "subscriptionPlans Updated Successfully."
                 });
-            }else{
+            }else{ 
                 res.status(401).json({
-                    "message": "subscription Report Not Found"
+                    "message": "subscriptionPlans Not Found"
                 });
             }
         })
@@ -103,11 +105,11 @@ exports.update_subscription = (req,res,next)=>{
         });
 }
 
-exports.delete_subscription = (req,res,next)=>{
-    Subscription.deleteOne({_id:req.params.subscriptionID})
+exports.delete_subscriptionPlans = (req,res,next)=>{
+    subscriptionPlans.deleteOne({_id:req.params.subscriptionPlansID})
         .exec()
         .then(data=>{
-            res.status(200).json("subscription deleted");
+            res.status(200).json("subscriptionPlans deleted");
         })
         .catch(err =>{
             console.log(err);
