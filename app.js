@@ -8,6 +8,7 @@
 	global.JWT_KEY = "secret";	
 	
 	mongoose.connect('mongodb://localhost/'+dbname,{
+   // mongoose.connect('mongodb://localhost/onlineExamSystem',{
         useNewUrlParser: true
     })
     mongoose.promise = global.Promise;
@@ -36,6 +37,7 @@
     const ProjectSettingsurl           = require("./api/cofficAdmin/routes/projectSettings");
     const Vendorworkspaceurl           = require("./api/vendorApi/routes/Vendorworkspace");
     const Vendorsubscriptionurl        = require("./api/vendorApi/routes/Vendorsubscription");
+    const VendorCafeMenuUrl            = require("./api/vendorApi/routes/CafeMenu");
     // const SubscriptionPlanurl          = require("./api/vendorApi/routes/subscriptionPlan");
     // const SeatBookingurl               = require("./api/vendorApi/routes/seatBooking");
     // const Ordersurl                    = require("./api/vendorApi/routes/orders");
@@ -47,7 +49,7 @@
     app.use("/api/projectSettings",ProjectSettingsurl);
     app.use("/api/Vendorworkspace",Vendorworkspaceurl);
     app.use("/api/Vendorsubscription",Vendorsubscriptionurl);
-    // app.use("/api/seatBoking",SeatBookingurl);
+    app.use("/api/cafeMenu",VendorCafeMenuUrl);
     // app.use("/api/subscriptionPlan",SubscriptionPlanurl);
     // app.use("/api/orders",Ordersurl);
 

@@ -1,67 +1,88 @@
+
+---------------------------------Cafe details-----------------
+
 workspaceDetails 
 
 {
-	_id 					: xxxx,
-	nameOfCafe 		: String,
+	_id 				: xxxx,
+	nameOfCafe 			: String,
 	address 			: String,
 	landmark 			: String,
-	area 					: String,
-	city					: String,
+	area 				: String,
+	city				: String,
 	state 				: String,
 	country 			: String,
 	pincode 			: String,
-	lat 					: String,
-	long 					: String,
-	numberOfSeats : Number,
-	facilities 		: [string1,string1,string1,string1,string1],
-	cafeAdmin  		: user_id,
+	lat 				: String,
+	long 				: String,
+	numberOfSeats 		: Number,
+	facilities 			: [{
+								_id : xx,
+								amenityName : xx,
+								icon : fontawesome i tag,
+							},
+							{
+								_id : xx,
+								amenityName : xx,
+								icon : fontawesome i tag,
+							}],
+	cafeAdmin  			: user_id,
+	isOpen 				: true / false,
 }
 
 
-
+		---------------packages---------------------
 subscriptionPlans = {
 	_id 				 :  xxx,
 	planName  	 :  String,
 	description	 :  String,
 	maxCheckIns	 :  Number,
-	price 			 :  Number,
+	price 		 :  Number,
 	validityDays :  String,
 	createdBy 	 :  user_id,
-	createAt 		 :  timestamp,
+	createAt 	 :  timestamp,
 	updatedBy 	 :  user_id,
 	lastUpdateAt :  timestamp,
 }
 
+----------------------------package oreder collection---------
 
 subscription = {
-	_id 				 :  xxx,
+	_id 		 :  xxx,
 	plan_id   	 :  xxx,
-	user_id 		 :  xxx,
+	user_id 	 :  xxx,
 	maxCheckIns	 :  Number,
-	startDate		 :  Date,
-	endDate			 :  Date,
-	status 			 :  String,
+	startDate	 :  Date,
+	endDate		 :  Date,
+	status 		 :  String,
 	createdBy 	 :  user_id,
-	createAt 		 :  timestamp,
+	createAt 	 :  timestamp,
 }
 
+
+-----------------------------Checked in collection----------------
 
 seatBooking = {
-	_id 				 :  xxx,
-	workSpace_id :  xxx,
-	user_id 		 :  xxx,
-	date 				 :  Date,
-	checkInTime	 :  timestamp,
-	checkOutTime :  timestamp,
-	createdBy 	 :  user_id,
-	createAt 		 :  timestamp,
+	_id 			:  xxx,
+	workSpace_id 	:  xxx,
+	user_id 		:  xxx,
+	subscriptionPlanID : xxx,
+	date 			:  Date,
+	checkInTime	 	:  timestamp,
+	checkOutTime 	:  timestamp,
+	createdBy 	 	:  user_id,
+	createAt 		:  timestamp,
 }
 
+
+
+-----------------------------Ordered menu collection---------------
+
 menuOrders = {
-	_id 	:  xxx,
+	_id 		  :  xxx,
 	workSpace_id  : xxx,
-	user_id 			: xxx,
-	date 					: Date,
+	user_id 	  : xxx,
+	date 		  : Date,
 	itemsOrdered 	: [
 		{item: String, price: Number, isDelivered: Boolean, orderedAt: timestamp,}
 		{item: String, price: Number, isDelivered: Boolean, orderedAt: timestamp,}
@@ -69,6 +90,38 @@ menuOrders = {
 	]
 }
 
+----------------------------------Cafe Menu--------------------
+
+cafeMenu 
+
+{
+	_id 					: xxxx,
+	workspaceID 			: xxx,
+	itemName 		        : String,
+	cost 			        : Number,
+}
+
+
+------------------------------------Work Amenities-----------
+
+workAmenities : {
+	_id : xx,
+	amenityName : xx,
+	icon : fontawesome i tag,
+}
 
 
 
+
+
+===========================
+
+1. List Of All Cafes in Selected City
+2. Details of selected cafe
+3. checkin => scan QR code => match two ids... Insert in SeatBooking collection. 
+4. Vendor => get API using workspaceid and date. and checkout field is blank. 
+
+5. all seats are occupied => find how many seats are already occupied. then minus that count from total seats allowed. add those many dummy records. 
+
+6. amenities all crud api -> 2 fields only.
+7. 
