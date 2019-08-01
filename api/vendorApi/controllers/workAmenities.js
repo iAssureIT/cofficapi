@@ -1,24 +1,45 @@
 const mongoose	= require("mongoose");
 
-const CafeMenu = require('../models/CafeMenu');
+const WorkAmenities = require('../models/workAmenities');
 
-exports.submit_cafeItem = (req,res,next)=>{ 
-    CafeMenu.findOne({"itemName":req.body.itemName})
-            .exec()
-            .then(dataexist=>{
-                if(dataexist){
-                    res.status(200).json("Record Exists");
-                }else{
-                        const cafeMenu = new CafeMenu({
+exports.submit_amenity = (req,res,next)=>{ 
+    // WorkAmenities.findOne({"amenityName":req.body.amenityName})
+    //         .exec()
+    //         .then(dataexist=>{
+    //             if(dataexist){
+    //                 res.status(200).json("Record Exists");
+    //             }else{
+    //                     const workAmenities = new WorkAmenities({
+    //                                             _id                      : new mongoose.Types.ObjectId(),
+    //                                             amenityName              :  req.body.amenityName,
+    //                                             icon                     :  req.body.icon,                                               
+    //                                     });
+    //                     workAmenities.save()
+    //                             .then(data=>{
+    //                                 console.log("data--->",data);
+    //                                 res.status(200).json("Successful");
+    //                             })
+    //                             .catch(err =>{
+    //                                 console.log(err);
+    //                                 res.status(500).json({
+    //                                     error: err
+    //                                 });
+    //                             });
+
+    //                 }
+    //         })
+    //         .catch()
+
+
+            const workAmenities = new WorkAmenities({
                                                 _id                      : new mongoose.Types.ObjectId(),
-                                                itemName                 :  req.body.itemName,
-                                                cost                     :  req.body.cost,
-                                                workspaceID              :  req.body.workspaceID,
-                                               
+                                                amenityName              :  req.body.amenityName,
+                                                icon                     :  req.body.icon,                                               
                                         });
-                        cafeMenu.save()
+                        workAmenities.save()
                                 .then(data=>{
-                                    res.status(200).json("Item Details Submitted Successfully");
+                                    console.log("data--->",data);
+                                    res.status(200).json("Successful");
                                 })
                                 .catch(err =>{
                                     console.log(err);
@@ -27,14 +48,10 @@ exports.submit_cafeItem = (req,res,next)=>{
                                     });
                                 });
 
-                    }
-            })
-            .catch()
-
 };
 
-exports.get_cafeItemList = (req,res,next)=>{
-        CafeMenu.find()
+exports.get_amenityList = (req,res,next)=>{
+        WorkAmenities.find()
                         .then(data=>{
                             res.status(200).json(data);
                         })
@@ -47,8 +64,8 @@ exports.get_cafeItemList = (req,res,next)=>{
 };
 
 
-exports.get_cafeItemSingle = (req,res,next)=>{
-        CafeMenu.findOne({"_id":req.params.id})
+exports.get_amenitySingle = (req,res,next)=>{
+        WorkAmenities.findOne({"_id":req.params.id})
                         .then(data=>{                           
                             res.status(200).json(data);
                         })
@@ -61,21 +78,21 @@ exports.get_cafeItemSingle = (req,res,next)=>{
 };
 
 
-exports.updateItemSingle = (req,res,next)=>{
-    CafeMenu.findOne({"_id":req.params.id})
+exports.updateamenitySingle = (req,res,next)=>{
+    WorkAmenities.findOne({"_id":req.params.id})
                     .then(data=>{ 
                         if(data){
-                            CafeMenu.updateOne({"_id":data._id},
+                            WorkAmenities.updateOne({"_id":data._id},
                                                     {$set:{
-                                                        itemName  :  req.body.itemName,
-                                                         cost     :  req.body.cost,
+                                                        amenityName  :  req.body.amenityName,
+                                                         icon        :  req.body.icon,
                                                     }
                                                 })
                                     .exec()
                                     .then(data=>{
                                         if(data){
                                             if(data.nModified==1){
-                                                res.status(200).json("Item Details Updated Successfully");
+                                                res.status(200).json("Successful");
                                             }
                                         }
 
@@ -92,8 +109,8 @@ exports.updateItemSingle = (req,res,next)=>{
                     });
 };
 
-exports.deleteItemSingle = (req,res,next)=>{
-        CafeMenu.deleteOne({"_id":req.params.id})
+exports.deleteamenitySingle = (req,res,next)=>{
+        WorkAmenities.deleteOne({"_id":req.params.id})
                         .then(data=>{  
                             console.log("data delete---->",data);
                             if(data.deletedCount==1){

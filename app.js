@@ -35,6 +35,9 @@
     const WorkspaceDetailsurl 	       = require("./api/cofficAdmin/routes/workspaceDetails");
     const Subscriptionsurl             = require("./api/cofficAdmin/routes/subscription");
     const ProjectSettingsurl           = require("./api/cofficAdmin/routes/projectSettings");
+    const WorkAmenitiessurl            = require("./api/cofficAdmin/routes/workAmenities");
+
+
     const Vendorworkspaceurl           = require("./api/vendorApi/routes/Vendorworkspace");
     const Vendorsubscriptionurl        = require("./api/vendorApi/routes/Vendorsubscription");
     const VendorCafeMenuUrl            = require("./api/vendorApi/routes/CafeMenu");
@@ -46,6 +49,10 @@
 
 	app.use("/api/workspaceDetails",WorkspaceDetailsurl);
     app.use("/api/subscription",Subscriptionsurl);
+    app.use("/api/workAmenities",WorkAmenitiessurl);
+
+
+
     app.use("/api/projectSettings",ProjectSettingsurl);
     app.use("/api/Vendorworkspace",Vendorworkspaceurl);
     app.use("/api/Vendorsubscription",Vendorsubscriptionurl);
