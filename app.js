@@ -38,8 +38,8 @@
     const Vendorworkspaceurl           = require("./api/vendorApi/routes/Vendorworkspace");
     const Vendorsubscriptionurl        = require("./api/vendorApi/routes/Vendorsubscription");
     const VendorCafeMenuUrl            = require("./api/vendorApi/routes/CafeMenu");
+
     // const SubscriptionPlanurl          = require("./api/vendorApi/routes/subscriptionPlan");
-    // const SeatBookingurl               = require("./api/vendorApi/routes/seatBooking");
     // const Ordersurl                    = require("./api/vendorApi/routes/orders");
 
 
