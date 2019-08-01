@@ -2,7 +2,8 @@ const mongoose	= require("mongoose");
 
 const Subscription = require('../models/subscription');
 
-exports.create_workspace = (req,res,next)=>{
+exports.create_subscription = (req,res,next)=>{
+    console.log("create_subscription");
 
         const subscription = new Subscription({
                 _id                     : new mongoose.Types.ObjectId(),
@@ -14,6 +15,8 @@ exports.create_workspace = (req,res,next)=>{
                 createdBy               :  req.body.createdBy,
                 createAt                :  new Date(),
         });
+
+        console.log("subscription",subscription);
         subscription.save()
                         .then(data=>{
                             console.log('data', data);

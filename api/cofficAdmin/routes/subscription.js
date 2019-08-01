@@ -5,7 +5,7 @@ const router 	= express.Router();
 const subscriptionController = require('../controllers/subscription');
 
 
-router.post('/', subscriptionController.create_workspace);
+router.post('/', subscriptionController.create_subscription);
 
 
 router.get('/list',subscriptionController.list_subscription);
