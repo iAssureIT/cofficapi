@@ -4,7 +4,7 @@ const Subscription = require('../models/subscription');
 
 exports.create_workspace = (req,res,next)=>{
 
-        const subscriptionvar = new subscription({
+        const subscription = new Subscription({
                 _id                     : new mongoose.Types.ObjectId(),
                 user_id                 :  req.body.user_id,
                 subscriptionName        :  req.body.subscriptionName,
