@@ -4,7 +4,7 @@ const Subscription = require('../models/subscription');
 
 exports.create_workspace = (req,res,next)=>{
 
-        const subscription = new Subscription({
+        const subscriptionvar = new Subscription({
                 _id                     : new mongoose.Types.ObjectId(),
                 user_id                 :  req.body.user_id,
                 subscriptionName        :  req.body.subscriptionName,
@@ -14,7 +14,7 @@ exports.create_workspace = (req,res,next)=>{
                 createdBy               :  req.body.createdBy,
                 createAt                :  new Date(),
         });
-        subscription.save()
+        Subscription.save()
                         .then(data=>{
                             console.log('data', data);
                             res.status(200).json("subscription Details Submitted Successfully");
