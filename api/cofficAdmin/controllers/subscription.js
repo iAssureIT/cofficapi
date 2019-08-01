@@ -5,7 +5,7 @@ const Subscription = require('../models/subscription');
 exports.create_subscription = (req,res,next)=>{
     // console.log("create_subscription",create_subscription);
 
-        const subscription = new Subscription({
+        const obj = new Subscription({
                 _id                     : new mongoose.Types.ObjectId(),
                 user_id                 :  req.body.user_id,
                 subscriptionName        :  req.body.subscriptionName,
@@ -17,7 +17,7 @@ exports.create_subscription = (req,res,next)=>{
         });
 
         console.log("subscription",subscription);
-        subscription.save()
+        obj.save()
                         .then(data=>{
                             console.log('data', data);
                             res.status(200).json("subscription Details Submitted Successfully");
