@@ -25,7 +25,7 @@ exports.create_workspace = (req,res,next)=>{
                 updatedBy              : req.body.createdBy,
                 lastUpdateAt           : new Date(),
         });
-        workspaceDetails.save()
+        workspaceDetailsvar.save()
                         .then(data=>{
                             res.status(200).json({ message: "Workspace Details Submitted Successfully",ID:data._id});
                         })
