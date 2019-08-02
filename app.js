@@ -5,6 +5,7 @@
 	const mongoose 						= require ('mongoose');
 
     const dbname = "qacoffic";
+
 	global.JWT_KEY = "secret";	
 	
 	mongoose.connect('mongodb://localhost/'+dbname,{
@@ -41,6 +42,7 @@
     const Vendorworkspaceurl           = require("./api/vendorApi/routes/Vendorworkspace");
     const Vendorsubscriptionurl        = require("./api/vendorApi/routes/Vendorsubscription");
     const VendorCafeMenuUrl            = require("./api/vendorApi/routes/CafeMenu");
+    const VendorSubscriptionOrderUrl   = require("./api/vendorApi/routes/subscriptionOrder");
 
     // const SubscriptionPlanurl          = require("./api/vendorApi/routes/subscriptionPlan");
     // const Ordersurl                    = require("./api/vendorApi/routes/orders");
@@ -57,8 +59,8 @@
     app.use("/api/Vendorworkspace",Vendorworkspaceurl);
     app.use("/api/Vendorsubscription",Vendorsubscriptionurl);
     app.use("/api/cafeMenu",VendorCafeMenuUrl);
-    // app.use("/api/subscriptionPlan",SubscriptionPlanurl);
-    // app.use("/api/orders",Ordersurl);
+    app.use("/api/subscriptionOrder",VendorSubscriptionOrderUrl);
+    
 
 
 

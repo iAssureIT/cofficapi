@@ -1,29 +1,36 @@
 const mongoose  = require("mongoose");
-
 const WorkspaceDetails = require('../models/workspaceDetails');
 
-exports.create_workspace = (req,res,next)=>{
 
-        const workspaceDetailsvar = new workspaceDetails({
+
+exports.create_workspace = (req,res,next)=>{
+    console.log("create_workspace--->",req.body);
+        const workspaceDetails = new WorkspaceDetails({
                 _id                    : new mongoose.Types.ObjectId(),
-                nameOfCafe             : req.body.nameOfCafe,
-                address                : req.body.address,
-                landmark               : req.body.landmark,
-                area                   : req.body.city,
-                city                   : req.body.state,
-                state                  : req.body.state,
-                country                : req.body.country,
-                pincode                : req.body.pincode,
+                nameOfCafe             : req.body.CafeName,
+                address                : req.body.Address,
+                landmark               : req.body.Landmark,
+                area                   : req.body.Area,
+                city                   : req.body.State,
+                state                  : req.body.City,
+                country                : req.body.Country,
+                pincode                : req.body.Pin,
                 lat                    : req.body.lat,
                 long                   : req.body.long,
                 numberOfSeats          : req.body.numberOfSeats,
                 Name                   : req.body.Name,
                 Mobile                 : req.body.Mobile,
                 Email                  : req.body.Email ,
-                createdBy              : req.body.createdBy ,
+                facilities             : req.body.facilities ,
+                createdBy              : "ddd" ,
                 createAt               : new  Date(),
-                updatedBy              : req.body.createdBy,
+                // updatedBy              : "ddd",
                 lastUpdateAt           : new Date(),
+                logo                   : req.body.logo,
+                banner                 : req.body.banner,
+                workspaceImages        : req.body.workspaceImages,
+                cafeAdmin              : "user_id",
+                isOpen                 : true,
         });
         workspaceDetailsvar.save()
                         .then(data=>{
@@ -38,7 +45,7 @@ exports.create_workspace = (req,res,next)=>{
 };
 
 exports.list_workspace = (req,res,next)=>{
-    workspaceDetails.findOne({propertyID:req.params.workspaceID})
+    WorkspaceDetails.find({})
         .exec()
         .then(data=>{
             if(data){
@@ -57,7 +64,7 @@ exports.list_workspace = (req,res,next)=>{
 
 exports.single_workspace = (req,res,next)=>{
     console.log('list');
-    workspaceDetails.find({})
+    WorkspaceDetails.findOne({"_id":req.params.workspaceID})
         .exec()
         .then(data=>{
             if(data){
@@ -75,25 +82,35 @@ exports.single_workspace = (req,res,next)=>{
 }
 
 exports.update_workspace = (req,res,next)=>{
-    workspaceDetails.updateOne(
-            { _id:req.body.workspace_ID},  
+    WorkspaceDetails.updateOne(
+            { _id:req.params.id},  
             {
                 $set:{
                 id                     : new mongoose.Types.ObjectId(),
-                nameOfCafe             : req.body.nameOfCafe,
-                address                : req.body.address,
-                landmark               : req.body.landmark,
-                area                   : req.body.city,
-                city                   : req.body.state,
-                state                  : req.body.state,
-                country                : req.body.country,
-                pincode                : req.body.pincode,
+                nameOfCafe             : req.body.CafeName,
+                address                : req.body.Address,
+                landmark               : req.body.Landmark,
+                area                   : req.body.Area,
+                city                   : req.body.State,
+                state                  : req.body.City,
+                country                : req.body.Country,
+                pincode                : req.body.Pin,
                 lat                    : req.body.lat,
                 long                   : req.body.long,
                 numberOfSeats          : req.body.numberOfSeats,
-                // facilities             : req.body.facilities ,
-                createdBy              : req.body.createdBy ,
-                createAt               : new Date(),
+                Name                   : req.body.Name,
+                Mobile                 : req.body.Mobile,
+                Email                  : req.body.Email ,
+                facilities             : req.body.facilities ,
+                createdBy              : "ddd" ,
+                createAt               : new  Date(),
+                // updatedBy              : "ddd",
+                lastUpdateAt           : new Date(),
+                logo                   : req.body.logo,
+                banner                 : req.body.banner,
+                workspaceImages        : req.body.workspaceImages,
+                cafeAdmin              : "user_id",
+                isOpen                 : true,
                 }
             }
         )
@@ -121,7 +138,7 @@ exports.update_workspace = (req,res,next)=>{
 
 
 exports.delete_workspace = (req,res,next)=>{
-    workspaceDetails.deleteOne({_id:req.params.workspaceID})
+    WorkspaceDetails.deleteOne({_id:req.params.workspaceID})
         .exec()
         .then(data=>{
             res.status(200).json("workspace deleted");

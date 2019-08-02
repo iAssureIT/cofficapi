@@ -32,22 +32,23 @@ workspaceDetails
 
 
 		---------------packages---------------------
-subscriptionPlans = {
-	_id 				 :  xxx,
+subscription = {
+	_id 	     :  xxx,
 	planName  	 :  String,
-	description	 :  String,
 	maxCheckIns	 :  Number,
 	price 		 :  Number,
-	validityDays :  String,
+	validityDays :  String,	
 	createdBy 	 :  user_id,
 	createAt 	 :  timestamp,
+
+	description	 :  String,
 	updatedBy 	 :  user_id,
 	lastUpdateAt :  timestamp,
 }
 
-----------------------------package oreder collection---------
+----------------------------package order collection---------
 
-subscription = {
+subscriptionOrder = {
 	_id 		 :  xxx,
 	plan_id   	 :  xxx,
 	user_id 	 :  xxx,

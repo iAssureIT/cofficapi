@@ -5,7 +5,7 @@ const ProjectSettings = require('../models/projectSettings');
 exports.create_projectSettings = (req,res,next)=>{
 
         const projectSettings = new ProjectSettings({
-                _id                     : new mongoose.Types.ObjectId(),
+                _id                     :  new mongoose.Types.ObjectId(),
                 user_id                 :  req.body.user_id,
                 key                     :  req.body.key,
                 secret                  :  req.body.secret,
@@ -14,6 +14,7 @@ exports.create_projectSettings = (req,res,next)=>{
                 type                    :  req.body.type,
                 
         });
+        
         projectSettings.save()
                         .then(data=>{
                             console.log('data', data);
