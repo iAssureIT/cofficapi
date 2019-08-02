@@ -11,12 +11,12 @@ router.post('/', subscriptionController.create_subscription);
 router.get('/list',subscriptionController.list_subscription);
 
 
-// router.get('/:subscriptionID',subscriptionController.single_subscription);
+router.get('/single:subscriptionID',subscriptionController.single_subscription);
 
 
-router.patch('/', subscriptionController.update_subscription);
+router.post('/edit', subscriptionController.update_subscription);
 
 
-router.delete('/:subscriptionID',subscriptionController.delete_subscription);
+router.delete('/single:subscriptionID',subscriptionController.delete_subscription);
 
 module.exports = router;

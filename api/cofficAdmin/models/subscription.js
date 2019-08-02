@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const SubscriptionSchema = mongoose.Schema({
 
 					_id			                    : mongoose.Schema.Types.ObjectId,
-					subscriptionName   	            :  String,
 					user_id 		          	    :  String,
+					subscriptionName   	            :  String,
 					maxCheckIns	         	        :  Number,
 					Cost                            :  Number,
 				    Validity                        :  Number,
