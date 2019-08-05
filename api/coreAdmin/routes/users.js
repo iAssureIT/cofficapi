@@ -36,7 +36,9 @@ router.patch('/patch/one/:userID',UserController.update_user);
 
 router.patch('/patch/:rolestatus',UserController.user_change_role);  
 
-// router.get('/verify_mobile/',UserController.users_verify_mobile); 
+router.post('/verify_mobileOTP',UserController.users_verify_mobileOTP); 
+
+router.post('/confirmOTP',UserController.confirmOTP); 
 
 router.get('/get/one/:userID',UserController.user_details); 
 

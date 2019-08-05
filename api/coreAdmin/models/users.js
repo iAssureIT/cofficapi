@@ -37,6 +37,7 @@ const userSchema = mongoose.Schema({
 		pwd 			: String,
 		status			: String,
 		otp 			: Number,
+		emailOTP    	: Number,
 		city 			: String,
 	},
 	roles 				: [String],
