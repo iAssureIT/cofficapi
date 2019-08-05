@@ -16,26 +16,31 @@ const userSchema = mongoose.Schema({
 			]
 		}
 	},
-	username		: {type:String},
-	mobileNumber 	: String, 
-	otp				: Number,
-	emails			: 	[
+	username	 : {type:String},
+	emails		 : [
 							{
 								address:{type:String},
 								verified: Boolean
 							}
-						],
+					],
+	mobileNumber  : String,
+	countryCode   : String,
 	profile :{
-		firstname 		: String,
-		lastname  		: String,
+		firstName 		: String,
+		lastName  		: String,
 		fullName  		: String,
+		// name 	 		: String,
 		emailId   		: String,
-		mobNumber 		: String,
+		mobileNumber 	: String, 
+		countryCode  	: String,
 		profilepic		: String,
 		pwd 			: String,
 		status			: String,
+		otp 			: Number,
+		city 			: String,
 	},
-	roles : [String],
+	roles 				: [String],
+	officeLocation 		: String,
 	heartbeat : Date
 });
 

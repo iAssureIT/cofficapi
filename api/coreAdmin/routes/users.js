@@ -1,46 +1,51 @@
 const express 	= require("express");
-const router 	= express.Router();
 
+const router 	= express.Router();
 
 const checkAuth     = require('../middlerware/check-auth');
 
 const UserController = require('../controllers/users');
 
-router.post('/', UserController.user_signup); 
+// router.post('/', UserController.user_signup); 
 
-router.post('/login',UserController.user_login); 
+router.post('/post', UserController.user_signupadmin); 
 
-router.post('/userslist',UserController.users_fetch); 
+router.post('/post/login',UserController.user_login); 
 
-router.post('/verify_mobile/',UserController.users_verify_mobile); 
+router.post('/post/forgot-pwd',UserController.forgot_pwd); 
 
-router.get('/list', UserController.users_list); 
+router.post('/post/userslist',UserController.users_fetch); 
 
-router.get('/verify_mobile/',UserController.users_verify_mobile); 
+router.post('/post/searchValue',UserController.user_search); 
 
-router.get('/userslist', UserController.users_directlist); 
+router.post('/post/officesearchValue',UserController.search_user_office); 
 
+router.post('/post/statusaction',UserController.account_status); 
 
+router.post('/post/roleadd',UserController.account_role_add); 
 
-router.get('/:userID',UserController.user_details); 
+router.post('/post/roledelete',UserController.account_role_remove); 
 
+router.get('/post/list', UserController.users_list); 
 
+// router.get('/userslist', UserController.users_directlist); 
 
+router.get('/get/count', UserController.users_count); 
 
+router.patch('/patch/one/:userID',UserController.update_user); 
 
-router.delete('/:userID',UserController.delete_user);
+router.patch('/patch/:rolestatus',UserController.user_change_role);  
 
-// router.put('/',UserController.user_update);  
+// router.get('/verify_mobile/',UserController.users_verify_mobile); 
 
-router.put('/:userID',UserController.update_user);  
+router.get('/get/one/:userID',UserController.user_details); 
 
-router.patch('/:rolestatus',UserController.user_change_role);  
+router.put('/put/one/resetpwd/:userID',UserController.update_user_resetpassword);  
 
+router.delete('/delete/one/:userID',UserController.delete_user);
 
-//========  Manage OTP  ===========
+router.delete('/',UserController.deleteall_user);  
 
-const OTPController = require('../controllers/otp');
-router.post('/otpverification',OTPController.generate_otp);
 
 
 module.exports = router;

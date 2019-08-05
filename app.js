@@ -44,6 +44,10 @@
     const VendorCafeMenuUrl            = require("./api/vendorApi/routes/CafeMenu");
     const VendorSubscriptionOrderUrl   = require("./api/vendorApi/routes/subscriptionOrder");
 
+
+
+      const UsersUrl            = require("./api/coreAdmin/routes/users");
+
     // const SubscriptionPlanurl          = require("./api/vendorApi/routes/subscriptionPlan");
     // const Ordersurl                    = require("./api/vendorApi/routes/orders");
 
@@ -60,6 +64,10 @@
     app.use("/api/Vendorsubscription",Vendorsubscriptionurl);
     app.use("/api/cafeMenu",VendorCafeMenuUrl);
     app.use("/api/subscriptionOrder",VendorSubscriptionOrderUrl);
+
+
+
+      app.use("/api/users",UsersUrl);
     
 
 
