@@ -14,6 +14,7 @@ const WorkspaceDetailsSchema = mongoose.Schema({
     long                   : String,
     numberOfSeats          : Number,
     facilities             : Array,
+    Cost                   : Number,
     Mobile                 : Number,
     Email                  : String,
     Name                   : String,

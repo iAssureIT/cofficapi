@@ -1,0 +1,5 @@
+TO KILL PORT:
+1.lsof -t -i:5012
+2. kill 29988
+
+ 

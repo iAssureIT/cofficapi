@@ -1,5 +1,4 @@
 const mongoose	= require("mongoose");
-
 const WorkAmenities = require('../models/workAmenities');
 
 exports.submit_amenity = (req,res,next)=>{    

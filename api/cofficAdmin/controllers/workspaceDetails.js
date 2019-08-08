@@ -22,6 +22,7 @@ exports.create_workspace = (req,res,next)=>{
                 Mobile                 : req.body.Mobile,
                 Email                  : req.body.Email ,
                 facilities             : req.body.facilities ,
+                Cost                   : req.body.Cost ,
                 createdBy              : "ddd" ,
                 createAt               : new  Date(),
                 // updatedBy              : "ddd",
@@ -32,7 +33,7 @@ exports.create_workspace = (req,res,next)=>{
                 cafeAdmin              : "user_id",
                 isOpen                 : true,
         });
-        workspaceDetailsvar.save()
+        workspaceDetails.save()
                         .then(data=>{
                             res.status(200).json({ message: "Workspace Details Submitted Successfully",ID:data._id});
                         })
