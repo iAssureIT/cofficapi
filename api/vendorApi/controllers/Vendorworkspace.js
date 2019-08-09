@@ -50,10 +50,10 @@ exports.list_Vendorworkspace = (req,res,next)=>{
             });
         });
 }
-
+/*modified on 9/8/2019 by Karuna for QR code */
 exports.single_Vendorworkspace = (req,res,next)=>{
     console.log('list');
-    workspace.find({})
+    Vendorworkspace.findOne({"_id":req.params.workspaceID})
         .exec()
         .then(data=>{
             if(data){
@@ -68,6 +68,7 @@ exports.single_Vendorworkspace = (req,res,next)=>{
                 error: err
             });
         });
+
 }
 
 exports.update_Vendorworkspace = (req,res,next)=>{

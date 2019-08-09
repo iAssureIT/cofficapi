@@ -514,10 +514,10 @@ exports.users_fetch = (req,res,next)=>{
 					mobileNumber  : data.profile.mobileNumber,				
 					firstName   : data.profile.firstName,
 					lastName    : data.profile.lastName,
-					fullName    : data.profile.fullName,
-					emailId     : data.profile.emailId,
-					status	    : data.profile.status,
-					roles 	    : (data.roles).toString(),
+					fullName        : data.profile.fullName,
+					emailId         : data.profile.emailId,
+					status	        : data.profile.status,
+					roles 	        : (data.roles).toString(),
 					officeLocation 	: data.officeLocation,
 				});	
 			})

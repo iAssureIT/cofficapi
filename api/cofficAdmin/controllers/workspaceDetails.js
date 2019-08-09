@@ -23,6 +23,8 @@ exports.create_workspace = (req,res,next)=>{
                 Email                  : req.body.Email ,
                 facilities             : req.body.facilities ,
                 Cost                   : req.body.Cost ,
+                openingtime            : req.body.openingtime ,
+                closingtime            : req.body.closingtime ,
                 createdBy              : "ddd" ,
                 createAt               : new  Date(),
                 // updatedBy              : "ddd",
@@ -46,7 +48,7 @@ exports.create_workspace = (req,res,next)=>{
 };
 
 exports.list_workspace = (req,res,next)=>{
-    WorkspaceDetails.find({})
+    WorkspaceDetails.find()
         .exec()
         .then(data=>{
             if(data){
