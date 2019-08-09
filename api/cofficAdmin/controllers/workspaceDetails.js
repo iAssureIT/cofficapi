@@ -48,6 +48,7 @@ exports.create_workspace = (req,res,next)=>{
 };
 
 exports.list_workspace = (req,res,next)=>{
+    console('list_workspace');
     WorkspaceDetails.find()
         .exec()
         .then(data=>{
