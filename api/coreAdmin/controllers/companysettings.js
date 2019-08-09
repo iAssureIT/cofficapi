@@ -126,7 +126,6 @@ exports.update_companysettings = (req,res,next)=>{
         case 'add' :
             switch(info){
                 case 'location':
-                     console.log("I am in switch");
                      console.log("I am in req.body.companyId",req.body);
 
                      Companysettings.updateOne(
