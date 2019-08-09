@@ -48,14 +48,14 @@ exports.create_workspace = (req,res,next)=>{
 };
 
 exports.list_workspace = (req,res,next)=>{
-    console('list_workspace');
+    console.log('list_workspace WorkspaceDetails');
     WorkspaceDetails.find()
         .exec()
         .then(data=>{
             if(data){
                 res.status(200).json(data);
             }else{
-                res.status(404).json('Workspace Details not found');
+                res.status(200).json('Workspace Details not found');
             }
         })
         .catch(err =>{
