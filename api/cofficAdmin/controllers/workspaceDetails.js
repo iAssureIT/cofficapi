@@ -20,7 +20,7 @@ exports.create_workspace = (req,res,next)=>{
                 numberOfSeats          : req.body.numberOfSeats,
                 Name                   : req.body.Name,
                 Mobile                 : req.body.Mobile,
-                Email                  : req.body.Email ,
+                Email                  : req.body.Email,
                 facilities             : req.body.facilities ,
                 Cost                   : req.body.Cost ,
                 openingtime            : req.body.openingtime ,

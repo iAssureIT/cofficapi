@@ -8,8 +8,9 @@
 
 	global.JWT_KEY = "secret";	
 	
-	mongoose.connect('mongodb://localhost/'+dbname,{
-   // mongoose.connect('mongodb://localhost/onlineExamSystem',{
+	/*mongoose.connect('mongodb://localhost/'+dbname,{*/
+  /* mongoose.connect('mongodb://localhost/onlineExamSystem',{*/
+     mongoose.connect('mongodb://localhost/qacoffic',{
         useNewUrlParser: true
     })
     mongoose.promise = global.Promise;

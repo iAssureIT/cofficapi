@@ -115,7 +115,7 @@ exports.user_createVendor = (req,res,next)=>{
 						user.save()
 							.then(result =>{
 								res.status(201).json({
-									message : "NEW-USER-CREATED",
+									message   : "NEW-USER-CREATED",
 									"user_id" : user._id,
                         			// "otp"     : OTP,
 								})
