@@ -32,7 +32,7 @@ exports.create_workspace = (req,res,next)=>{
                 logo                   : req.body.logo,
                 banner                 : req.body.banner,
                 workspaceImages        : req.body.workspaceImages,
-                cafeAdmin              : "user_id",
+                cafeAdmin              : req.body.cafeAdmin,
                 isOpen                 : true,
         });
         workspaceDetails.save()

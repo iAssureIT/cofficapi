@@ -14,6 +14,69 @@ function getRandomInt(min, max) {
 
 
 exports.user_signupadmin = (req,res,next)=>{
+	console.log('req',req)
+	User.find()
+		.exec()
+		.then(user =>{				
+				bcrypt.hash(req.body.pwd,10,(err,hash)=>{
+					if(err){
+						return res.status(500).json({
+							error:err
+						});
+					}else{
+						const user = new User({
+							_id: new mongoose.Types.ObjectId(),
+							createdAt		: new Date,
+							services		: {
+								password	:{
+											bcrypt:hash
+											},
+							},
+							mobileNumber  	: req.body.mobileNumber,
+							emails			: [
+									{
+										address  : req.body.emailId,
+										verified : true 
+									}
+							],
+							profile		:{
+										firstName     : req.body.firstName,
+										lastName      : req.body.lastName,
+										fullName      : req.body.firstName+' '+req.body.lastName,
+										emailId       : req.body.emailId,
+										mobileNumber  : req.body.mobileNumber,
+										status		  : req.body.status
+							},
+							roles 		   : (req.body.roles),
+							
+			            });	
+						user.save()
+							.then(result =>{
+								res.status(201).json({
+									message : "NEW-USER-CREATED",
+									"user_id" : user._id,
+                        			// "otp"     : OTP,
+								})
+							})
+							.catch(err =>{
+								console.log(err);
+								res.status(500).json({
+									error: err
+								});
+							});
+					}			
+				});
+			
+		})
+		.catch(err =>{
+			console.log(err);
+			res.status(500).json({
+				error: err
+			});
+		});
+};
+
+exports.user_createVendor = (req,res,next)=>{
 	User.find()
 		.exec()
 		.then(user =>{				

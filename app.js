@@ -48,7 +48,7 @@
 
       const UsersUrl                   = require("./api/coreAdmin/routes/users");
       const Companysettings            = require("./api/coreAdmin/routes/companysettings");
-
+      const NotificationTemp           = require("./api/coreAdmin/routes/masternotifications")
     // const SubscriptionPlanurl          = require("./api/vendorApi/routes/subscriptionPlan");
     // const Ordersurl                    = require("./api/vendorApi/routes/orders");
 
@@ -70,7 +70,7 @@
 
       app.use("/api/users",UsersUrl);
       app.use("/api/companysettings",Companysettings);
-
+      app.use("/api/masternotifications",NotificationTemp)
 
 
     app.use((req, res, next) => {

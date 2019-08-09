@@ -6,7 +6,7 @@ exports.create_companysettings = (req,res,next)=>{
 	Companysettings.find()
 		            .exec()
 		            .then(data =>{
-                        var companyId = data.length + 1;
+                        var companyId = 1;
                         const companysettings = new Companysettings({
                                 _id             : new mongoose.Types.ObjectId(),
                                 companyId              : companyId,
@@ -26,40 +26,7 @@ exports.create_companysettings = (req,res,next)=>{
                                 logoFilename           : req.body.logoFilename,
                                 companyUniqueID        : req.body.companyUniqueID,
                                 companyLogo            : req.body.companyLogo,
-                                companyLocationsInfo   : [
-                                                            {
-                                                                Location        : req.body.Location,
-                                                                contactnumber   : req.body.contactnumber,
-                                                                blockname       : req.body.blockname,
-                                                                landmark        : req.body.landmark,
-                                                                companyDistrict : req.body.companyDistrict,
-                                                                companyPincode  : req.body.companyPincode,
-                                                                companyCity     : req.body.companyCity,
-                                                                companyState    : req.body.companyState,
-                                                                companyCountry  : req.body.companyCountry,
-                                                                companytaluka   : req.body.companytaluka
-                                                            }
-                                                        ],
-                                bankDetails             : [
-                                                            {
-                                                                accHolderName : req.body.accHolderName,
-                                                                accNickName   : req.body.accNickName,
-                                                                bankName      : req.body.bankName,
-                                                                branchName    : req.body.branchName,
-                                                                accType       : req.body.accType,
-                                                                accNumber     : req.body.accNumber,
-                                                                ifscCode      : req.body.ifscCode,
-                                                            }
-                                                        ],
-                                taxSettings             : [
-                                                            {
-                                                                taxType         : req.body.taxType,
-                                                                taxRating       : req.body.taxRating,
-                                                                effectiveFrom   : req.body.effectiveFrom,
-                                                                // effectiveTo     : req.body.effectiveTo,
-                                                                createdAt       : new Date(),
-                                                            }
-                                                        ]
+                                
                         });
                         companysettings.save()
                                         .then(data=>{
@@ -198,7 +165,7 @@ exports.update_companysettings = (req,res,next)=>{
                     break;
                 case 'bank' :
                 console.log("I am in switch bank");
-                console.log("companyID===>",req.body.companyId);
+                console.log("companyID===>",req.body);
 
                     Companysettings.updateOne(
 
