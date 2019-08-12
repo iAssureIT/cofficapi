@@ -4,7 +4,7 @@ const ProjectSettingsSchema = mongoose.Schema({
 
 					_id    : mongoose.Schema.Types.ObjectId,
 					key    : String,
-					Secret : String,
+					secret : String,
 					bucket : String,
 					region : String,
 					type   : String,
