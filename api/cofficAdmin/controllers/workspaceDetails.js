@@ -33,6 +33,7 @@ exports.create_workspace = (req,res,next)=>{
                 banner                 : req.body.banner,
                 workspaceImages        : req.body.workspaceImages,
                 cafeAdmin              : req.body.cafeAdmin,
+                vendorId               : req.body.vendorId,
                 isOpen                 : true,
         });
         workspaceDetails.save()
@@ -105,7 +106,10 @@ exports.update_workspace = (req,res,next)=>{
                 Name                   : req.body.Name,
                 Mobile                 : req.body.Mobile,
                 Email                  : req.body.Email ,
-                facilities             : req.body.facilities ,
+                facilities             : req.body.facilities,
+                Cost                   : req.body.Cost,
+                openingtime            : req.body.openingtime,
+                closingtime            : req.body.closingtime,
                 createdBy              : "ddd" ,
                 createAt               : new  Date(),
                 // updatedBy              : "ddd",

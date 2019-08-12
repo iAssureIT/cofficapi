@@ -28,6 +28,7 @@ const WorkspaceDetailsSchema = mongoose.Schema({
     banner                 : String,
     workspaceImages        : Array,
     cafeAdmin              : String,
+    vendorId               : String,
     isOpen                 : Boolean,
 });
 
