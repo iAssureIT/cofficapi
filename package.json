@@ -21,6 +21,5 @@
     "mongoose": "^5.5.15",
     "morgan": "^1.9.1",
     "plivo": "^4.1.2"
-  },
-  "proxy": "http://localhost:3003"
+  }
 }
