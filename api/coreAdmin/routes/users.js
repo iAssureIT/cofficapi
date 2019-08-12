@@ -28,7 +28,7 @@ router.post('/post/roleadd',UserController.account_role_add);
 
 router.post('/post/roledelete',UserController.account_role_remove); 
 
-router.get('/post/list', UserController.users_list); 
+router.get('/get/list', UserController.users_list); 
 
 // router.get('/userslist', UserController.users_directlist); 
 
