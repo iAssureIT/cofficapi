@@ -6,8 +6,8 @@ const projectSettingsController = require('../controllers/projectSettings');
 
 
 router.post('/'         ,projectSettingsController.create_projectSettings);
-router.get('/list'      ,projectSettingsController.list_project);
-router.get('/single'    ,projectSettingsController.fetch_projectsettings); 
+// router.get('/list'      ,projectSettingsController.list_project);
+router.get('/single/:type'    ,projectSettingsController.fetch_projectsettings); 
 
 
 

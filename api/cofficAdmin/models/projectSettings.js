@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const ProjectSettingsSchema = mongoose.Schema({
 
-					_id    : String,
+					_id    : mongoose.Schema.Types.ObjectId,
 					key    : String,
 					Secret : String,
 					bucket : String,
