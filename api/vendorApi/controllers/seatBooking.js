@@ -5,18 +5,18 @@ const SeatBooking = require('../models/workspaceDetails');
 exports.create_seatBooking = (req,res,next)=>{
 
         const seatBooking = new SeatBooking({
-                _id                    : new mongoose.Types.ObjectId(),
+                _id                          : new mongoose.Types.ObjectId(),
                 workSpace_id                 :  req.body.workSpace_id,
-                user_id                      :  req.body.user_id,,
-                date                         :  req.body.date,,
+                user_id                      :  req.body.user_id,
+                date                         :  req.body.date,
                 checkInTime                  :  new Date(),
                 checkOutTime                 :  new Date(),
-                createdBy                    :  req.body.createdBy,,
+                createdBy                    :  req.body.createdBy,
                 createAt                     :  new Date(), 
         });
         seatBooking.save()
                         .then(data=>{
-                            res.status(200).json("Workspace Details Submitted Successfully");
+                            res.status(200).json("Booking Successfully");
                         })
                         .catch(err =>{
                             console.log(err);

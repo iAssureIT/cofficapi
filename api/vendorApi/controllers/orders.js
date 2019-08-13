@@ -9,7 +9,10 @@ exports.create_orders = (req,res,next)=>{
                 workSpace_id             :  req.body.workSpace_id,
                 user_id                  :  req.body.user_id,
                 date                     :  req.body.date,
-                itemsOrdered             :  req.body.itemsOrdered,
+                item                     :  req.body.item,
+                price                    :  req.body.price,
+                isDelivered              :  req.body.isDelivered,
+                orderedAt                :  req.body.orderedAt,
         });
 
 
@@ -26,7 +29,7 @@ exports.create_orders = (req,res,next)=>{
 };
 
 exports.detail_orders = (req,res,next)=>{
-    orders.findOne({propertyID:req.params.ordersID})
+    Orders.findOne({propertyID:req.params.ordersID})
         .exec()
         .then(data=>{
             if(data){
@@ -45,7 +48,7 @@ exports.detail_orders = (req,res,next)=>{
 
 exports.list_orders = (req,res,next)=>{
     console.log('list');
-    orders.find({})
+    Orders.find({})
         .exec()
         .then(data=>{
             if(data){
@@ -65,15 +68,18 @@ exports.list_orders = (req,res,next)=>{
 
 
 exports.update_orders = (req,res,next)=>{
-       orders .updateOne(
-            { _id:req.body.orders _ID},  
+       Orders .updateOne(
+            { _id:req.body.ordersID},  
             {
                 $set:{
                     _id                    : new mongoose.Types.ObjectId(),
                 workSpace_id               :  req.body.workSpace_id,
                 user_id                    :  req.body.user_id,
                 date                       :  req.body.date,
-                itemsOrdered               :  req.body.itemsOrdered,
+                item                       :  req.body.item,
+                price                      :  req.body.price,
+                isDelivered                :  req.body.isDelivered,
+                orderedAt                  :  req.body.orderedAt,
                 }
             }
         )
@@ -98,7 +104,7 @@ exports.update_orders = (req,res,next)=>{
 }
 
 exports.delete_orders = (req,res,next)=>{
-    orders.deleteOne({_id:req.params.orders ID})
+    Orders.deleteOne({_id:req.params.ordersID})
         .exec()
         .then(data=>{
             res.status(200).json("orders  deleted");

@@ -5,11 +5,11 @@ const ordersSchema = mongoose.Schema({
 	workSpace_id 		    : String,
 	user_id 				: String,
 	date 					: Date,
-	itemsOrdered 			: [
-								{item: String, price: Number, isDelivered: Boolean, orderedAt:  Date}
-								{item: String, price: Number, isDelivered: Boolean, orderedAt:  Date}
-								{item: String, price: Number, isDelivered: Boolean, orderedAt:  Date}
-							  ]	
+	item                    : String,
+	price                   : Number,
+	isDelivered             : Boolean,
+	orderedAt               :  Date,
+					
 
 });
 

@@ -45,13 +45,19 @@
     const VendorCafeMenuUrl            = require("./api/vendorApi/routes/CafeMenu");
     const VendorSubscriptionOrderUrl   = require("./api/vendorApi/routes/subscriptionOrder");
 
+    /*API's for Mobile App*/
+    
+    const MobileAppsignupurl           = require("./api/mobileApp/routes/signup");
+    
+
+
 
 
       const UsersUrl                   = require("./api/coreAdmin/routes/users");
       const Companysettings            = require("./api/coreAdmin/routes/companysettings");
-      const NotificationTemp           = require("./api/coreAdmin/routes/masternotifications")
+      const NotificationTemp           = require("./api/coreAdmin/routes/masternotifications");
     // const SubscriptionPlanurl          = require("./api/vendorApi/routes/subscriptionPlan");
-    // const Ordersurl                    = require("./api/vendorApi/routes/orders");
+      const Ordersurl                    = require("./api/vendorApi/routes/orders");
 
 
 
@@ -69,9 +75,16 @@
 
 
 
-      app.use("/api/users",UsersUrl);
-      app.use("/api/companysettings",Companysettings);
-      app.use("/api/masternotifications",NotificationTemp)
+    app.use("/api/users",UsersUrl);
+    app.use("/api/companysettings",Companysettings);
+    app.use("/api/masternotifications",NotificationTemp);
+
+    app.use("/api/signupmobile",MobileAppsignupurl);
+    app.use("/api/menuorders",Ordersurl);
+
+
+
+
 
 
     app.use((req, res, next) => {

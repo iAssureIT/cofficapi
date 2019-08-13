@@ -9,7 +9,7 @@ const seatBookingPlanSchema = mongoose.Schema({
 	checkInTime	 				 :  Date,
 	checkOutTime 				 :  Date,
 	createdBy 	 				 :  user_id,
-	createAt 		 			 :  Date,	
+	createdAt 		 			 :  Date,	
 
 });
 

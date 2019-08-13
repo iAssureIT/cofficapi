@@ -80,15 +80,14 @@ seatBooking = {
 -----------------------------Ordered menu collection---------------
 
 menuOrders = {
-	_id 		  :  xxx,
+	_id 		  : xxx,
 	workSpace_id  : xxx,
 	user_id 	  : xxx,
 	date 		  : Date,
-	itemsOrdered 	: [
-		{item: String, price: Number, isDelivered: Boolean, orderedAt: timestamp,}
-		{item: String, price: Number, isDelivered: Boolean, orderedAt: timestamp,}
-		{item: String, price: Number, isDelivered: Boolean, orderedAt: timestamp,}
-	]
+	item 		  : String, 
+	price 		  : Number, 
+	isDelivered   : Boolean, 
+	orderedAt     : timestamp
 }
 
 ----------------------------------Cafe Menu--------------------
