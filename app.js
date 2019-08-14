@@ -34,46 +34,28 @@
     });
 
     
-    const WorkspaceDetailsurl 	       = require("./api/cofficAdmin/routes/workspaceDetails");
-    const Subscriptionsurl             = require("./api/cofficAdmin/routes/subscription");
-    const ProjectSettingsurl           = require("./api/cofficAdmin/routes/projectSettings");
-    const WorkAmenitiessurl            = require("./api/cofficAdmin/routes/workAmenities");
+    const WorkspaceDetailsurl 	       = require("./api/coffic/routes/workspaceDetails");
+    const SubscriptionPlanurl          = require("./api/coffic/routes/subscriptionPlan");
+    const ProjectSettingsurl           = require("./api/coffic/routes/projectSettings");
+    const WorkAmenitiessurl            = require("./api/coffic/routes/workAmenities");
+    const CafeMenuUrl                  = require("./api/coffic/routes/CafeMenu");
+    const SubscriptionOrderUrl         = require("./api/coffic/routes/subscriptionOrder");
+    const MenuOrdersurl                = require("./api/coffic/routes/menuOrders");
+    const SeatBookingurl               = require("./api/coffic/routes/seatBooking");
+    const SubscriptionOrder            = require("./api/coffic/routes/subscriptionOrder");
 
-
-    const Vendorworkspaceurl           = require("./api/vendorApi/routes/Vendorworkspace");
-    const Vendorsubscriptionurl        = require("./api/vendorApi/routes/Vendorsubscription");
-    const VendorCafeMenuUrl            = require("./api/vendorApi/routes/CafeMenu");
-    const VendorSubscriptionOrderUrl   = require("./api/vendorApi/routes/subscriptionOrder");
-
-    /*API's for Mobile App*/
+    const UsersUrl                     = require("./api/coreAdmin/routes/users");
+    const Companysettings              = require("./api/coreAdmin/routes/companysettings");
+    const NotificationTemp             = require("./api/coreAdmin/routes/masternotifications");
     
-    // const MobileAppsignupurl           = require("./api/mobileApp/routes/signup");
-    
-
-
-
-
-      const UsersUrl                   = require("./api/coreAdmin/routes/users");
-      const Companysettings            = require("./api/coreAdmin/routes/companysettings");
-      const NotificationTemp           = require("./api/coreAdmin/routes/masternotifications");
-    // const SubscriptionPlanurl          = require("./api/vendorApi/routes/subscriptionPlan");
-      const Ordersurl                  = require("./api/vendorApi/routes/orders");
-      const SeatBookingurl             = require("./api/vendorApi/routes/seatBooking");
-      const SubscriptionOrder          = require("./api/vendorApi/routes/subscriptionOrder");
-
 
 
 	app.use("/api/workspaceDetails",WorkspaceDetailsurl);
-    app.use("/api/subscription",Subscriptionsurl);
+    app.use("/api/subscriptionplan",SubscriptionPlanurl);
     app.use("/api/workAmenities",WorkAmenitiessurl);
-
-
-
     app.use("/api/projectSettings",ProjectSettingsurl);
-    app.use("/api/Vendorworkspace",Vendorworkspaceurl);
-    app.use("/api/Vendorsubscription",Vendorsubscriptionurl);
-    app.use("/api/cafeMenu",VendorCafeMenuUrl);
-    app.use("/api/subscriptionOrder",VendorSubscriptionOrderUrl);
+    app.use("/api/cafeMenu",CafeMenuUrl);
+    app.use("/api/subscriptionOrder",SubscriptionOrderUrl);
 
 
 
@@ -82,7 +64,7 @@
     app.use("/api/masternotifications",NotificationTemp);
 
     // app.use("/api/signupmobile",MobileAppsignupurl);
-    app.use("/api/menuorders",Ordersurl);
+    app.use("/api/menuorders",MenuOrdersurl);
     app.use("/api/seatbooking",SeatBookingurl);
     app.use("/api/subscriptionorder",SubscriptionOrder);
 
