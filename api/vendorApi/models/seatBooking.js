@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const seatBookingPlanSchema = mongoose.Schema({
+const SeatBookingSchema = mongoose.Schema({
 	_id			            : mongoose.Schema.Types.ObjectId,
     user_id 					 :  String,
 	workSpace_id				 :  String,
@@ -8,9 +8,10 @@ const seatBookingPlanSchema = mongoose.Schema({
 	date 						 :  Date,
 	checkInTime	 				 :  Date,
 	checkOutTime 				 :  Date,
-	createdBy 	 				 :  user_id,
+	createdBy 	 				 :  String,
+	/*createdBy: user_id*/
 	createdAt 		 			 :  Date,	
 
 });
 
-module.exports = mongoose.model('seatBooking',seatBookingSchema);
+module.exports = mongoose.model('seatBooking',SeatBookingSchema);

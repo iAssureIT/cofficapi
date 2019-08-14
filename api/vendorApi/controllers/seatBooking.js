@@ -1,6 +1,6 @@
 const mongoose	= require("mongoose");
 
-const SeatBooking = require('../models/workspaceDetails');
+const SeatBooking = require('../models/seatBooking');
 
 exports.create_seatBooking = (req,res,next)=>{
 
@@ -27,7 +27,7 @@ exports.create_seatBooking = (req,res,next)=>{
 };
 
 exports.detail_seatBooking = (req,res,next)=>{
-    seatBooking.findOne({propertyID:req.params.seatBookingID})
+    SeatBooking.findOne({propertyID:req.params.seatBookingID})
         .exec()
         .then(data=>{
             if(data){
@@ -46,7 +46,7 @@ exports.detail_seatBooking = (req,res,next)=>{
 
 exports.list_seatBooking = (req,res,next)=>{
     console.log('list');
-    seatBooking.find({})
+    SeatBooking.find({})
         .exec()
         .then(data=>{
             if(data){
@@ -66,17 +66,17 @@ exports.list_seatBooking = (req,res,next)=>{
 
 
 exports.update_seatBooking = (req,res,next)=>{
-     seatBooking.updateOne(
+     SeatBooking.updateOne(
             { _id:req.body.seatBooking_ID},  
             {
                 $set:{
                    _id                       : new mongoose.Types.ObjectId(),
                 workSpace_id                 :  req.body.workSpace_id,
-                user_id                      :  req.body.user_id,,
-                date                         :  req.body.date,,
+                user_id                      :  req.body.user_id,
+                date                         :  req.body.date,
                 checkInTime                  :  new Date(),
                 checkOutTime                 :  new Date(),
-                createdBy                    :  req.body.createdBy,,
+                createdBy                    :  req.body.createdBy,
                 createAt                     :  new Date(), 
                 }
             }
@@ -102,7 +102,7 @@ exports.update_seatBooking = (req,res,next)=>{
 }
 
 exports.delete_seatBooking = (req,res,next)=>{
-    seatBooking.deleteOne({_id:req.params.seatBookingID})
+    SeatBooking.deleteOne({_id:req.params.seatBookingID})
         .exec()
         .then(data=>{
             res.status(200).json("seatBooking deleted");
