@@ -16,7 +16,7 @@ exports.create_orders = (req,res,next)=>{
         });
         menuorders.save()
                         .then(data=>{
-                            res.status(200).json("order Details Submitted Successfully");
+                            res.status(200).json("Order Details Submitted Successfully");
                         })
                         .catch(err =>{
                             console.log(err);
@@ -33,7 +33,7 @@ exports.detail_orders = (req,res,next)=>{
             if(data){
                 res.status(200).json(data);
             }else{
-                res.status(404).json('order Details not found');
+                res.status(404).json('Order Details not found');
             }
         })
         .catch(err =>{
@@ -52,7 +52,7 @@ exports.list_orders = (req,res,next)=>{
             if(data){
                 res.status(200).json(data);
             }else{
-                res.status(404).json('order Details not found');
+                res.status(404).json('Order Details not found');
             }
         })
         .catch(err =>{
@@ -85,11 +85,11 @@ exports.update_orders = (req,res,next)=>{
         .then(data=>{
             if(data.nModified == 1){
                 res.status(200).json({
-                    "message": "orders Updated Successfully."
+                    "message": "Orders Updated Successfully."
                 });
             }else{
                 res.status(401).json({
-                    "message": "orders  Not Found"
+                    "message": "Orders  Not Found"
                 });
             }
         })

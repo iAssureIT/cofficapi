@@ -65,6 +65,34 @@ exports.list_workspace = (req,res,next)=>{
         });
 }
 
+exports.listcity_workspace = (req,res,next)=>{
+    console.log('list_workspace WorkspaceDetails');
+    WorkspaceDetails.find()
+        .exec()
+        .then(data=>{
+            console.log("data",data);
+            if(data){
+               var info = data.map((city,index)=>{
+                    return city.city
+
+               }) 
+               info = [...new Set(info)];
+            console.log('info',info)
+                res.status(200).json(info);
+            }else{
+                res.status(200).json('Workspace Details not found');
+            }
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+}
+
+
+
 exports.single_workspace = (req,res,next)=>{
     console.log('list');
     WorkspaceDetails.findOne({"_id":req.params.workspaceID})
