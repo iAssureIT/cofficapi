@@ -51,7 +51,7 @@ exports.list_subscriptionPlan = (req,res,next)=>{
 
 
 exports.single_subscriptionPlan = (req,res,next)=>{
-        SubscriptionPlan.findOne({"_id":req.params.subscriptionID})
+        SubscriptionPlan.findOne({"_id":req.params.subscriptionPlansID})
                         .then(data=>{                           
                             res.status(200).json(data);
                         })
@@ -67,14 +67,14 @@ exports.single_subscriptionPlan = (req,res,next)=>{
 exports.update_subscriptionPlan = (req,res,next)=>{
     console.log('inside api---->',req.params,req.body)
         SubscriptionPlan
-            .updateOne({"_id":req.params.subscriptionID},
+            .updateOne({"_id":req.params.subscriptionPlansID},
                     {$set:{                                          
                         plan_id                 :  req.body.plan_id,
-                        subscriptionName        :  req.body.subscriptionName,
+                        planName                :  req.body.planName,
                         maxCheckIns             :  req.body.maxCheckIns,
-                        Cost                    :  req.body.Cost,
-                        Validity                :  req.body.Validity,
-                        Description             :  req.body.Description,
+                        price                   :  req.body.price,
+                        validityDays            :  req.body.validityDays,
+                        description             :  req.body.description,
                         updatedBy               :  req.body.createdBy,
                         lastUpdateAt            :  new Date(),
                     }
@@ -98,16 +98,16 @@ exports.update_subscriptionPlan = (req,res,next)=>{
 
 
 exports.delete_subscriptionPlan = (req,res,next)=>{
-        SubscriptionPlan.deleteOne({"_id":req.params.subscriptionID})
-                        .then(data=>{
-                            if(data.deletedCount==1){
-                                res.status(200).json('Deleted Successfully');
-                            }                         
-                        })
-                        .catch(err =>{
-                            console.log(err);
-                            res.status(500).json({
-                                error: err
-                            });
-                        });
+        SubscriptionPlan.deleteOne({"_id":req.params.subscriptionPlansID})
+            .then(data=>{
+                        if(data.deletedCount==1){
+                        res.status(200).json('Deleted Successfully');
+                        }                         
+                    })
+                    .catch(err =>{
+                     console.log(err);
+                     res.status(500).json({
+                     error: err
+                    });
+                });
 };

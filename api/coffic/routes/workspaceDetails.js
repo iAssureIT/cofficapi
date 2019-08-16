@@ -13,7 +13,7 @@ router.post('/post', workspaceController.create_workspace);
 
 router.get('/get/list', workspaceController.list_workspace);
 
-router.get('/get/:workspaceID',workspaceController.single_workspace);
+router.get('/get/one/:workspaceID',workspaceController.single_workspace);
 
 router.patch('/patch/update/:workspaceID', workspaceController.update_workspace);
 
