@@ -99,6 +99,65 @@ exports.user_signupadmin = (req,res,next)=>{
 		});
 };
 
+exports.user_signupmobile = (req,res,next)=>{
+	User.find()
+		.exec()
+		.then(user=>{
+			bcrypt.hash(req.body.password,10,(err,hash)=>{
+				if(err){
+					return res.status(500).json({
+						error:err
+					})
+				}else{
+					const user = new User({
+						_id: new mongoose.Types.ObjectId(),
+						createdAt			: new Date(),
+						services			: {
+							password 		: {
+											bcrypt:hash
+											},
+						},
+						mobileNumber 		: req.body.mobileNumber,
+						emails 				: [
+									{
+										address  : req.body.email,
+										verified : true 
+									}
+						],
+						profile 			:{
+										firstName     : req.body.firstName,
+										lastName      : req.body.lastName,
+										fullName      : req.body.firstName+' '+req.body.lastName,
+										emailId       : req.body.email,
+										mobileNumber  : req.body.mobileNumber,
+						},
+						roles 				:(req.body.role)
+					});
+					user.save()
+						.then(result =>{
+							res.status(201).json({
+								message   : "NEW-USER-CREATED",
+								"user_id" : user._id,
+                    			// "otp"     : OTP,
+							})
+						})
+						.catch(err =>{
+							console.log(err);
+							res.status(500).json({
+								error: err
+							});
+						});
+				}
+			})
+		})
+	.catch(err =>{
+			console.log(err);
+			res.status(500).json({
+				error: err
+			});
+		});
+}
+
 exports.user_createVendor = (req,res,next)=>{
 	User.find()
 		.exec()
@@ -131,7 +190,8 @@ exports.user_createVendor = (req,res,next)=>{
 										fullName      : req.body.firstName+' '+req.body.lastName,
 										emailId       : req.body.emailId,
 										mobileNumber  : req.body.mobileNumber,
-										status		  : req.body.status
+										status		  : req.body.status,
+										emailotp
 							},
 							roles 		   : (req.body.roles),
 							
