@@ -8,7 +8,6 @@ const SeatBookingSchema = mongoose.Schema({
 	date 						 :  Date,
 	checkInTime	 				 :  Date,
 	checkOutTime 				 :  Date,
-	createdBy 	 				 :  String,
 	createdAt 		 			 :  Date,
 });
 
