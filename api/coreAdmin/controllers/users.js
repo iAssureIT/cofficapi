@@ -845,8 +845,9 @@ exports.update_user = (req,res,next)=>{
 					"profile.fullName"      : req.body.firstName+' '+req.body.lastName,
 					"profile.emailId"       : req.body.emailId,
 					"profile.mobileNumber"  : req.body.mobileNumber,
-					"roles" 				: (req.body.roles),
-					"officeLocation" 		: req.body.officeLocation,
+					"mobileNumber"          : req.body.mobileNumber
+					// "roles" 				: (req.body.roles),
+					// "officeLocation" 		: req.body.officeLocation,
 
 			
                 }
