@@ -14,7 +14,9 @@ router.post('/post/mobSignup',UserController.user_signupmobile);
 
 router.post('/post/vendor', UserController.user_createVendor);
 
-router.post('/post/login',UserController.user_login); 
+router.post('/post/loginwithvendor',UserController.user_loginwithvendor); 
+
+router.post('/post/loginwithuser',UserController.user_loginwithuser); 
 
 router.post('/post/forgot-pwd',UserController.forgot_pwd); 
 

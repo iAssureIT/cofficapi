@@ -826,9 +826,68 @@ exports.update_user_resetpassword = (req,res,next)=>{
 // };
 
 
-exports.user_login = (req,res,next)=>{
+exports.user_loginwithvendor = (req,res,next)=>{
     console.log('login',req.body);
     User.findOne({emails:{$elemMatch:{address:req.body.email}},roles: "vendor"})
+        .exec()
+        .then(user => {
+            if(user){
+                var pwd = user.services.password.bcrypt;
+                if(pwd){
+					console.log('PWD');
+                    bcrypt.compare(req.body.password,pwd,(err,result)=>{
+                        if(err){
+                            console.log('password err ',err);
+                            return res.status(401).json({
+                                message: 'Bcrypt Auth failed'
+                            });     
+                        }
+                        if(result){
+                            console.log('result ',result);
+                            const token = jwt.sign({
+                                email   : req.body.email,
+                                // userId   : mongoose.Types.ObjectId(user._id) ,
+                                userId  : user._id ,
+                            },global.JWT_KEY,
+                            {
+                                expiresIn: "1h"
+                            }
+                            );
+                            console.log('login faild');
+                            res.header("Access-Control-Allow-Origin","*");
+                            return res.status(200).json({
+                                message             : 'Auth successful',
+                                token               : token,
+                                user_ID             : user._id,
+								userFullName       	: user.profile.fullName,
+								useremailId			: user.profile.emailId,						
+								roles 				: user.roles,
+                                // userProfileImg      : user.profile.userProfile,
+                            }); 
+                        }
+                        console.log({message:"Neither err nor result"});
+                        return res.status(401).json({
+                            message: 'Error and Result Auth failed'
+                        });
+                    })
+                }else{
+                    res.status(409).status({message:"Password not found"}); 
+                }
+            }else{
+                res.status(409).status({message:"User Not found"});
+            }
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+};
+
+exports.user_loginwithuser = (req,res,next)=>{
+    console.log('login',req.body);
+    User.findOne({emails:{$elemMatch:{address:req.body.email}},roles: "user"})
         .exec()
         .then(user => {
             if(user){
