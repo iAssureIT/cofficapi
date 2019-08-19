@@ -18,6 +18,9 @@ router.post('/post/login',UserController.user_login);
 
 router.post('/post/forgot-pwd',UserController.forgot_pwd); 
 
+router.post('/post/otpverificationsend',UserController.user_otpverification); 
+
+
 router.post('/post/userslist',UserController.users_fetch); 
 
 router.post('/post/searchValue',UserController.user_search); 
@@ -40,9 +43,9 @@ router.patch('/patch/one/:userID',UserController.update_user);
 
 router.patch('/patch/:rolestatus',UserController.user_change_role);  
 
-router.post('/verify_mobileOTP',UserController.users_verify_mobileOTP); 
+// router.post('/verify_mobileOTP',UserController.users_verify_mobileOTP); 
 
-router.post('/confirmOTP',UserController.confirmOTP); 
+// router.post('/confirmOTP',UserController.confirmOTP); 
 
 router.get('/get/one/:userID',UserController.user_details); 
 
