@@ -18,7 +18,7 @@ exports.create_seatBooking = (req,res,next)=>{
 
     SubscriptionOrder
         .find({ 
-                "user_id" : req.params.user_id,
+                "user_id" : req.body.user_id,
                 "endDate" : {$gte : new Date()},
                 "status" : "paid" ,
              })
@@ -26,7 +26,7 @@ exports.create_seatBooking = (req,res,next)=>{
             if(activeSubOrder.length>0){
                SeatBooking
                     .find({
-                        user_id : req.params.user_id, 
+                        user_id : req.body.user_id, 
                         plan_id : activeSubOrder[0].plan_id
                     })
                     .countDocuments()
