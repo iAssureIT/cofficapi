@@ -4,6 +4,7 @@ const Masternotifications = require("../models/masternotifications");
 
 
 exports.create_template = (req, res, next) => {
+    console.log('req=>',req)
     const masterNotifications = new Masternotifications({
         _id             : mongoose.Types.ObjectId(),      
         templateType    : req.body.templateType,
