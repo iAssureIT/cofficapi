@@ -20,6 +20,9 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.5.15",
     "morgan": "^1.9.1",
-    "plivo": "^4.1.2"
+    "nodemailer": "^6.3.0",
+    "plivo": "^4.1.2",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4"
   }
 }

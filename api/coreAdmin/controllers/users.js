@@ -3,6 +3,7 @@ const bcrypt		= require("bcrypt");
 const jwt			= require("jsonwebtoken");
 const plivo 		= require('plivo');
 const User 			= require('../models/users');
+var request 		= require('request-promise');
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -11,8 +12,96 @@ function getRandomInt(min, max) {
 }
 
 
-exports.user_signupadmin = (req,res,next)=>{
+// exports.user_signupadmin = (req,res,next)=>{
 
+// 	console.log('req',req)
+// 	User.find()
+// 		.exec()
+// 		.then(user =>{				
+// 				bcrypt.hash(req.body.pwd,10,(err,hash)=>{
+// 					if(err){
+// 						return res.status(500).json({
+// 							error:err
+// 						});
+// 					}else{
+// 						const OTP = getRandomInt(1000,9999);
+// 						const user = new User({
+// 							_id: new mongoose.Types.ObjectId(),
+// 							createdAt		: new Date,
+// 							services		: {
+// 								password	:{
+// 											bcrypt:hash
+// 											},
+// 							},
+// 							mobileNumber  	: req.body.mobileNumber,
+// 							emails			: [
+// 									{
+// 										address  : req.body.emailId,
+// 										verified : true 
+// 									}
+// 							],
+// 							profile		:{
+// 										firstName     : req.body.firstName,
+// 										lastName      : req.body.lastName,
+// 										fullName      : req.body.firstName+' '+req.body.lastName,
+// 										emailId       : req.body.emailId,
+// 										mobileNumber  : req.body.mobileNumber,
+// 										status		  : req.body.status
+// 							},
+// 							roles 		   : (req.body.roles),
+							
+// 			            });	
+// 						user.save()
+// 						.then(newUser =>{
+// 							if(newUser){
+// 								console.log('New USER = ',newUser);
+// 								// console.log('Plivo Client = ',mobileNumber);
+// 								const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+// 								const sourceMobile = "+919923393733";
+// 								var text = "Dear User, "+'\n'+"To verify your account on Coffic, Enter this verification code : \n"+OTP; 
+				
+// 								client.messages.create(
+// 									src=sourceMobile,
+// 									dst=req.body.mobileNumber,
+// 									text=text
+// 								).then((result)=> {
+// 									console.log("src = ",src," | DST = ", dst, " | result = ", result);
+// 									// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
+// 									return res.status(200).json({
+// 										"message" : 'NEW-USER-CREATED',
+// 										"user_id" : newUser._id,
+// 										"otp"     : OTP,
+// 									});			
+// 								})
+// 								.catch(otpError=>{
+// 									return res.status(501).json({
+// 										message: "Some Error Occurred in OTP Send Function",
+// 										error: otpError
+// 									});        
+// 								});       
+// 							}
+							
+// 						})	
+// 							.catch(err =>{
+// 								console.log(err);
+// 								res.status(500).json({
+// 									error: err
+// 								});
+// 							});
+// 					}			
+// 				});
+			
+// 		})
+// 		.catch(err =>{
+// 			console.log(err);
+// 			res.status(500).json({
+// 				error: err
+// 			});
+// 		});
+// };
+
+
+exports.user_signupadmin = (req,res,next)=>{
 	console.log('req',req)
 	User.find()
 		.exec()
@@ -53,12 +142,45 @@ exports.user_signupadmin = (req,res,next)=>{
 						user.save()
 						.then(newUser =>{
 							if(newUser){
+								
 								console.log('New USER = ',newUser);
-								// console.log('Plivo Client = ',mobileNumber);
+								
+								res.header("Access-Control-Allow-Origin","*");
+								request({
+									
+									"method"    : "POST",
+									"url"       : "http://localhost:5012/send-email",
+									"body"      : 	{
+														"email"     : newUser.profile.emailId,
+														"subject"   : 'Verify your Account',
+														"text"      : "WOW Its done",
+														"mail"      : "Your OTP verifcation code is ="+OTP,
+													},
+									"json"      : true,
+									"headers"   : {
+													"User-Agent": "Test App"
+												}
+								})
+							
+								.then((sentemail)=>{
+									console.log("call to api");
+									
+
+									res.status(200).json({message:"Mail Sent successfully"});
+								})
+								.catch((err) =>{
+									console.log("call to api",err);
+									res.status(500).json({
+										error: err
+									});
+								});    
+								
+								
+								console.log('Plivo Client = ',newUser.profile.mobileNumber);
 								const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
 								const sourceMobile = "+919923393733";
 								var text = "Dear User, "+'\n'+"To verify your account on Coffic, Enter this verification code : \n"+OTP; 
-				
+								
 								client.messages.create(
 									src=sourceMobile,
 									dst=req.body.mobileNumber,
@@ -77,7 +199,7 @@ exports.user_signupadmin = (req,res,next)=>{
 										message: "Some Error Occurred in OTP Send Function",
 										error: otpError
 									});        
-								});       
+								}); 
 							}
 							
 						})	
@@ -100,64 +222,126 @@ exports.user_signupadmin = (req,res,next)=>{
 };
 
 exports.user_signupmobile = (req,res,next)=>{
-	User.find()
-		.exec()
-		.then(user=>{
-			bcrypt.hash(req.body.password,10,(err,hash)=>{
+
+console.log('req',req)
+User.find()
+	.exec()
+	.then(user =>{				
+			bcrypt.hash(req.body.pwd,10,(err,hash)=>{
 				if(err){
 					return res.status(500).json({
 						error:err
-					})
+					});
 				}else{
+					const OTP = getRandomInt(1000,9999);
 					const user = new User({
 						_id: new mongoose.Types.ObjectId(),
-						createdAt			: new Date(),
-						services			: {
-							password 		: {
-											bcrypt:hash
-											},
+						createdAt		: new Date,
+						services		: {
+							password	:{
+										bcrypt:hash
+										},
 						},
-						mobileNumber 		: req.body.mobileNumber,
-						emails 				: [
-									{
-										address  : req.body.email,
-										verified : true 
-									}
+						mobileNumber  	: req.body.mobileNumber,
+						emails			: [
+								{
+									address  : req.body.emailId,
+									verified : true 
+								}
 						],
-						profile 			:{
-										firstName     : req.body.firstName,
-										lastName      : req.body.lastName,
-										fullName      : req.body.firstName+' '+req.body.lastName,
-										emailId       : req.body.email,
-										mobileNumber  : req.body.mobileNumber,
+						profile		:{
+									firstName     : req.body.firstName,
+									lastName      : req.body.lastName,
+									fullName      : req.body.firstName+' '+req.body.lastName,
+									emailId       : req.body.emailId,
+									mobileNumber  : req.body.mobileNumber,
+									status		  : req.body.status
 						},
-						roles 				:(req.body.role)
-					});
+						roles 		   : (req.body.roles),
+						
+					});	
 					user.save()
-						.then(result =>{
-							res.status(201).json({
-								message   : "NEW-USER-CREATED",
-								"user_id" : user._id,
-                    			// "otp"     : OTP,
+					.then(newUser =>{
+						if(newUser){
+							
+							console.log('New USER = ',newUser);
+							
+							res.header("Access-Control-Allow-Origin","*");
+							request({
+								
+								"method"    : "POST",
+								"url"       : "http://localhost:5012/send-email",
+								"body"      : 	{
+													"email"     : newUser.profile.emailId,
+													"subject"   : 'Verify your Account',
+													"text"      : "WOW Its done",
+													"mail"      : "Your OTP verifcation code is ="+OTP,
+												},
+								"json"      : true,
+								"headers"   : {
+												"User-Agent": "Test App"
+											}
 							})
-						})
+						
+							.then((sentemail)=>{
+								console.log("call to api");
+								res.header("Access-Control-Allow-Origin","*");
+
+								res.status(200).json({message:"Mail Sent successfully"});
+							})
+							.catch((err) =>{
+								console.log("call to api",err);
+								res.status(500).json({
+									error: err
+								});
+							});    
+							
+							
+							console.log('Plivo Client = ',newUser.profile.mobileNumber);
+							const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+							const sourceMobile = "+919923393733";
+							var text = "Dear User, "+'\n'+"To verify your account on Coffic, Enter this verification code : \n"+OTP; 
+							
+							client.messages.create(
+								src=sourceMobile,
+								dst=req.body.mobileNumber,
+								text=text
+							).then((result)=> {
+								console.log("src = ",src," | DST = ", dst, " | result = ", result);
+								// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
+								return res.status(200).json({
+									"message" : 'NEW-USER-CREATED',
+									"user_id" : newUser._id,
+									"otp"     : OTP,
+								});			
+							})
+							.catch(otpError=>{
+								return res.status(501).json({
+									message: "Some Error Occurred in OTP Send Function",
+									error: otpError
+								});        
+							}); 
+						}
+						
+					})	
 						.catch(err =>{
 							console.log(err);
 							res.status(500).json({
 								error: err
 							});
 						});
-				}
-			})
-		})
-	.catch(err =>{
-			console.log(err);
-			res.status(500).json({
-				error: err
+				}			
 			});
+		
+	})
+	.catch(err =>{
+		console.log(err);
+		res.status(500).json({
+			error: err
 		});
-}
+	});
 
+};
 exports.user_createVendor = (req,res,next)=>{
 	User.find()
 		.exec()
