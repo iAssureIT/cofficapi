@@ -78,27 +78,27 @@
 			host: 'smtp.gmail.com',
 			port: 587,
 			auth: {
-				// user: 'Appstore@coffic.com',
-                // pass: 'Coffic@123'
-                user: 'testtprm321@gmail.com',
-                pass: 'tprm1234'
+				user: 'Appstore@coffic.com',
+                pass: 'Coffic@123'
+                // user: 'testtprm321@gmail.com',
+                // pass: 'tprm1234'
 
 			}
 		});
 		console.log('after transport');
 		let mailOptions = {
 			
-			// from   : '"Coffic" <Appstore@coffic.com>', // sender address
-			// to     : req.body.email, // list of receivers
-			// subject: req.body.subject, // Subject line
-			// text   : req.body.text, // plain text body
-            // html   : req.body.mail // html body
-            
-            from   : '"Coffic" <testtprm321@gmail.com>', // sender address
-            to     : req.body.email, // list of receivers
-            subject: req.body.subject, // Subject line
-            text   : req.body.text, // plain text body
+			from   : '"Coffic" <Appstore@coffic.com>', // sender address
+			to     : req.body.email, // list of receivers
+			subject: req.body.subject, // Subject line
+			text   : req.body.text, // plain text body
             html   : req.body.mail // html body
+            
+            // from   : '"Coffic" <testtprm321@gmail.com>', // sender address
+            // to     : req.body.email, // list of receivers
+            // subject: req.body.subject, // Subject line
+            // text   : req.body.text, // plain text body
+            // html   : req.body.mail // html body
 		};
 		console.log('after mailoption');
 		//name email mobilenumber message

@@ -144,7 +144,11 @@ exports.user_signupadmin = (req,res,next)=>{
 							if(newUser){
 								
 								console.log('New USER = ',newUser);
+								return res.status(200).json({
+									"message" : 'NEW-USER-CREATED',
+									"user_id" : newUser._id,
 								
+								});	
 								// res.header("Access-Control-Allow-Origin","*");
 								// request({
 									
@@ -824,7 +828,7 @@ exports.update_user_resetpassword = (req,res,next)=>{
 
 exports.user_login = (req,res,next)=>{
     console.log('login',req.body);
-    User.findOne({emails:{$elemMatch:{address:req.body.email}}})
+    User.findOne({emails:{$elemMatch:{address:req.body.email}},roles: "vendor"})
         .exec()
         .then(user => {
             if(user){
