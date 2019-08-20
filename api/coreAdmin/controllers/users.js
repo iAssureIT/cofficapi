@@ -4,6 +4,7 @@ const jwt			= require("jsonwebtoken");
 const plivo 		= require('plivo');
 const User 			= require('../models/users');
 var request 		= require('request-promise');
+const WorkspaceDetails = require('../../coffic/models/workspaceDetails');
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -946,6 +947,21 @@ exports.user_loginwithuser = (req,res,next)=>{
 
 exports.users_list = (req,res,next)=>{
 	User.find({roles : {$ne : "admin"} })
+		.exec()
+		.then(users =>{
+			console.log('users ',users);
+			res.status(200).json(users);
+		})
+		.catch(err =>{
+			console.log(err);
+			res.status(500).json({
+				error: err
+			});
+		});
+	
+}
+exports.id_cafeAdmin = (req,res,next)=>{
+	WorkspaceDetails.findOne({"cafeAdmin":req.params.user_id })
 		.exec()
 		.then(users =>{
 			console.log('users ',users);

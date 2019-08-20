@@ -10,6 +10,8 @@ const UserController = require('../controllers/users');
 
 router.post('/post', UserController.user_signupadmin); 
 
+router.get('/get/single/:user_id', UserController.id_cafeAdmin); 
+
 router.post('/post/mobSignup',UserController.user_signupmobile);
 
 router.post('/post/vendor', UserController.user_createVendor);

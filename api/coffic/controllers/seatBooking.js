@@ -20,8 +20,10 @@ exports.create_seatBooking = (req,res,next)=>{
     var selector={ 
                 "user_id" : req.body.user_id,
                 "endDate" : {$gte : new Date()},
-                "status" : "paid" , }
-                console.log("selector",selector);
+                "status" : "paid" , };
+
+    console.log("selector",selector);
+    
     SubscriptionOrder
         .find({ 
                 "user_id" : req.body.user_id,
@@ -30,39 +32,40 @@ exports.create_seatBooking = (req,res,next)=>{
              })
         .then(activeSubOrder=>{
             if(activeSubOrder.length>0){
-               SeatBooking
+                console.log("activeSubOrder = ",activeSubOrder);
+                SeatBooking
                     .find({
                         user_id : req.body.user_id, 
                         plan_id : activeSubOrder[0].plan_id
                     })
-                    .countDocuments()
+                    .estimatedDocumentCount()
                     .then(totCheckIns => {
                         console.log("totCheckIns = ",totCheckIns);
-                        if (totCheckIns < activeSubOrder[0].maxCheckIns) {
+                        console.log("activeSubOrder[0].maxCheckIns = ",activeSubOrder[0].maxCheckIns);
+                        if(totCheckIns < activeSubOrder[0].maxCheckIns) {
                             const seatBookingObj = new SeatBooking({
-                                _id                          :  new mongoose.Types.ObjectId(),
-                                plan_id                      :  activeSubOrder[0].plan_id,
-                                user_id                      :  req.body.user_id,
-                                workSpace_id                 :  req.body.workSpace_id,
-                                date                         :  currDate,
-                                checkInTime                  :  new Date(),
-                                checkOutTime                 :  new Date(),
-                                createAt                     :  new Date(),                      
+                                _id                 :  new mongoose.Types.ObjectId(),
+                                plan_id             :  activeSubOrder[0].plan_id,
+                                user_id             :  req.body.user_id,
+                                workSpace_id        :  req.body.workSpace_id,
+                                date                :  currDate,
+                                checkInTime         :  new Date(),
+                                checkOutTime        :  new Date(),
+                                createAt            :  new Date(),                      
                             });
 
                             seatBookingObj
                                 .save()
-                                .then(data=>{                                    
-                                    res.status(200).json("Booking Successful");
+                                .then(data=>{                   
+                                    var message = "Booking Successful";                 
                                     if(activeSubOrder[0].maxCheckIns == (totCheckIns+1)){
                                         SubscriptionOrder
                                             .update(
-                                                {_id : activeSubOrder.plan_id},
+                                                {plan_id : activeSubOrder[0].plan_id},
                                                 {$set : {"status" : "inactive"}}
                                             )
                                             .then(data=>{
-                                                console.log("status made inactive");
-                                                // res.status(200).json("Booking Successful");
+                                                message = "Booking Successful & Order status made inactive";
                                             })
                                             .catch(err =>{
                                                 console.log(err);
@@ -71,6 +74,7 @@ exports.create_seatBooking = (req,res,next)=>{
                                                 });
                                             });
                                     }
+                                    res.status(200).json(message);                                    
                                 })
                                 .catch(err =>{
                                     console.log(err);
@@ -78,6 +82,8 @@ exports.create_seatBooking = (req,res,next)=>{
                                         error: err
                                     });
                                 });
+                        }else{
+                            res.status(200).json("Booking Can not be made because Plan is inactive.");
                         }
                     })
                     .catch(err =>{
@@ -115,6 +121,25 @@ exports.list_seatBooking = (req,res,next)=>{
     SeatBooking.find({})
         .exec()
         .then(data=>{
+            if(data){
+                res.status(200).json(data);
+            }else{
+                res.status(404).json('Not found');
+            }
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+};
+exports.list_checkIncount = (req,res,next)=>{
+    SeatBooking.find({})
+        .exec()
+        .then(data=>{
+            
+            console.log("data",data);
             if(data){
                 res.status(200).json(data);
             }else{

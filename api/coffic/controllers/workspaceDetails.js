@@ -138,14 +138,9 @@ exports.single_workspace = (req,res,next)=>{
 
 
 exports.update_workspace = (req,res,next)=>{
-    console.log('inside api---->',req.params,req.body)
-    WorkspaceDetails.findOne({"_id":req.params.workspaceID})
-                    .then(data=>{ 
-                        // console.log('data',data)
-                        if(data){
-                            WorkspaceDetails.updateOne({"_id":data._id},
-                                        {
-                                    $set:{
+     WorkspaceDetails
+            .updateOne({"_id":req.params.workspaceID},
+                                   { $set:{
                                                     
                                         nameOfCafe             : req.body.cafeName,
                                         address                : req.body.address,
@@ -171,7 +166,7 @@ exports.update_workspace = (req,res,next)=>{
                                         logo                   : req.body.logo,
                                         banner                 : req.body.banner,
                                         workspaceImages        : req.body.workspaceImages,
-                                        cafeAdmin              : req.body.cafeAdmin,
+                                        // cafeAdmin              : req.body.cafeAdmin,
                                         isOpen                 : true,
                                         }
                                     })
@@ -184,19 +179,13 @@ exports.update_workspace = (req,res,next)=>{
                                     }
 
                                 })
-                                .catch()
-                        }                          
-                        
-                    })
-                    .catch(err =>{
-                        console.log(err);
-                        res.status(500).json({
-                            error: err
+                        .catch(err =>{
+                            console.log(err);
+                            res.status(500).json({
+                                error: err
+                            });
                         });
-                    });
-};
-
-
+             };
 
 exports.delete_workspace = (req,res,next)=>{
     WorkspaceDetails.deleteOne({_id:req.params.workspaceID})

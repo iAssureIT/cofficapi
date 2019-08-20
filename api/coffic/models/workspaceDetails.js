@@ -9,7 +9,7 @@ const WorkspaceDetailsSchema = mongoose.Schema({
     city                   : String,
     state                  : String,
     country                : String,
-    pincode                : String,
+    pin                    : String,
     location               : Object,
     numberOfSeats          : Number,
     facilities             : Array,
