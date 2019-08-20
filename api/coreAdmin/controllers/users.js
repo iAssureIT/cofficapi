@@ -242,7 +242,7 @@ exports.user_otpverification = (req,res,next)=>{
 	
 	if(newUser){
 					
-		// console.log('New USER = ',newUser);
+		console.log('New USER = ',newUser);
 		request({
 			
 			"method"    : "POST",
