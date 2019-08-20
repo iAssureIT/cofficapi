@@ -11,10 +11,10 @@ exports.create_workspace = (req,res,next)=>{
                 address                : req.body.address,
                 landmark               : req.body.landmark,
                 area                   : req.body.area,
-                city                   : req.body.state,
-                state                  : req.body.city,
+                city                   : req.body.city,
+                state                  : req.body.state,
                 country                : req.body.country,
-                pincode                : req.body.pin,
+                pin                    : req.body.pin,
                 location               : req.body.location,
                 numberOfSeats          : req.body.numberOfSeats,
                 name                   : req.body.name,
@@ -80,7 +80,7 @@ exports.listcity_workspace = (req,res,next)=>{
             console.log('info',info)
                 res.status(200).json(info);
             }else{
-                res.status(200).json('Workspace Details not found');
+                res.status(200).json('Not found');
             }
         })
         .catch(err =>{
@@ -112,6 +112,31 @@ exports.single_workspace = (req,res,next)=>{
         });
 }
 
+
+// exports.single_seatNumbers = (req,res,next)=>{
+//     WorkspaceDetails.findOne({"workspaceID":req.params.workspaceID})
+//         .exec()
+//         .then(data=>{
+//             if(data){
+//                var seatinfo = data.map((seat,index)=>{
+//                 return seat.numberOfSeats
+
+//                }
+                
+//                 res.status(200).json(data);
+//             }else{
+//                 res.status(404).json('Not found');
+//             }
+//         })
+//         .catch(err =>{
+//             console.log(err);
+//             res.status(500).json({
+//                 error: err
+//             });
+//         });
+// }
+
+
 exports.update_workspace = (req,res,next)=>{
     console.log('inside api---->',req.params,req.body)
     WorkspaceDetails.findOne({"_id":req.params.workspaceID})
@@ -129,7 +154,7 @@ exports.update_workspace = (req,res,next)=>{
                                         state                  : req.body.state,
                                         city                   : req.body.city,
                                         country                : req.body.country,
-                                        pincode                : req.body.pin,
+                                        pin                    : req.body.pin,
                                         location               : req.body.location,
                                         numberOfSeats          : req.body.numberOfSeats,
                                         name                   : req.body.name,

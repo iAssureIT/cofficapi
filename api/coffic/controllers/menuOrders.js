@@ -1,6 +1,7 @@
 const mongoose	= require("mongoose");
-
+const ObjectID  = require("mongodb").ObjectID;
 const Menuorders = require('../models/menuOrders');
+const WorkspaceDetails = require('../models/workspaceDetails');
 
 exports.create_orders = (req,res,next)=>{
 
@@ -26,14 +27,48 @@ exports.create_orders = (req,res,next)=>{
                         });
 };
 
-exports.detail_orders = (req,res,next)=>{
-    Menuorders.findOne({propertyID:req.params.ordersID})
+function getworkSpaceDetails(workspaceId){
+    return new Promise(function(resolve,reject){
+        WorkspaceDetails.findOne({"_id": new ObjectID(workspaceId)})
+                        .exec()
+                        .then(data=>{
+                            resolve(data);
+                        })
+                        .catch(err=>{
+                            reject(err);
+                        });
+        // resolve(workspaceId);
+    });
+}
+
+
+exports.detail_userorders = (req,res,next)=>{
+    console.log("user_id",String(req.params.user_id));
+    Menuorders.find({"user_id":String(req.params.user_id)})
         .exec()
-        .then(data=>{
-            if(data){
-                res.status(200).json(data);
+         .then(data=>{
+            if(data.length > 0){
+                getData();
+                async function getData(){
+                    var returnData = [];
+                    for(i = 0 ; i < data.length ; i++){
+                        var workSpaceData = await getworkSpaceDetails(data[i].workSpace_id);
+                        returnData.push({
+                            "_id"               : data[i]._id,
+                            "user_id"           : data[i].user_id,
+                            "date"              : data[i].date,
+                            "checkInTime"       : data[i].checkInTime,
+                            "checkOutTime"      : data[i].checkOutTime,
+                            "workSpace_id"      : data[i].workSpace_id,
+                            "workspaceDetails"  : workSpaceData,
+                        });
+                    }
+                    if(i >= data.length){
+                        res.status(200).json(returnData);        
+                    }
+                }
             }else{
-                res.status(404).json('Order Details not found');
+                res.status(404).json('Not found');
             }
         })
         .catch(err =>{
@@ -52,7 +87,7 @@ exports.list_orders = (req,res,next)=>{
             if(data){
                 res.status(200).json(data);
             }else{
-                res.status(404).json('Order Details not found');
+                res.status(404).json('Not found');
             }
         })
         .catch(err =>{

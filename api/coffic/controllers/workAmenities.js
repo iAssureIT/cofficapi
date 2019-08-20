@@ -83,11 +83,11 @@ exports.updateamenitySingle = (req,res,next)=>{
                     .then(data=>{ 
                         if(data){
                             WorkAmenities.updateOne({"_id":data._id},
-                                                    {$set:{
-                                                        amenityName  :  req.body.amenityName,
-                                                         icon        :  req.body.icon,
-                                                    }
-                                                })
+                                        {$set:{
+                                            amenityName  :  req.body.amenityName,
+                                             icon        :  req.body.icon,
+                                        }
+                                    })
                                     .exec()
                                     .then(data=>{
                                         if(data){

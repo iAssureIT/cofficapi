@@ -1,9 +1,11 @@
 const mongoose  = require("mongoose");
-
+const ObjectID  = require("mongodb").ObjectID;
 const SubscriptionOrder = require('../models/subscriptionOrder');
 const SeatBooking = require('../models/seatBooking');
+const WorkspaceDetails = require('../models/workspaceDetails');
 
 exports.create_seatBooking = (req,res,next)=>{
+    console.log("into seatbooking.....");
     var currDate = new Date();
     var day = currDate.getDate();
     var month = currDate.getMonth() + 1;
@@ -15,7 +17,11 @@ exports.create_seatBooking = (req,res,next)=>{
     if(month<10 || month.length<2){month = '0' + month;}
     currDate = year+"-"+month+"-"+day;
 
-
+    var selector={ 
+                "user_id" : req.body.user_id,
+                "endDate" : {$gte : new Date()},
+                "status" : "paid" , }
+                console.log("selector",selector);
     SubscriptionOrder
         .find({ 
                 "user_id" : req.body.user_id,
@@ -80,14 +86,15 @@ exports.create_seatBooking = (req,res,next)=>{
                             error: err
                         });
                     });
-
-     }
+            }else{
+                res.status(200).json("User Has not paid yet");
+            }
 
    });
 }
 
 exports.detail_seatBooking = (req,res,next)=>{
-    SeatBooking.findOne({ID:req.params.seatBookingID})
+    SeatBooking.findOne({user_id:req.params.seatBookingID})
         .exec()
         .then(data=>{
             if(data){
@@ -105,7 +112,6 @@ exports.detail_seatBooking = (req,res,next)=>{
 };
 
 exports.list_seatBooking = (req,res,next)=>{
-    console.log('list');
     SeatBooking.find({})
         .exec()
         .then(data=>{
@@ -122,6 +128,60 @@ exports.list_seatBooking = (req,res,next)=>{
             });
         });
 };
+function getworkSpaceDetails(workspaceId){
+    return new Promise(function(resolve,reject){
+        WorkspaceDetails.findOne({"_id": new ObjectID(workspaceId)})
+                        .exec()
+                        .then(data=>{
+                            resolve(data);
+                        })
+                        .catch(err=>{
+                            reject(err);
+                        });
+        // resolve(workspaceId);
+    });
+}
+exports.list_userSeatBooking=(req,res,next)=>{
+    console.log("user_id",String(req.params.user_id));
+    var selector = { "$match" : {"user_id":String(req.params.user_id)}};
+    console.log("selector",selector);
+    SeatBooking
+        .find({"user_id":String(req.params.user_id)})
+        .exec()
+        .then(data=>{
+            console.log("data",data);
+            if(data.length > 0){
+                getData();
+                async function getData(){
+                    var returnData = [];
+                    for(i = 0 ; i < data.length ; i++){
+                        var workSpaceData = await getworkSpaceDetails(data[i].workSpace_id);
+                        returnData.push({
+                            "_id"               : data[i]._id,
+                            "user_id"           : data[i].user_id,
+                            "date"              : data[i].date,
+                            "checkInTime"       : data[i].checkInTime,
+                            "checkOutTime"      : data[i].checkOutTime,
+                            "workSpace_id"      : data[i].workSpace_id,
+                            "workspaceDetails"  : workSpaceData,
+                        });
+                    }
+                    if(i >= data.length){
+                        res.status(200).json(returnData);        
+                    }
+                }
+            }else{
+                res.status(404).json('Not found');
+            }
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+}
+
 
  
 exports.update_seatBooking = (req,res,next)=>{

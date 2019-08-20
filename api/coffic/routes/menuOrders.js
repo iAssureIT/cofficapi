@@ -11,7 +11,7 @@ router.post('/post', OrdersController.create_orders);
 router.get('/get/list',OrdersController.list_orders);
 
 
-// router.get('/:ordersID',ordersController.single_orders);
+router.get('/get/one/:user_id',OrdersController.detail_userorders);
 
 
 router.patch('patch/:ordersID', OrdersController.update_orders);
