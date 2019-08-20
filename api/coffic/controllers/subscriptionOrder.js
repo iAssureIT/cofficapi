@@ -73,6 +73,43 @@ exports.submit_subscriptionOrder = (req,res,next)=>{
             });
         });
 };
+ 
+
+exports.single_activesub = (req,res,next)=>{
+  var currDate = new Date();
+    var day = currDate.getDate();
+    var month = currDate.getMonth() + 1;
+    var year = currDate.getYear();
+    if (year < 1900){
+        year = year + 1900;
+    }
+    if(day<10 || day.length<2){day = '0' + day;}
+    if(month<10 || month.length<2){month = '0' + month;}
+    var currDateISO = year+"-"+month+"-"+day;
+
+    SubscriptionOrder.findOne({
+                "user_id" : req.params.user_id,
+                "endDate" : {$gte : new Date()},
+                "status" : "paid" ,
+              })
+            .exec()
+            .then(data=>{
+                console.log("data",data);
+                if(data){
+
+                    res.status(200).json(data);
+                }else{
+                    res.status(404).json('Not found');
+                }
+            })
+            .catch(err =>{
+                console.log(err);
+                res.status(500).json({
+                    error: err
+                });
+            });
+ }
+
 
 exports.detail_subscriptionOrder = (req,res,next)=>{
     SubscriptionOrder.findOne({"_id":req.params.suborderID})

@@ -15,7 +15,7 @@ exports.create_seatBooking = (req,res,next)=>{
     }
     if(day<10 || day.length<2){day = '0' + day;}
     if(month<10 || month.length<2){month = '0' + month;}
-    currDate = year+"-"+month+"-"+day;
+    currDateISO = year+"-"+month+"-"+day;
 
     var selector={ 
                 "user_id" : req.body.user_id,
@@ -48,9 +48,9 @@ exports.create_seatBooking = (req,res,next)=>{
                                 plan_id             :  activeSubOrder[0].plan_id,
                                 user_id             :  req.body.user_id,
                                 workSpace_id        :  req.body.workSpace_id,
-                                date                :  currDate,
+                                date                :  currDateISO,
                                 checkInTime         :  new Date(),
-                                checkOutTime        :  new Date(),
+                                checkOutTime        :  "",
                                 createAt            :  new Date(),                      
                             });
 
@@ -117,6 +117,62 @@ exports.detail_seatBooking = (req,res,next)=>{
         });
 };
 
+exports.availableSeats = (req,res,next)=>{
+    var currDate = new Date();
+    var day = currDate.getDate();
+    var month = currDate.getMonth() + 1;
+    var year = currDate.getYear();
+    if (year < 1900){
+        year = year + 1900;
+    }
+    if(day<10 || day.length<2){day = '0' + day;}
+    if(month<10 || month.length<2){month = '0' + month;}
+    var currDateISO = year+"-"+month+"-"+day;
+    
+    WorkspaceDetails
+        .findOne({_id : req.params.workspace_id})
+        .exec()
+        .then(workspace => {
+            SeatBooking
+                .find({
+                    workspace_id : req.params.workspace_id,
+                    date : currDateISO,
+                    checkOutTime : ""
+                })
+                .estimatedDocumentCount()
+                .exec()
+                .then(bookedSeats =>{
+                    if(bookedSeats){
+                        var availableSeats = workspace.numberOfSeats - bookedSeats;
+                        res.status(200).json({
+                            maxSeats        : workspace.numberOfSeats,
+                            bookedSeats     : bookedSeats,
+                            availableSeats  : availableSeats
+                        });
+                    }else{
+                        res.status(200).json({
+                            maxSeats        : workspace.numberOfSeats,
+                            bookedSeats     : bookedSeats,
+                            availableSeats  : workspace.numberOfSeats
+                        });
+                    }
+                })
+                .catch(err =>{
+                    console.log(err);
+                    res.status(500).json({
+                        error: err
+                    });
+                });
+
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+
+};
 exports.list_seatBooking = (req,res,next)=>{
     SeatBooking.find({})
         .exec()

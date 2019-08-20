@@ -13,6 +13,8 @@ router.get('/get/one/:user_id',seatBookingController.list_userSeatBooking);
 
 router.get('/get/count',seatBookingController.list_checkIncount);
 
+router.get('/get/availableSeats/:workspace_id',seatBookingController.availableSeats);
+
 router.patch('/patch/update/:seatBooking_ID', seatBookingController.update_seatBooking);
 
 router.delete('/delete/:seatBookingID',seatBookingController.delete_seatBooking);
