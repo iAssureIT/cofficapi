@@ -8,7 +8,9 @@ const SeatBookingSchema = mongoose.Schema({
 	date 						 :  Date,
 	checkInTime	 				 :  Date,
 	checkOutTime 				 :  Date,
+	bookAllSeats 				 :  String,
 	createdAt 		 			 :  Date,
+	getstatus 					 :  String,
 });
 
 module.exports = mongoose.model('seatBooking',SeatBookingSchema);

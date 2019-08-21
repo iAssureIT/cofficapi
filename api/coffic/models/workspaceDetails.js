@@ -19,15 +19,16 @@ const WorkspaceDetailsSchema = mongoose.Schema({
     mobile                 : Number,
     email                  : String,
     name                   : String,
-    createdBy              :  String,
-    createAt               :  Date,
-    // updatedBy              :  {type: mongoose.Schema.Types.ObjectId, ref : 'users'},
-    lastUpdateAt           :  Date,
+    createdBy              : String,
+    createAt               : Date,
+    lastUpdateAt           : Date,
     logo                   : String,
     banner                 : String,
     workspaceImages        : Array,
     cafeAdmin              : String,
     isOpen                 : Boolean,
+    status                 : String,
+    reason                 : String,
 });
 
 module.exports = mongoose.model('workspaceDetails',WorkspaceDetailsSchema);

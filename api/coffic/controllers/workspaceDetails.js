@@ -24,15 +24,15 @@ exports.create_workspace = (req,res,next)=>{
                 cost                   : req.body.cost ,
                 openingtime            : req.body.openingtime ,
                 closingtime            : req.body.closingtime ,
-                createdBy              : "ddd" ,
+                createdBy              : "user_id" ,
                 createAt               : new  Date(),
-                // updatedBy              : "ddd",
-                lastUpdateAt           : new Date(),
                 logo                   : req.body.logo,
                 banner                 : req.body.banner,
                 workspaceImages        : req.body.workspaceImages,
                 cafeAdmin              : req.body.cafeAdmin,
                 isOpen                 : true,
+                status                 : req.body.status,
+                reason                 : req.body.reason,
         });
         workspaceDetails.save()
                         .then(data=>{

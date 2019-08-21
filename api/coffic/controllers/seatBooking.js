@@ -49,6 +49,7 @@ exports.create_seatBooking = (req,res,next)=>{
                                 user_id             :  req.body.user_id,
                                 workSpace_id        :  req.body.workSpace_id,
                                 date                :  currDateISO,
+                                bookAllSeats        : '' ,
                                 checkInTime         :  new Date(),
                                 checkOutTime        :  "",
                                 createAt            :  new Date(),                      
@@ -99,6 +100,51 @@ exports.create_seatBooking = (req,res,next)=>{
    });
 }
 
+// exports.seatsOccupied = (req,res,next)=>{
+//     console.log("into seats .....");
+//     var currDate = new Date();
+//     var day = currDate.getDate();
+//     var month = currDate.getMonth() + 1;
+//     var year = currDate.getYear();
+//     if (year < 1900){
+//         year = year + 1900;
+//     }
+//     if(day<10 || day.length<2){day = '0' + day;}
+//     if(month<10 || month.length<2){month = '0' + month;}
+//     currDateISO = year+"-"+month+"-"+day;
+
+//     SeatBooking.updateOne({"_id":req.params.workspaceId},
+//                 {
+//                     $set:{
+    
+//                         plan_id             :  "",
+//                         user_id             :  "",
+//                         workSpace_id        :  req.body.workspaceId,
+//                         bookAllSeats        :  req.body.bookAllSeats,
+//                         date                :  currDateISO,
+//                         checkInTime         :  new Date(),
+//                        }
+                                             
+//                     })
+//                     .exec()
+//                     .then(data=>{
+//                         console.log("data",data);
+//                         if(data){
+//                             if(data.nModified==1){
+//                                 res.status(200).json("Successful");
+//                             }
+//                         }
+
+//                     })
+//             .catch(err =>{
+//                 console.log(err);
+//                 res.status(500).json({
+//                     error: err
+//                 });
+//             });
+//     };
+
+
 exports.detail_seatBooking = (req,res,next)=>{
     SeatBooking.findOne({user_id:req.params.seatBookingID})
         .exec()
@@ -143,6 +189,10 @@ exports.availableSeats = (req,res,next)=>{
                 .exec()
                 .then(bookedSeats =>{
                     if(bookedSeats){
+                        wsStatus = workspace.status;
+                        if(wsStatus === "occupied"){
+                            bookedSeats = workspace.numberOfSeats;
+                        }
                         var availableSeats = workspace.numberOfSeats - bookedSeats;
                         res.status(200).json({
                             maxSeats        : workspace.numberOfSeats,
@@ -173,6 +223,53 @@ exports.availableSeats = (req,res,next)=>{
         });
 
 };
+
+exports.availableSeatsdata = (req,res,next)=>{
+    var currDate = new Date();
+    var day = currDate.getDate();
+    var month = currDate.getMonth() + 1;
+    var year = currDate.getYear();
+    if (year < 1900){
+        year = year + 1900;
+    }
+    if(day<10 || day.length<2){day = '0' + day;}
+    if(month<10 || month.length<2){month = '0' + month;}
+    var currDateISO = year+"-"+month+"-"+day;
+    
+    WorkspaceDetails
+        .findOne({_id : req.params.workspace_id})
+        .exec()
+        .then(workspace => {
+            SeatBooking
+                .find({
+                    workspace_id : req.params.workspace_id,
+                    date : currDateISO,
+                    checkOutTime : ""
+                })
+                // .estimatedDocumentCount()
+                .exec()
+                .then(bookedSeats =>{
+                    console.log("bookedSeats",bookedSeats);
+                     res.status(200).json("Data found");
+
+                })
+                .catch(err =>{
+                    console.log(err);
+                    res.status(500).json({
+                        error: err
+                    });
+                });
+
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+
+};
+
 exports.list_seatBooking = (req,res,next)=>{
     SeatBooking.find({})
         .exec()
