@@ -56,8 +56,7 @@ exports.detail_userorders = (req,res,next)=>{
                             "_id"               : data[i]._id,
                             "user_id"           : data[i].user_id,
                             "date"              : data[i].date,
-                            "checkInTime"       : data[i].checkInTime,
-                            "checkOutTime"      : data[i].checkOutTime,
+                            "item"              : data[i].item,
                             "workSpace_id"      : data[i].workSpace_id,
                             "workspaceDetails"  : workSpaceData,
                         });
