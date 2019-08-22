@@ -1,4 +1,5 @@
 const mongoose	= require("mongoose");
+var moment                          = require('moment');
 
 const SubscriptionOrder = require('../models/subscriptionOrder');
 const SubscriptionPlan = require('../models/subscriptionPlan');
@@ -21,24 +22,8 @@ exports.submit_subscriptionOrder = (req,res,next)=>{
             if(month<10 || month.length<2){month = '0' + month;}
             currDate = year+"-"+month+"-"+day;
 
-
-            var endDay = parseInt(day) + parseInt(validityDays);
-
-            if(endDay>30){
-                endDay = endDay - 30;
-                if(endDay<10 || endDay.length<2){endDay = '0' + endDay;}
-                month = parseInt(month) + 1;                
-                if(month > 12){
-                    month = parseInt(month) - 12;
-                    year = year + 1;
-                }
-                if(month<10 || month.length<2){month = '0' + month;}
-            }  
-
-            var endDate = year+"-"+month+"-"+endDay;
-
-
-        const newSubscriptionOrder = new SubscriptionOrder({
+            var endDate = moment(currDate).add('days',parseInt(validityDays))
+            const newSubscriptionOrder = new SubscriptionOrder({
                                 _id          :  new mongoose.Types.ObjectId(),
                                 plan_id      :  req.body.plan_id,
                                 user_id      :  req.body.user_id,

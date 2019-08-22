@@ -24,7 +24,6 @@ exports.create_seatBooking = (req,res,next)=>{
                 "status" : "paid" , };
 
     console.log("selector",selector);
-    
     SubscriptionOrder
         .find({ 
                 "user_id" : req.body.user_id,
@@ -372,7 +371,7 @@ exports.list_userSeatBooking=(req,res,next)=>{
         .then(data=>{
             console.log("data",data);
             if(data.length > 0){
-                getData();
+             getData();
                 async function getData(){
                     var returnData = [];
                     for(i = 0 ; i < data.length ; i++){

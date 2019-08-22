@@ -4,6 +4,7 @@
 	const bodyParser 					= require('body-parser');// this package use to formate json data 
 	const mongoose 						= require ('mongoose');
     var nodeMailer                      = require('nodemailer');
+    var moment                          = require('moment');
     const dbname = "qacoffic";
 
 	global.JWT_KEY = "secret";	

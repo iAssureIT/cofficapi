@@ -1,7 +1,20 @@
 const mongoose  = require("mongoose");
 const WorkspaceDetails = require('../models/workspaceDetails');
+const CafeMenu = require('../models/CafeMenu');
 
 
+// function getcafeDetails(workspaceID){
+//     return new Promise(function(resolve,reject){
+//         CafeMenu.findOne({"_id": new ObjectID(workspaceID)})
+//                         .exec()
+//                         .then(data=>{
+//                             resolve(data);
+//                         })
+//                         .catch(err=>{
+//                             reject(err);
+//                         });
+//     });
+// }
 
 exports.create_workspace = (req,res,next)=>{
     console.log("create_workspace--->",req.body);
