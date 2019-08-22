@@ -3,6 +3,7 @@ const ObjectID  = require("mongodb").ObjectID;
 const SubscriptionOrder = require('../models/subscriptionOrder');
 const SeatBooking = require('../models/seatBooking');
 const WorkspaceDetails = require('../models/workspaceDetails');
+const User          = require('../../coreAdmin/models/users');
 
 exports.create_seatBooking = (req,res,next)=>{
     console.log("into seatbooking.....");
@@ -163,6 +164,21 @@ exports.detail_seatBooking = (req,res,next)=>{
         });
 };
 
+
+function getuserDetails(user_id){
+    return new Promise(function(resolve,reject){
+        User.findOne({"_id": new ObjectID(user_id)})
+                        .exec()
+                        .then(data=>{
+                            resolve(data);
+                        })
+                        .catch(err=>{
+                            reject(err);
+                        });
+        // resolve(workspaceId);
+    });
+}
+
 exports.availableSeats = (req,res,next)=>{
     var currDate = new Date();
     var day = currDate.getDate();
@@ -174,91 +190,72 @@ exports.availableSeats = (req,res,next)=>{
     if(day<10 || day.length<2){day = '0' + day;}
     if(month<10 || month.length<2){month = '0' + month;}
     var currDateISO = year+"-"+month+"-"+day;
-    
+    console.log('currDate',new Date(currDateISO))
     WorkspaceDetails
         .findOne({_id : req.params.workspace_id})
         .exec()
         .then(workspace => {
+            console.log('workspace',workspace)
             SeatBooking
                 .find({
-                    workspace_id : req.params.workspace_id,
-                    date : currDateISO,
-                    checkOutTime : ""
-                })
-                .estimatedDocumentCount()
-                .exec()
-                .then(bookedSeats =>{
-                    if(bookedSeats){
-                        wsStatus = workspace.status;
-                        if(wsStatus === "occupied"){
-                            bookedSeats = workspace.numberOfSeats;
-                        }
-                        var availableSeats = workspace.numberOfSeats - bookedSeats;
-                        res.status(200).json({
-                            maxSeats        : workspace.numberOfSeats,
-                            bookedSeats     : bookedSeats,
-                            availableSeats  : availableSeats
-                        });
-                    }else{
-                        res.status(200).json({
-                            maxSeats        : workspace.numberOfSeats,
-                            bookedSeats     : bookedSeats,
-                            availableSeats  : workspace.numberOfSeats
-                        });
-                    }
-                })
-                .catch(err =>{
-                    console.log(err);
-                    res.status(500).json({
-                        error: err
-                    });
-                });
-
-        })
-        .catch(err =>{
-            console.log(err);
-            res.status(500).json({
-                error: err
-            });
-        });
-
-};
-
-exports.availableSeatsdata = (req,res,next)=>{
-    var currDate = new Date();
-    var day = currDate.getDate();
-    var month = currDate.getMonth() + 1;
-    var year = currDate.getYear();
-    if (year < 1900){
-        year = year + 1900;
-    }
-    if(day<10 || day.length<2){day = '0' + day;}
-    if(month<10 || month.length<2){month = '0' + month;}
-    var currDateISO = year+"-"+month+"-"+day;
-    
-    WorkspaceDetails
-        .findOne({_id : req.params.workspace_id})
-        .exec()
-        .then(workspace => {
-            SeatBooking
-                .find({
-                    workspace_id : req.params.workspace_id,
-                    date : currDateISO,
-                    checkOutTime : ""
+                    workSpace_id : req.params.workspace_id,
+                    date : new Date(currDateISO),
+                    checkOutTime : null
                 })
                 // .estimatedDocumentCount()
                 .exec()
                 .then(bookedSeats =>{
-                    console.log("bookedSeats",bookedSeats);
-                     res.status(200).json("Data found");
-
-                })
-                .catch(err =>{
-                    console.log(err);
-                    res.status(500).json({
-                        error: err
-                    });
+                    if(bookedSeats.length > 0){
+                        wsStatus = workspace.status;
+                        var bookedCount = bookedSeats.length;
+                        console.log('bookedCount',bookedCount)
+                        if(wsStatus === "occupied"){
+                            var bookedSeatsNum = workspace.numberOfSeats;
+                        }else{
+                            var bookedSeatsNum = bookedSeats.length;
+                        }
+                        var availableSeats = workspace.numberOfSeats - bookedSeats.length;
+                        var returnData = {
+                            maxSeats        : workspace.numberOfSeats,
+                            bookedSeats     : bookedSeatsNum,
+                            availableSeats  : availableSeats,
+                            userList        : [],
+                        };
+                        getData();
+                        async function getData(){ 
+                            for(i = 0 ; i < bookedSeats.length ; i++){
+                               var userData = await getuserDetails(bookedSeats[i].user_id);
+                                console.log("userDta",userData);
+                                returnData.userList.push({
+                                 "user_id"           : userData._id,
+                                 "userName"          : userData.profile.fullName,
+                                });
+                                console.log("returnData ",returnData);
+                             }
+                             if(i >= bookedSeats.length){
+                                res.status(200).json(returnData);
+                             }
+                        }
+                        // res.status(200).json({
+                        //     maxSeats        : workspace.numberOfSeats,
+                        //     bookedSeats     : bookedSeats,
+                        //     availableSeats  : availableSeats
+                        // });
+                    }else{
+                        res.status(200).json({
+                            maxSeats        : workspace.numberOfSeats,
+                            bookedSeats     : 0,
+                            availableSeats  : workspace.numberOfSeats,
+                            userList        : [],
+                        });
+                    }
+            })
+            .catch(err =>{
+                console.log(err);
+                res.status(500).json({
+                    error: err
                 });
+            });
 
         })
         .catch(err =>{
@@ -269,6 +266,52 @@ exports.availableSeatsdata = (req,res,next)=>{
         });
 
 };
+
+// exports.availableSeatsdata = (req,res,next)=>{
+//     var currDate = new Date();
+//     var day = currDate.getDate();
+//     var month = currDate.getMonth() + 1;
+//     var year = currDate.getYear();
+//     if (year < 1900){
+//         year = year + 1900;
+//     }
+//     if(day<10 || day.length<2){day = '0' + day;}
+//     if(month<10 || month.length<2){month = '0' + month;}
+//     var currDateISO = year+"-"+month+"-"+day;
+    
+//     WorkspaceDetails
+//         .findOne({_id : req.params.workspace_id})
+//         .exec()
+//         .then(workspace => {
+//             SeatBooking
+//                 .find({
+//                     workspace_id : req.params.workspace_id,
+//                     date : currDateISO,
+//                     checkOutTime : ""
+//                 })
+//                 // .estimatedDocumentCount()
+//                 .exec()
+//                 .then(bookedSeats =>{
+//                     console.log("bookedSeats",bookedSeats);
+//                      res.status(200).json("Data found");
+
+//                 })
+//                 .catch(err =>{
+//                     console.log(err);
+//                     res.status(500).json({
+//                         error: err
+//                     });
+//                 });
+
+//         })
+//         .catch(err =>{
+//             console.log(err);
+//             res.status(500).json({
+//                 error: err
+//             });
+//         });
+
+// };
 
 exports.list_seatBooking = (req,res,next)=>{
     SeatBooking.find({})

@@ -17,7 +17,7 @@ router.get('/get/count',seatBookingController.list_checkIncount);
 
 router.get('/get/availableSeats/:workspace_id',seatBookingController.availableSeats);
 
-router.get('/get/availableSeatsdata/:workspace_id',seatBookingController.availableSeatsdata);
+// router.get('/get/availableSeatsdata/:workspace_id',seatBookingController.availableSeatsdata);
 
 router.patch('/patch/update/:seatBooking_ID', seatBookingController.update_seatBooking);
 

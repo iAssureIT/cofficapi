@@ -37,7 +37,6 @@ function getworkSpaceDetails(workspaceId){
                         .catch(err=>{
                             reject(err);
                         });
-        // resolve(workspaceId);
     });
 }
 
