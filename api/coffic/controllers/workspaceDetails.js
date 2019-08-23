@@ -141,11 +141,13 @@ exports.single_workspace = (req,res,next)=>{
         .then(data=>{
             console.log(data);
             // res.status(200).json(data);
-            WorkspaceDetails.updateOne({"_id":req.params.workspaceID},
+            WorkspaceDetails.findOneAndUpdate({"_id":req.params.workspaceID},
                 {$set:{
                     cafeMenu: data
-                }
-            })
+                    }
+                },
+                // {returnOriginal: false},
+            )
             .exec()
             .then(workspace=>{
                 console.log('updated',workspace)

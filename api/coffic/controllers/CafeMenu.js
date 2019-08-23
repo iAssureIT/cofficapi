@@ -35,6 +35,7 @@ exports.submit_cafeItem = (req,res,next)=>{
 
 exports.get_cafeItemList = (req,res,next)=>{
         CafeMenu.find()
+        .sort({"createdAt":-1})
                         .then(data=>{
                             res.status(200).json(data);
                         })
@@ -49,6 +50,7 @@ exports.get_cafeItemList = (req,res,next)=>{
 
 exports.get_cafeItemSingle = (req,res,next)=>{
         CafeMenu.findOne({"_id":req.params.id})
+        .sort({"createdAt":-1})
                         .then(data=>{                           
                             res.status(200).json(data);
                         })
