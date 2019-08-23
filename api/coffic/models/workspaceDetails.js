@@ -29,6 +29,7 @@ const WorkspaceDetailsSchema = mongoose.Schema({
     isOpen                 : Boolean,
     status                 : String,
     reason                 : String,
+    cafeMenu               : Array,
 });
 
 module.exports = mongoose.model('workspaceDetails',WorkspaceDetailsSchema);

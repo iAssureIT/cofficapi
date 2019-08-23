@@ -13,18 +13,34 @@ exports.create_subscriptionPlan = (req,res,next)=>{
                 createdBy              :  req.body.createdBy,
                 createAt               :  new Date(),
         });
-
-        subscriptionplan.save()
-                        .then(data=>{
-                            console.log('data', data);
-                            res.status(200).json("Subscription Plan Details Submitted Successfully");
-                        })
-                        .catch(err =>{
-                            console.log(err);
-                            res.status(500).json({
-                                error: err
-                            });
-                        });
+        SubscriptionPlan.find({
+            planName               :  req.body.planName
+        })
+        .exec()
+        .then(data=>{
+            if(data){
+                console.log('data', data);
+                res.status(200).json("Subscription Plan Already exists");
+            }else{               
+                subscriptionplan.save()
+                                .then(data=>{
+                                    console.log('data', data);
+                                    res.status(200).json("Subscription Plan Details Submitted Successfully");
+                                })
+                                .catch(err =>{
+                                    console.log(err);
+                                    res.status(500).json({
+                                        error: err
+                                    });
+                                });
+            }
+        })
+        .catch(error=>{
+            console.log(error)
+            res.status(500).json({
+             error: err
+             });
+        })
                 
           
 };

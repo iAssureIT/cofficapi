@@ -5,7 +5,7 @@ const SeatBooking = require('../models/seatBooking');
 const WorkspaceDetails = require('../models/workspaceDetails');
 const User          = require('../../coreAdmin/models/users');
 
-exports.create_seatBooking = (req,res,next)=>{
+exports.chekinUser = (req,res,next)=>{
     console.log("into seatbooking.....");
     var currDate = new Date();
     var day = currDate.getDate();
@@ -100,50 +100,6 @@ exports.create_seatBooking = (req,res,next)=>{
    });
 }
 
-// exports.seatsOccupied = (req,res,next)=>{
-//     console.log("into seats .....");
-//     var currDate = new Date();
-//     var day = currDate.getDate();
-//     var month = currDate.getMonth() + 1;
-//     var year = currDate.getYear();
-//     if (year < 1900){
-//         year = year + 1900;
-//     }
-//     if(day<10 || day.length<2){day = '0' + day;}
-//     if(month<10 || month.length<2){month = '0' + month;}
-//     currDateISO = year+"-"+month+"-"+day;
-
-//     SeatBooking.updateOne({"_id":req.params.workspaceId},
-//                 {
-//                     $set:{
-    
-//                         plan_id             :  "",
-//                         user_id             :  "",
-//                         workSpace_id        :  req.body.workspaceId,
-//                         bookAllSeats        :  req.body.bookAllSeats,
-//                         date                :  currDateISO,
-//                         checkInTime         :  new Date(),
-//                        }
-                                             
-//                     })
-//                     .exec()
-//                     .then(data=>{
-//                         console.log("data",data);
-//                         if(data){
-//                             if(data.nModified==1){
-//                                 res.status(200).json("Successful");
-//                             }
-//                         }
-
-//                     })
-//             .catch(err =>{
-//                 console.log(err);
-//                 res.status(500).json({
-//                     error: err
-//                 });
-//             });
-//     };
-
 
 exports.detail_seatBooking = (req,res,next)=>{
     SeatBooking.findOne({user_id:req.params.seatBookingID})
@@ -173,9 +129,8 @@ function getuserDetails(user_id){
                         })
                         .catch(err=>{
                             reject(err);
-                        });
-        // resolve(workspaceId);
-    });
+                  });
+            });
 }
 
 exports.availableSeats = (req,res,next)=>{
@@ -235,11 +190,6 @@ exports.availableSeats = (req,res,next)=>{
                                 res.status(200).json(returnData);
                              }
                         }
-                        // res.status(200).json({
-                        //     maxSeats        : workspace.numberOfSeats,
-                        //     bookedSeats     : bookedSeats,
-                        //     availableSeats  : availableSeats
-                        // });
                     }else{
                         res.status(200).json({
                             maxSeats        : workspace.numberOfSeats,
@@ -266,51 +216,6 @@ exports.availableSeats = (req,res,next)=>{
 
 };
 
-// exports.availableSeatsdata = (req,res,next)=>{
-//     var currDate = new Date();
-//     var day = currDate.getDate();
-//     var month = currDate.getMonth() + 1;
-//     var year = currDate.getYear();
-//     if (year < 1900){
-//         year = year + 1900;
-//     }
-//     if(day<10 || day.length<2){day = '0' + day;}
-//     if(month<10 || month.length<2){month = '0' + month;}
-//     var currDateISO = year+"-"+month+"-"+day;
-    
-//     WorkspaceDetails
-//         .findOne({_id : req.params.workspace_id})
-//         .exec()
-//         .then(workspace => {
-//             SeatBooking
-//                 .find({
-//                     workspace_id : req.params.workspace_id,
-//                     date : currDateISO,
-//                     checkOutTime : ""
-//                 })
-//                 // .estimatedDocumentCount()
-//                 .exec()
-//                 .then(bookedSeats =>{
-//                     console.log("bookedSeats",bookedSeats);
-//                      res.status(200).json("Data found");
-
-//                 })
-//                 .catch(err =>{
-//                     console.log(err);
-//                     res.status(500).json({
-//                         error: err
-//                     });
-//                 });
-
-//         })
-//         .catch(err =>{
-//             console.log(err);
-//             res.status(500).json({
-//                 error: err
-//             });
-//         });
-
-// };
 
 exports.list_seatBooking = (req,res,next)=>{
     SeatBooking.find({})
@@ -329,25 +234,8 @@ exports.list_seatBooking = (req,res,next)=>{
             });
         });
 };
-exports.list_checkIncount = (req,res,next)=>{
-    SeatBooking.find({})
-        .exec()
-        .then(data=>{
-            
-            console.log("data",data);
-            if(data){
-                res.status(200).json(data);
-            }else{
-                res.status(404).json('Not found');
-            }
-        })
-        .catch(err =>{
-            console.log(err);
-            res.status(500).json({
-                error: err
-            });
-        });
-};
+
+
 function getworkSpaceDetails(workspaceId){
     return new Promise(function(resolve,reject){
         WorkspaceDetails.findOne({"_id": new ObjectID(workspaceId)})
@@ -404,36 +292,9 @@ exports.list_userSeatBooking=(req,res,next)=>{
 
 
  
-exports.update_seatBooking = (req,res,next)=>{
-    SeatBooking.updateOne({"_id":data._id},
-        {$set:{
-           
-            date                         :  req.body.date,
-            checkInTime                  :  new Date(),
-            checkOutTime                 :  new Date(),
-            createdBy                    :  req.body.createdBy,
-            createAt                     :  new Date(), 
-             }
-            })
-    .exec()
-    .then(data=>{
-        if(data){
-            if(data.nModified==1){
-                res.status(200).json("Successful");
-            }
-        }
-
-    })
-    .catch(err =>{
-        console.log(err);
-        res.status(500).json({
-            error: err
-        });
-    });
-};
-
 exports.delete_seatBooking = (req,res,next)=>{
-    SeatBooking.deleteOne({_id:req.params.seatBookingID})
+    SeatBooking
+        .deleteOne({_id:req.params.seatBookingID})
         .exec()
         .then(data=>{
             res.status(200).json("seatBooking deleted");
@@ -486,3 +347,52 @@ exports.validate_checkin = (req,res,next)=>{
             });
         });
     }
+
+
+
+exports.checkoutUser = (req,res,next)=>{
+    var currDate = new Date();
+    var day = currDate.getDate();
+    var month = currDate.getMonth() + 1;
+    var year = currDate.getYear();
+
+    if (year < 1900){
+        year = year + 1900;
+    }
+    if(day<10 || day.length<2){day = '0' + day;}
+    if(month<10 || month.length<2){month = '0' + month;}
+
+    var currDateISO = year+"-"+month+"-"+day;
+
+
+    SeatBooking
+    .updateOne(
+        {
+            "user_id"       : req.body.user_id, 
+            "workSpace_id"  : req.body.workspace_id,
+            "date"          : currDateISO,
+        },
+        {
+            $set:   {
+                        checkOutTime  :  new Date(),
+                    }
+        }
+    )
+    .exec()
+    .then(data=>{
+        if(data){
+            if(data.nModified==1){
+                res.status(200).json("Checkout is Successful");
+            }
+        }
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    });
+};
+
+
+
