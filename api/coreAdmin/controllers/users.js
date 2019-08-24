@@ -1213,6 +1213,7 @@ exports.update_user = (req,res,next)=>{
 					"roles" 				: (req.body.roles),
 					"emails[0].address  "  	: req.body.emailId,
 					// "roles" 				: (req.body.roles),
+
 					// "officeLocation" 		: req.body.officeLocation,
 
 			
