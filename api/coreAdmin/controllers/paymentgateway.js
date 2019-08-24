@@ -10,7 +10,23 @@ exports.fetch_details = (req,res,next)=>{
             .exec()
                     .then(data =>{
                         res.status(200).json(data);
-                        
+
+                    })
+                    .catch(err =>{
+                        console.log(err);
+                        res.status(500).json({
+                            error: err
+                        });
+                    });
+   
+}
+
+exports.paymentResponse = (req,res,next)=>{
+    console.log("QW Response = ", res.data);
+    QuickWalletMasters.find()
+            .exec()
+                    .then(data =>{
+                        res.status(200).json(data);                        
                     })
                     .catch(err =>{
                         console.log(err);
