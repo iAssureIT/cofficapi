@@ -46,12 +46,16 @@ exports.makepayment = (req, res, next) => {
 		.then(data =>{
 			
             const quickWalletMasters = new QuickWalletMasters({
-                _id             : mongoose.Types.ObjectId(),      
+                _id              : mongoose.Types.ObjectId(),      
                 "partnerid"      : req.body.partnerid,
                 "mobile"         : req.body.mobile,
                 "amount"         : req.body.amount,
-                "secret"         : req.body.secret
-                
+                "secret"         : req.body.secret,
+                "billNumber"     : "5d5e6d308384369cca6e6723",
+                // "udf2"  : "Something relevant",
+                // "udf3"  : "SKU-4321",
+                // "udf4"  : "Men'sFootwear",
+                // "udf5"  : "Something else relevant"                
             });
             
             quickWalletMasters.save(
