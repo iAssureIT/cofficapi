@@ -263,7 +263,7 @@ exports.user_otpverification = (req,res,next)=>{
 								"subject"   : 'Verify your Account',
 								"text"      : "WOW Its done",
 								// "mail"      : "Hello"+newUser.profile.firstName+','+'\n'+"Your account verifcation code is"+OTP,
-								"mail"      : 'Hello '+newUser.firstName+','+'\n'+"\n <br><br>Your account verification code is "+"<b>"+newUser.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
+								"mail"      : 'Dear '+newUser.firstName+','+'\n'+"\n <br><br>Your account verification code is "+"<b>"+newUser.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
 							},
 			"json"      : true,
 			"headers"   : {
@@ -840,7 +840,7 @@ exports.update_user_resetpassword = (req,res,next)=>{
 
 exports.user_loginwithvendor = (req,res,next)=>{
     console.log('login',req.body);
-    User.findOne({emails:{$elemMatch:{address:req.body.email}},roles: "vendor"})
+    User.findOne({emails:{$elemMatch:{address:req.body.email}},roles: "vendor",emailId:req.body.emailId})
         .exec()
         .then(user => {
             if(user){
@@ -886,7 +886,9 @@ exports.user_loginwithvendor = (req,res,next)=>{
                     res.status(409).status({message:"Password not found"}); 
                 }
             }else{
-                res.status(409).status({message:"User Not found"});
+				res.status(200).json({
+					message: 'User not found'
+				});
             }
         })
         .catch(err =>{
@@ -899,10 +901,12 @@ exports.user_loginwithvendor = (req,res,next)=>{
 
 exports.user_loginwithuser = (req,res,next)=>{
     console.log('login',req.body);
-    User.findOne({emails:{$elemMatch:{address:req.body.email}},roles: "user"})
+    User.findOne({emails:{$elemMatch:{address:req.body.email}},roles: "user",emailId:req.body.emailId})
         .exec()
         .then(user => {
+			
             if(user){
+				
                 var pwd = user.services.password.bcrypt;
                 if(pwd){
 					console.log('PWD');
@@ -913,6 +917,7 @@ exports.user_loginwithuser = (req,res,next)=>{
                                 message: 'Bcrypt Auth failed'
                             });     
                         }
+                        
                         if(result){
                             console.log('result ',result);
                             const token = jwt.sign({
@@ -945,7 +950,9 @@ exports.user_loginwithuser = (req,res,next)=>{
                     res.status(409).status({message:"Password not found"}); 
                 }
             }else{
-                res.status(409).status({message:"User Not found"});
+				res.status(200).json({
+					message: 'User not found'
+				});
             }
         })
         .catch(err =>{
@@ -1202,8 +1209,8 @@ exports.update_user = (req,res,next)=>{
 					"profile.fullName"      : req.body.firstName+' '+req.body.lastName,
 					"profile.emailId"       : req.body.emailId,
 					"profile.mobileNumber"  : req.body.mobileNumber,
-					"mobileNumber"          : req.body.mobileNumber
-					// "roles" 				: (req.body.roles),
+					"mobileNumber"          : req.body.mobileNumber,
+					"roles" 				: (req.body.roles),
 					// "officeLocation" 		: req.body.officeLocation,
 
 			

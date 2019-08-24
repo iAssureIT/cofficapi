@@ -48,6 +48,8 @@
     const UsersUrl                     = require("./api/coreAdmin/routes/users");
     const Companysettings              = require("./api/coreAdmin/routes/companysettings");
     const NotificationTemp             = require("./api/coreAdmin/routes/masternotifications");
+    const paymentgatewayurl             = require("./api/coreAdmin/routes/paymentgateway");
+
     
 
 
@@ -57,6 +59,9 @@
     app.use("/api/projectSettings",ProjectSettingsurl);
     app.use("/api/cafeMenu",CafeMenuUrl);
     app.use("/api/subscriptionOrder",SubscriptionOrderUrl);
+
+    app.use("/api/paymentgateway",paymentgatewayurl);
+
 
 
 
