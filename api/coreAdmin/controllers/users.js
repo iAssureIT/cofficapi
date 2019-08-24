@@ -104,10 +104,19 @@ function getRandomInt(min, max) {
 
 exports.user_signupadmin = (req,res,next)=>{
 	console.log('req',req)
-	User.find()
-		.exec()
-		.then(user =>{				
-				bcrypt.hash(req.body.pwd,10,(err,hash)=>{
+	User
+	.findOne({'emails.address': req.body.emailId})
+	.exec()
+	.then(user=>{
+		console.log("user",user)
+		if(user){
+			return res.status(200).json({
+				"message" : 'USER_ALREADY_EXIST',
+				"user_id" : user._id,
+			
+			});	
+		}else{
+			bcrypt.hash(req.body.pwd,10,(err,hash)=>{
 					if(err){
 						return res.status(500).json({
 							error:err
@@ -216,8 +225,10 @@ exports.user_signupadmin = (req,res,next)=>{
 							});
 					}			
 				});
-			
-		})
+
+		}
+	})
+
 		.catch(err =>{
 			console.log(err);
 			res.status(500).json({

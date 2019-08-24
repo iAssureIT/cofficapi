@@ -5,7 +5,7 @@ const SeatBookingSchema = mongoose.Schema({
     user_id 					 :  String,
 	workSpace_id				 :  String,
 	subscriptionPlanID		     :  String,
-	date 						 :  Date,
+	date 						 :  String,
 	checkInTime	 				 :  Date,
 	checkOutTime 				 :  Date,
 	bookAllSeats 				 :  String,

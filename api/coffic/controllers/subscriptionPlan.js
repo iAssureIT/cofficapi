@@ -18,7 +18,7 @@ exports.create_subscriptionPlan = (req,res,next)=>{
         })
         .exec()
         .then(data=>{
-            if(data){
+            if(data.length > 0){
                 console.log('data', data);
                 res.status(200).json("Subscription Plan Already exists");
             }else{               
@@ -32,17 +32,9 @@ exports.create_subscriptionPlan = (req,res,next)=>{
                                     res.status(500).json({
                                         error: err
                                     });
-                                });
+                                });              
             }
         })
-        .catch(error=>{
-            console.log(error)
-            res.status(500).json({
-             error: err
-             });
-        })
-                
-          
 };
 
 exports.list_subscriptionPlan = (req,res,next)=>{

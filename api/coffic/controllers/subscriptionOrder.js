@@ -103,7 +103,7 @@ exports.detail_subscriptionOrder = (req,res,next)=>{
             if(data){
                 res.status(200).json(data);
             }else{
-                res.status(404).json('Company Details not found');
+                res.status(404).json(' not found');
             }
         })
         .catch(err =>{

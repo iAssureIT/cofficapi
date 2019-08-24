@@ -47,53 +47,11 @@ exports.create_workspace = (req,res,next)=>{
 };
 
 exports.list_workspace = (req,res,next)=>{
- console.log('list_workspace WorkspaceDetails');
-   WorkspaceDetails.find()
-    .sort({"createdAt":-1})
+    console.log('list_workspace WorkspaceDetails');
+    WorkspaceDetails.find()
         .exec()
         .then(data=>{
-            if(data.length>0){
-             getData();
-                async function getData(){
-                 var returnData = [];
-                    for(i = 0 ; i < data.length ; i++){
-                    var cafeData = await getcafeDetails(data[i].workSpace_id);
-                    console.log("cafeData----------",cafeData);
-                     returnData.push({
-                         _id                    : data[i]._id,
-                        nameOfCafe             : data[i].nameOfCafe,
-                        address                : data[i].address,
-                        landmark               : data[i].landmark,
-                        area                   : data[i].area,
-                        city                   : data[i].city,
-                        state                  : data[i].state,
-                        country                : data[i].country,
-                        pin                    : data[i].pin,
-                        location               : data[i].location,
-                        numberOfSeats          : data[i].numberOfSeats,
-                        name                   : data[i].name,
-                        mobile                 : data[i].mobile,
-                        email                  : data[i].email,
-                        facilities             : data[i].facilities, 
-                        cost                   : data[i].cost, 
-                        openingtime            : data[i].openingtime,
-                        closingtime            : data[i].closingtime,
-                        createdBy              : "user_id" ,
-                        createAt               : new  Date(),
-                        logo                   : data[i].logo,
-                        banner                 : data[i].banner,
-                        workspaceImages        : data[i].workspaceImages,
-                        cafeAdmin              : data[i].cafeAdmin,
-                        isOpen                 : true,
-                        status                 : data[i].status,
-                        reason                 : data[i].reason,
-                        cafedata               : cafeData,
-
-                     })
-                    }
-                            
-                }   
-
+            if(data){
                 res.status(200).json(data);
             }else{
                 res.status(200).json('Workspace Details not found');
@@ -151,7 +109,14 @@ exports.single_workspace = (req,res,next)=>{
             .exec()
             .then(workspace=>{
                 console.log('updated',workspace)
-                res.status(200).json(workspace)
+                if(workspace){
+                  res.status(200).json(workspace)
+                }else{
+                  res.status(400).json("Not updated")
+                }
+            })
+            .catch(error=>{
+                res.status(400).json('No workspace added')
             })
         })
         .catch(error=>{

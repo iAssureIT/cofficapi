@@ -4,6 +4,7 @@ const SubscriptionOrder = require('../models/subscriptionOrder');
 const SeatBooking = require('../models/seatBooking');
 const WorkspaceDetails = require('../models/workspaceDetails');
 const User          = require('../../coreAdmin/models/users');
+var moment                          = require('moment');
 
 exports.chekinUser = (req,res,next)=>{
     console.log("into seatbooking.....");
@@ -17,7 +18,7 @@ exports.chekinUser = (req,res,next)=>{
     if(day<10 || day.length<2){day = '0' + day;}
     if(month<10 || month.length<2){month = '0' + month;}
     currDateISO = year+"-"+month+"-"+day;
-
+    console.log('currDateISO', currDateISO, typeof currDateISO)
     var selector={ 
                 "user_id" : req.body.user_id,
                 "endDate" : {$gte : new Date()},
@@ -35,7 +36,7 @@ exports.chekinUser = (req,res,next)=>{
                 console.log("activeSubOrder = ",activeSubOrder);
                 SeatBooking
                     .find({
-                        user_id : req.body.user_id, 
+                        dateuser_id : req.body.user_id, 
                         plan_id : activeSubOrder[0].plan_id
                     })
                     .estimatedDocumentCount()
@@ -144,7 +145,7 @@ exports.availableSeats = (req,res,next)=>{
     if(day<10 || day.length<2){day = '0' + day;}
     if(month<10 || month.length<2){month = '0' + month;}
     var currDateISO = year+"-"+month+"-"+day;
-    console.log('currDate',new Date(currDateISO))
+
     WorkspaceDetails
         .findOne({_id : req.params.workspace_id})
         .exec()
@@ -153,12 +154,13 @@ exports.availableSeats = (req,res,next)=>{
             SeatBooking
                 .find({
                     workSpace_id : req.params.workspace_id,
-                    date : new Date(currDateISO),
+                    date :  currDateISO,
                     checkOutTime : null
                 })
                 // .estimatedDocumentCount()
                 .exec()
                 .then(bookedSeats =>{
+                    console.log("bookedSeats",bookedSeats);
                     if(bookedSeats.length > 0){
                         wsStatus = workspace.status;
                         var bookedCount = bookedSeats.length;

@@ -21,7 +21,6 @@ const WorkspaceDetailsSchema = mongoose.Schema({
     name                   : String,
     createdBy              : String,
     createAt               : Date,
-    lastUpdateAt           : Date,
     logo                   : String,
     banner                 : String,
     workspaceImages        : Array,
