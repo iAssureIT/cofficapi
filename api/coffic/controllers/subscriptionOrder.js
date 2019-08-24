@@ -134,6 +134,30 @@ exports.list_subscriptionOrder = (req,res,next)=>{
 }
 
 
+exports.paymentResponse = (req,res,next)=>{
+    console.log("QW Response = ", req.query);
+    
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.write('<div style="margin-top:200px;text-align:center;width:50%;margin-left:25%; padding: 30px; border: 1px solid #aaa;"><h1 style="color:#00aa00"> Congratulations !</h1><h3> Your Payment is Successful! <br/> Click below button to proceed. </h3></div>');
+    res.status(200);
+    res.end();
+
+    // SubscriptionOrder.findOne({status : "unpaid"})
+    //         .exec()
+    //         .then(data =>{
+    //             if(data){
+
+    //             }
+    //             res.status(200).json(data);                        
+    //         })
+    //         .catch(err =>{
+    //             console.log(err);
+    //             res.status(500).json({
+    //                 error: err
+    //             });
+    //         });
+   
+}
 
 
 

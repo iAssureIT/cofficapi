@@ -21,23 +21,6 @@ exports.fetch_details = (req,res,next)=>{
    
 }
 
-exports.paymentResponse = (req,res,next)=>{
-    console.log("QW Response = ", req.query);
-    res.status(200).json(req.query);                        
-
-    // QuickWalletMasters.find()
-    //         .exec()
-    //                 .then(data =>{
-    //                     res.status(200).json(data);                        
-    //                 })
-    //                 .catch(err =>{
-    //                     console.log(err);
-    //                     res.status(500).json({
-    //                         error: err
-    //                     });
-    //                 });
-   
-}
 
 exports.makepayment = (req, res, next) => {
    
@@ -51,7 +34,7 @@ exports.makepayment = (req, res, next) => {
                 "mobile"         : req.body.mobile,
                 "amount"         : req.body.amount,
                 "secret"         : req.body.secret,
-                "billNumber"     : "5d5e6d308384369cca6e6723",
+                "billnumbers"    : "5d5e6d308384369cca6e6723",
                 // "udf2"  : "Something relevant",
                 // "udf3"  : "SKU-4321",
                 // "udf4"  : "Men'sFootwear",

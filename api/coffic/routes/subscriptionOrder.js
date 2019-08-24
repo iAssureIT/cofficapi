@@ -13,6 +13,7 @@ router.get('/get/list', subscriptionOrderController.list_subscriptionOrder);
 
 router.get('/get/activesub/:user_id', subscriptionOrderController.single_activesub); 
 
+router.get('/quickwallet-redirecturl', subscriptionOrderController.paymentResponse);
 
 
 module.exports = router;

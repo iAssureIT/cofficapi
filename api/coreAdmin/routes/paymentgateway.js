@@ -5,7 +5,7 @@ const QuickWalletMastersController = require('../controllers/paymentgateway');
 
 router.get('/list', QuickWalletMastersController.fetch_details);
 
-router.get('/quickwallet-redirecturl', QuickWalletMastersController.paymentResponse);
+router.get('/success');
 
 router.post('/payment',QuickWalletMastersController.makepayment);
 
