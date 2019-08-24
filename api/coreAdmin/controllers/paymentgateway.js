@@ -22,8 +22,8 @@ exports.fetch_details = (req,res,next)=>{
 }
 
 exports.paymentResponse = (req,res,next)=>{
-    console.log("QW Response = ", req.params);
-    res.status(200).json(req.params);                        
+    console.log("QW Response = ", req.query);
+    res.status(200).json(req.query);                        
 
     // QuickWalletMasters.find()
     //         .exec()
