@@ -871,7 +871,7 @@ exports.user_loginwithvendor = (req,res,next)=>{
                                 message             : 'Auth successful',
                                 token               : token,
                                 user_ID             : user._id,
-								userFullName       	: user.profile.fullName,
+								// userFullName       	: user.profile.fullName,
 								useremailId			: user.profile.emailId,						
 								roles 				: user.roles,
                                 // userProfileImg      : user.profile.userProfile,

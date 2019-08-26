@@ -11,7 +11,7 @@ router.get('/:companysettingsID', CompanySettingController.detail_companysetting
 
 router.patch('/:info/:action', CompanySettingController.update_companysettings);
 
-router.patch('/', CompanySettingController.update_companysettings);
+router.patch('/companyid', CompanySettingController.update_companysettinginfo);
 
 
 router.delete('/:companysettingsID',CompanySettingController.delete_companysettings);

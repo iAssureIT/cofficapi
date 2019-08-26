@@ -390,6 +390,49 @@ exports.update_companysettings = (req,res,next)=>{
     }
 }
 
+exports.update_companysettinginfo = (req,res,next)=>{
+    // var roleData = req.body.role;
+    Companysettings.updateOne(
+        { companyId : req.body.companyId},    
+            {
+                $set:{
+           
+                    "companyName"            : req.body.companyName,
+                    "companyContactNumber"   : req.body.companyContactNumber,
+                    "companyMobileNumber"    : req.body.companyMobileNumber,
+                    "companyEmail"           : req.body.companyEmail,
+                    "companyAltEmail"        : req.body.companyAltEmail,
+                    "companywebsite"         : req.body.companywebsite,
+                    "companyaddress"         : req.body.companyaddress,
+                    "city"                   : req.body.city, 
+                    "country"                : req.body.country,
+                    "state"                  : req.body.state,
+                    "district"               : req.body.district,
+                    "pincode"                : req.body.pincode,
+                    "taluka"                 : req.body.taluka,
+				
+                }
+            }
+        )
+        .exec()
+        .then(data=>{
+            console.log('data ',data);
+            if(data.nModified == 1){
+				// console.log('data =========>>>',data);
+                res.status(200).json("Company Setting Updated");
+            }else{
+                res.status(401).json("Company Setting Not Found");
+            }
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+}
+
+
 exports.delete_companysettings = (req,res,next)=>{
     Companysettings.deleteOne({_id:req.params.companysettingsID})
         .exec()
