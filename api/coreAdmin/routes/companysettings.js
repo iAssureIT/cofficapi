@@ -9,7 +9,7 @@ router.get('/list',CompanySettingController.list_companysettings);
 
 router.get('/:companysettingsID', CompanySettingController.detail_companysettings);
 
-router.patch('/:info/:action', CompanySettingController.update_companysettings);
+// router.patch('/:info/:action', CompanySettingController.update_companysettings);
 
 router.patch('/companyid', CompanySettingController.update_companysettinginfo);
 
