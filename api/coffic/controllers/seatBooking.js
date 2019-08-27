@@ -297,17 +297,6 @@ exports.monthly_Report=(req,res,next)=>{
 }
  exports.dailyBeverage_Report=(req,res,next)=>{
 
-    var currDate = new Date();
-    var day = currDate.getDate();
-    var month = currDate.getMonth() + 1;
-    var year = currDate.getYear();
-    if (year < 1900){
-        year = year + 1900;
-    }
-    if(day<10 || day.length<2){day = '0' + day;}
-    if(month<10 || month.length<2){month = '0' + month;}
-    var currDateISO = year+"-"+month+"-"+day;
-
     WorkspaceDetails
         .findOne({_id : req.params.workspace_id})
         .exec()
@@ -320,8 +309,7 @@ exports.monthly_Report=(req,res,next)=>{
                 }
                 console.log("cafedata",cafedata);
                 
-                var cafedata=data.cafeMenu[0];
-                console.log("cafedata",cafedata);
+               
                 res.status(200).json(data);
             }else{
                 res.status(404).json(' Not found');

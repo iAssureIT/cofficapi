@@ -60,18 +60,18 @@ exports.list_subscriptionPlan = (req,res,next)=>{
 
 
 
-// exports.single_subscriptionPlan = (req,res,next)=>{
-//         SubscriptionPlan.findOne({"_id":r})
-//                         .then(data=>{                           
-//                             res.status(200).json(data);
-//                         })
-//                         .catch(err =>{
-//                             console.log(err);
-//                             res.status(500).json({
-//                                 error: err
-//                             });
-//                         });
-// };
+exports.single_subscriptionPlan = (req,res,next)=>{
+        SubscriptionPlan.findOne({"_id":req.params.subscriptionPlansID})
+                        .then(data=>{                           
+                            res.status(200).json(data);
+                        })
+                        .catch(err =>{
+                            console.log(err);
+                            res.status(500).json({
+                                error: err
+                            });
+                        });
+};
 
 
 exports.update_subscriptionPlan = (req,res,next)=>{
