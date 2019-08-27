@@ -61,8 +61,10 @@ exports.list_subscriptionPlan = (req,res,next)=>{
 
 
 exports.single_subscriptionPlan = (req,res,next)=>{
-        SubscriptionPlan.findOne({"_id":req.params.subscriptionPlansID})
-                        .then(data=>{                           
+        SubscriptionPlan
+        .findOne({"_id" :req.params.subscriptionPlansID})
+                        .then(data=>{               
+                         console.log("data",data);            
                             res.status(200).json(data);
                         })
                         .catch(err =>{
