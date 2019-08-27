@@ -34,7 +34,7 @@ exports.makepayment = (req, res, next) => {
                 "mobile"         : req.body.mobile,
                 "amount"         : req.body.amount,
                 "secret"         : req.body.secret,
-                "billnumbers"    : "5d5e6d308384369cca6e6723",
+                // "billnumbers"    : "5d5e6d308384369cca6e6723",
                 // "udf2"  : "Something relevant",
                 // "udf3"  : "SKU-4321",
                 // "udf4"  : "Men'sFootwear",
