@@ -85,7 +85,7 @@ exports.chekinUser = (req,res,next)=>{
                                     });
                                 });
                         }else{
-                            res.status(200).json("Booking Can not be made because Plan is inactive.");
+                            res.status(200).json("Checkin Exceeded");
                         }
                     })
                     .catch(err =>{
@@ -133,6 +133,211 @@ function getuserDetails(user_id){
                   });
             });
 }
+
+function getuserDetailsforReports(user_id){
+    return new Promise(function(resolve,reject){
+        User.findOne({"_id": new ObjectID(user_id)})
+                        .exec()
+                        .then(data=>{
+                            resolve(data);
+                        })
+                        .catch(err=>{
+                            reject(err);
+                  });
+            });
+}
+
+
+exports.dailyCheckins_Report=(req,res,next)=>{
+
+     var currDate = new Date();
+    var day = currDate.getDate();
+    var month = currDate.getMonth() + 1;
+    var year = currDate.getYear();
+    if (year < 1900){
+        year = year + 1900;
+    }
+    if(day<10 || day.length<2){day = '0' + day;}
+    if(month<10 || month.length<2){month = '0' + month;}
+    var currDateISO = year+"-"+month+"-"+day;
+
+    WorkspaceDetails
+        .findOne({_id : req.params.workspace_id})
+        .exec()
+        .then(workspace => {
+            console.log('workspace',workspace)
+            SeatBooking
+                .find({
+                    workSpace_id : req.params.workspace_id,
+                    date :  currDateISO,
+                })
+                // .estimatedDocumentCount()
+                .exec()
+                .then(seatdata =>{
+                    console.log("seatdata",seatdata); 
+                        var returnData = {
+                            reportdata        : [],
+                        };
+                        getData();
+                        async function getData(){ 
+                            for(i = 0 ; i < seatdata.length ; i++){
+                               var userData = await getuserDetails(seatdata[i].user_id);
+                                console.log("userDta",userData);
+                                returnData.reportdata.push({
+                                 "user_id"           : userData._id,
+                                 "workspace_id"      : seatdata[i].workSpace_id,
+                                 "checkInTime"       : seatdata[i].checkInTime,
+                                 "checkOutTime"      : seatdata[i].checkOutTime,
+                                 "userName"          : userData.profile.fullName,
+                                });
+                                console.log("returnData ",returnData);
+                             }
+                             if(i >= seatdata.length){
+                                res.status(200).json(returnData);
+                             }
+                        }
+                    
+            })
+            .catch(err =>{
+                console.log(err);
+                res.status(500).json({
+                    error: err
+                });
+            });
+
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+
+ 
+     };
+
+ exports.dailyOrder_Report=(req,res,next)=>{
+
+    var currDate = new Date();
+    var day = currDate.getDate();
+    var month = currDate.getMonth() + 1;
+    var year = currDate.getYear();
+    if (year < 1900){
+        year = year + 1900;
+    }
+    if(day<10 || day.length<2){day = '0' + day;}
+    if(month<10 || month.length<2){month = '0' + month;}
+    var currDateISO = year+"-"+month+"-"+day;
+
+    WorkspaceDetails
+        .findOne({_id : req.params.workspace_id})
+        .exec()
+        .then(workspace => {
+             console.log('workspace',workspace)
+             cafedata= workspace.cafeMenu[0];
+            console.log("cafeeeeee",cafedata);   
+           
+            SeatBooking
+                .find({
+                    workSpace_id : req.params.workspace_id,
+                    date :  currDateISO,
+                })
+                // .estimatedDocumentCount()
+                .exec()
+                .then(seatdata =>{
+                    
+                    console.log("seatdata",seatdata); 
+                        var returnData = {
+
+                            
+                            reportdata        : [],
+                        };
+                        getData();
+                        async function getData(){ 
+                            for(i = 0 ; i < seatdata.length ; i++){
+                               var userData = await getuserDetails(seatdata[i].user_id);
+                                console.log("userDta",userData);
+                                returnData.reportdata.push({
+                                 "user_id"           : userData._id,
+                                 // "workspace_id"      : seatdata[i].workSpace_id,
+                                 "checkInTime"       : seatdata[i].checkInTime,
+                                 "userName"          : userData.profile.fullName,
+                                 "itemName"          : cafedata.itemName,
+                                 "price"             : cafedata.cost,
+                                 
+                                });
+                                console.log("returnData ",returnData);
+                             }
+                             if(i >= seatdata.length){
+                                res.status(200).json(returnData);
+                             }
+                        }
+                    
+            })
+            .catch(err =>{
+                console.log(err);
+                res.status(500).json({
+                    error: err
+                });
+            });
+
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+ 
+};
+    
+exports.monthly_Report=(req,res,next)=>{
+
+
+}
+ exports.dailyBeverage_Report=(req,res,next)=>{
+
+    var currDate = new Date();
+    var day = currDate.getDate();
+    var month = currDate.getMonth() + 1;
+    var year = currDate.getYear();
+    if (year < 1900){
+        year = year + 1900;
+    }
+    if(day<10 || day.length<2){day = '0' + day;}
+    if(month<10 || month.length<2){month = '0' + month;}
+    var currDateISO = year+"-"+month+"-"+day;
+
+    WorkspaceDetails
+        .findOne({_id : req.params.workspace_id})
+        .exec()
+        .then(data=>{
+             if(data){
+                for(i=0; i<data.cafeMenu.length;i++){
+                 cafedata=data.cafeMenu[i];
+                 
+                 console.log("cafedata",cafedata);
+                }
+                console.log("cafedata",cafedata);
+                
+                var cafedata=data.cafeMenu[0];
+                console.log("cafedata",cafedata);
+                res.status(200).json(data);
+            }else{
+                res.status(404).json(' Not found');
+            }
+            console.log("data",data);
+        })
+        .catch(err=>{
+            console.log(err);
+            res.status(500).json({
+                error:err
+            })
+        })
+        
+    };
+
+
 
 exports.availableSeats = (req,res,next)=>{
     var currDate = new Date();
@@ -184,6 +389,9 @@ exports.availableSeats = (req,res,next)=>{
                                 console.log("userDta",userData);
                                 returnData.userList.push({
                                  "user_id"           : userData._id,
+                                 "workspace_id"      : bookedSeats[i].workSpace_id,
+                                 "checkInTime"       : bookedSeats[i].checkInTime,
+                                 "checkOutTime"      : bookedSeats[i].checkOutTime,
                                  "userName"          : userData.profile.fullName,
                                 });
                                 console.log("returnData ",returnData);
@@ -310,6 +518,7 @@ exports.delete_seatBooking = (req,res,next)=>{
 };
 
 
+
 exports.validate_checkin = (req,res,next)=>{
     SubscriptionOrder
         .find({ 
@@ -395,6 +604,5 @@ exports.checkoutUser = (req,res,next)=>{
         });
     });
 };
-
 
 

@@ -40,8 +40,10 @@ exports.create_subscriptionPlan = (req,res,next)=>{
 exports.list_subscriptionPlan = (req,res,next)=>{
     console.log('list');
     SubscriptionPlan.find()
+    .sort({"createdAt":-1})
         .exec()
         .then(data=>{
+            console.log("data//////",data)
             if(data){
                 res.status(200).json(data);
             }else{
@@ -58,22 +60,29 @@ exports.list_subscriptionPlan = (req,res,next)=>{
 
 
 
-exports.single_subscriptionPlan = (req,res,next)=>{
-        SubscriptionPlan.findOne({"_id":req.params.subscriptionPlansID})
-                        .then(data=>{                           
-                            res.status(200).json(data);
-                        })
-                        .catch(err =>{
-                            console.log(err);
-                            res.status(500).json({
-                                error: err
-                            });
-                        });
-};
+// exports.single_subscriptionPlan = (req,res,next)=>{
+//         SubscriptionPlan.findOne({"_id":r})
+//                         .then(data=>{                           
+//                             res.status(200).json(data);
+//                         })
+//                         .catch(err =>{
+//                             console.log(err);
+//                             res.status(500).json({
+//                                 error: err
+//                             });
+//                         });
+// };
 
 
 exports.update_subscriptionPlan = (req,res,next)=>{
-    console.log('inside api---->',req.params,req.body)
+    SubscriptionPlan
+    .find({planName : req.body.planName})
+    .exec()
+    .then(data=>{
+        if(data.length>0){
+            res.status(200).json("Plan Already Exists");
+        }else{
+            console.log('inside api---->',req.params,req.body)
         SubscriptionPlan
             .updateOne({"_id":req.params.subscriptionPlansID},
                     {$set:{                                          
@@ -102,6 +111,10 @@ exports.update_subscriptionPlan = (req,res,next)=>{
                     error: err
                 });
             });
+
+        }
+    })
+    
 };
 
 
