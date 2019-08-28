@@ -152,68 +152,62 @@ exports.user_signupadmin = (req,res,next)=>{
 						user.save()
 						.then(newUser =>{
 							if(newUser){
-								
+					
 								console.log('New USER = ',newUser);
-								return res.status(200).json({
-									"message" : 'NEW-USER-CREATED',
-									"user_id" : newUser._id,
-								
-								});	
-								// res.header("Access-Control-Allow-Origin","*");
-								// request({
+								request({
 									
-								// 	"method"    : "POST",
-								// 	"url"       : "http://localhost:5012/send-email",
-								// 	"body"      : 	{
-								// 						"email"     : newUser.profile.emailId,
-								// 						"subject"   : 'Verify your Account',
-								// 						"text"      : "WOW Its done",
-								// 						"mail"      : "Your OTP verifcation code is ="+OTP,
-								// 					},
-								// 	"json"      : true,
-								// 	"headers"   : {
-								// 					"User-Agent": "Test App"
-								// 				}
-								// })
+									"method"    : "POST",
+									"url"       : "http://localhost:5012/send-email",
+									"body"      : 	{
+														"email"     : newUser.emailId,
+														"subject"   : 'Verify your Account',
+														"text"      : "WOW Its done",
+														// "mail"      : "Hello"+newUser.profile.firstName+','+'\n'+"Your account verifcation code is"+OTP,
+														"mail"      : 'Dear '+newUser.firstName+','+'\n'+"\n <br><br>Your account verification code is "+"<b>"+newUser.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
+													},
+									"json"      : true,
+									"headers"   : {
+													"User-Agent": "Test App"
+												}
+								})
 							
-								// .then((sentemail)=>{
-								// 	console.log("call to api");
-									
-
-								// 	res.status(200).json({message:"Mail Sent successfully"});
-								// })
-								// .catch((err) =>{
-								// 	console.log("call to api",err);
-								// 	res.status(500).json({
-								// 		error: err
-								// 	});
-								// });    
+								.then((sentemail)=>{
+									// console.log("call to api");
+									res.header("Access-Control-Allow-Origin","*");
+						
+									res.status(200).json({message:"Mail Sent successfully"});
+								})
+								.catch((err) =>{
+									console.log("call to api",err);
+									res.status(500).json({
+										error: err
+									});
+								});    
 								
 								
-								// console.log('Plivo Client = ',newUser.profile.mobileNumber);
-								// const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
-								// const sourceMobile = "+919923393733";
-								// var text = "Dear User, "+'\n'+"To verify your account on Coffic, Enter this verification code : \n"+OTP; 
+								console.log('Plivo Client = ',newUser.mobileNumber);
+								const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+								const sourceMobile = "+919923393733";
+								var text = "Dear "+newUser.firstName+','+'\n'+"Your account verification code is "+newUser.mobileOTP+"\nRegards,\nTeam Coffic"
 								
-								// client.messages.create(
-								// 	src=sourceMobile,
-								// 	dst=req.body.mobileNumber,
-								// 	text=text
-								// ).then((result)=> {
-								// 	console.log("src = ",src," | DST = ", dst, " | result = ", result);
-								// 	// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
-								// 	return res.status(200).json({
-								// 		"message" : 'NEW-USER-CREATED',
-								// 		"user_id" : newUser._id,
-								// 		"otp"     : OTP,
-								// 	});			
-								// })
-								// .catch(otpError=>{
-								// 	return res.status(501).json({
-								// 		message: "Some Error Occurred in OTP Send Function",
-								// 		error: otpError
-								// 	});        
-								// }); 
+								client.messages.create(
+									src=sourceMobile,
+									dst="+91"+req.body.mobileNumber,
+									text=text
+								).then((result)=> {
+									// console.log("src = ",src," | DST = ", dst, " | result = ", result);
+									// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
+									return res.status(200).json({
+										"message" : 'OTP-SEND-SUCCESSFULLY',
+										"otp"     : newUser.emailOTP,
+									});			
+								})
+								.catch(otpError=>{
+									return res.status(501).json({
+										message: "Some Error Occurred in OTP Send Function",
+										error: otpError
+									});        
+								}); 
 							}
 							
 						})	

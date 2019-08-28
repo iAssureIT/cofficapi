@@ -11,11 +11,12 @@ router.get('/:companysettingsID', CompanySettingController.detail_companysetting
 
 // router.patch('/:info/:action', CompanySettingController.update_companysettings);
 
-router.patch('/info', CompanySettingController.update_companysettings_info);
 
 router.patch('/companyLocationsInfo', CompanySettingController.update_companysettings_companyLocationsInfo);
 
 router.patch('/taxSettings', CompanySettingController.update_companysettings_taxSettings);
+
+router.patch('/info', CompanySettingController.update_companysettings_info);
 
 router.delete('/:companysettingsID',CompanySettingController.delete_companysettings);
 
