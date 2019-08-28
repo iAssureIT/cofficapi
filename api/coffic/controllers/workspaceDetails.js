@@ -148,7 +148,6 @@ exports.update_workspace = (req,res,next)=>{
                             cost                   : req.body.cost,
                             openingtime            : req.body.openingtime,
                             closingtime            : req.body.closingtime,
-                            status                 : req.body.status,
                             reason                 : req.body.reason,
 
                             createdBy              : "ddd" ,
