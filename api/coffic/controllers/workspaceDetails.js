@@ -5,7 +5,7 @@ const CafeMenu = require('../models/CafeMenu');
 const SeatBooking = require('../models/seatBooking');
 
 exports.create_workspace = (req,res,next)=>{
-    console.log("create_workspace--->",req.body);
+    console.log("create_workspace>",req.body);
     const workspaceDetails = new WorkspaceDetails({
                 _id                    : new mongoose.Types.ObjectId(),
                 nameOfCafe             : req.body.nameOfCafe,
