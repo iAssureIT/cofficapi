@@ -15,6 +15,8 @@ router.get('/get/list/city', workspaceController.listcity_workspace);
 
 router.get('/get/one/:workspaceID',workspaceController.single_workspace);
 
+router.patch('/get/onestatus/:workspaceID',workspaceController.update_workspacestatus);
+
 router.patch('/patch/update/:workspaceID', workspaceController.update_workspace);
 
 router.delete('/delete/:workspaceID',workspaceController.delete_workspace);

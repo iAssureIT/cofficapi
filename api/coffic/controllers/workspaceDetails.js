@@ -179,6 +179,33 @@ exports.update_workspace = (req,res,next)=>{
                 });
    };
 
+
+exports.update_workspacestatus = (req,res,next)=>{
+    WorkspaceDetails
+    .updateOne({"_id":req.params.workspaceID},
+                       { $set:{
+                                        
+                            status                 : req.body.status,
+                    
+                            }
+                                    
+                        })
+                        .exec()
+                        .then(data=>{
+                         if(data){
+                            if(data.nModified==1){
+                            res.status(200).json("Successful");
+                             }
+                        }
+                    })
+                    .catch(err =>{
+                        console.log(err);
+                        res.status(500).json({
+                        error: err
+                    });
+                });
+   };   
+
 exports.delete_workspace = (req,res,next)=>{
     WorkspaceDetails.deleteOne({_id:req.params.workspaceID})
         .exec()

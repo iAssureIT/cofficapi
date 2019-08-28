@@ -77,45 +77,41 @@ exports.single_subscriptionPlan = (req,res,next)=>{
 
 
 exports.update_subscriptionPlan = (req,res,next)=>{
-    SubscriptionPlan
-    .find({planName : req.body.planName})
-    .exec()
-    .then(data=>{
-        if(data.length>0){
-            res.status(200).json("Plan Already Exists");
-        }else{
-            console.log('inside api---->',req.params,req.body)
-        SubscriptionPlan
-            .updateOne({"_id":req.params.subscriptionPlansID},
-                    {$set:{                                          
-                        plan_id                 :  req.body.plan_id,
-                        planName                :  req.body.planName,
-                        maxCheckIns             :  req.body.maxCheckIns,
-                        price                   :  req.body.price,
-                        validityDays            :  req.body.validityDays,
-                        description             :  req.body.description,
-                        updatedBy               :  req.body.createdBy,
-                        lastUpdateAt            :  new Date(),
-                    }
-            })
-            .exec()
-            .then(data=>{
-                if(data){
-                    if(data.nModified==1){
-                        res.status(200).json("Successful");
-                    }
-                }
-
-            })
-            .catch(err =>{
-                console.log(err);
-                res.status(500).json({
-                    error: err
-                });
-            });
-
-        }
-    })
+    SubscriptionPlan.find({ "_id": { "$ne" :req.params.subscriptionPlansID},"planName" : req.body.planName})
+                    .exec()
+                    .then(data=>{
+                        if(data.length > 0){
+                            res.status(200).json({message : "Plan Already exists"});    
+                        }else{
+                            SubscriptionPlan.updateOne({ "_id" : req.params.subscriptionPlansID},
+                                                    { 
+                                                        $set : {
+                                                            planName                :  req.body.planName,
+                                                            maxCheckIns             :  req.body.maxCheckIns,
+                                                            price                   :  req.body.price,
+                                                            validityDays            :  req.body.validityDays,
+                                                            description             :  req.body.description,
+                                                            updatedBy               :  req.body.createdBy,
+                                                            lastUpdateAt            :  new Date(),
+                                                        }
+                                                    })
+                                            .exec()
+                                            .then(updateData=>{
+                                                if(updateData.nModified == 1){
+                                                    res.status(200).json({message : "Data Updated"});
+                                                }else{
+                                                    res.status(200).json({message : "Data Not Updated"});
+                                                }
+                                            })
+                                            .catch(err=>{
+                                                res.status(200).json({error : err});
+                                            });
+                        }
+                        // res.status(200).json(data);
+                    })
+                    .catch(err=>{
+                        res.status(200).json({error : err})
+                    });
     
 };
 

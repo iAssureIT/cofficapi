@@ -355,10 +355,11 @@ exports.availableSeats = (req,res,next)=>{
                 .then(bookedSeats =>{
                     console.log("bookedSeats",bookedSeats);
                     if(bookedSeats.length > 0){
-                        wsStatus = workspace.status;
+                        // wsStatus = workspace.status;
+                        console.log("workspace.status ",workspace.status);
                         var bookedCount = bookedSeats.length;
                         console.log('bookedCount',bookedCount)
-                        if(wsStatus === "occupied"){
+                        if(workspace.status === "occupied"){
                             var bookedSeatsNum = workspace.numberOfSeats;
                         }else{
                             var bookedSeatsNum = bookedSeats.length;
