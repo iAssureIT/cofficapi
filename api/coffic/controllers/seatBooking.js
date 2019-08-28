@@ -344,7 +344,7 @@ exports.availableSeats = (req,res,next)=>{
         .findOne({_id : req.params.workspace_id})
         .exec()
         .then(workspace => {
-            console.log("Inside workspace");
+            console.log("Inside workspace",workspace);
 
             if(workspace.status === "occupied"){
                 console.log("occupied = ",workspace.numberOfSeats);
@@ -367,7 +367,7 @@ exports.availableSeats = (req,res,next)=>{
                     // .estimatedDocumentCount()
                     .exec()
                     .then(bookedSeats =>{
-                        console.log("Inside bookedSeats");
+                            console.log("Inside bookedSeats",bookedSeats);
                         if(bookedSeats.length>0){
                             console.log("available = "+workspace.numberOfSeats+" - "+bookedSeats.length);
                             var returnData = {
@@ -394,6 +394,7 @@ exports.availableSeats = (req,res,next)=>{
                                  }
                             }
                         }else{
+                            console.log("bookedSeats length ",bookedSeats.length);
                             res.status(200).json({
                                 maxSeats        : workspace.numberOfSeats,
                                 bookedSeats     : 0,
