@@ -1075,6 +1075,7 @@ exports.user_details = (req, res, next)=>{
 		// .select("profile")
 		.exec()
 		.then(users =>{
+			console.log(users.profile.fullName);
 			res.status(200).json(users);
 		})
 		.catch(err =>{
