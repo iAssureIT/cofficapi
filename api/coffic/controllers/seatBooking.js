@@ -344,33 +344,31 @@ exports.availableSeats = (req,res,next)=>{
         .findOne({_id : req.params.workspace_id})
         .exec()
         .then(workspace => {
-                    console.log("Inside workspace");
+            console.log("Inside workspace");
 
-            // console.log('workspace',workspace)
-            SeatBooking
-                .find({
-                    workSpace_id : req.params.workspace_id,
-                    date :  currDateISO,
-                    checkOutTime : null
-                })
-                // .estimatedDocumentCount()
-                .exec()
-                .then(bookedSeats =>{
-                    console.log("Inside bookedSeats");
-                    if(bookedSeats.length > 0){
+            if(workspace.status === "occupied"){
+                console.log("occupied = ",workspace.numberOfSeats);
+                var returnData = {
+                    maxSeats        : workspace.numberOfSeats,
+                    bookedSeats     : workspace.numberOfSeats,
+                    availableSeats  : 0,
+                    userList        : [],
+                };
 
-                        if(workspace.status === "occupied"){
-                            console.log("occupied = ",workspace.numberOfSeats);
-                            var returnData = {
-                                maxSeats        : workspace.numberOfSeats,
-                                bookedSeats     : workspace.numberOfSeats,
-                                availableSeats  : 0,
-                                userList        : [],
-                            };
+                res.status(200).json(returnData);
 
-                            res.status(200).json(returnData);
-
-                        }else{
+            }else{
+                SeatBooking
+                    .find({
+                        workSpace_id : req.params.workspace_id,
+                        date :  currDateISO,
+                        checkOutTime : null
+                    })
+                    // .estimatedDocumentCount()
+                    .exec()
+                    .then(bookedSeats =>{
+                        console.log("Inside bookedSeats");
+                        if(bookedSeats.length>0){
                             console.log("available = "+workspace.numberOfSeats+" - "+bookedSeats.length);
                             var returnData = {
                                 maxSeats        : workspace.numberOfSeats,
@@ -395,23 +393,22 @@ exports.availableSeats = (req,res,next)=>{
                                     res.status(200).json(returnData);
                                  }
                             }
+                        }else{
+                            res.status(200).json({
+                                maxSeats        : workspace.numberOfSeats,
+                                bookedSeats     : 0,
+                                availableSeats  : workspace.numberOfSeats,
+                                userList        : [],
+                            });
                         }
-                    }else{
-                        res.status(200).json({
-                            maxSeats        : workspace.numberOfSeats,
-                            bookedSeats     : 0,
-                            availableSeats  : workspace.numberOfSeats,
-                            userList        : [],
-                        });
-                    }
-            })
-            .catch(err =>{
-                console.log(err);
-                res.status(500).json({
-                    error: err
+                })
+                .catch(err =>{
+                    console.log(err);
+                    res.status(500).json({
+                        error: err
+                    });
                 });
-            });
-
+            }
         })
         .catch(err =>{
             console.log(err);
