@@ -358,8 +358,9 @@ exports.availableSeats = (req,res,next)=>{
                 .then(bookedSeats =>{
                     console.log("Inside bookedSeats");
                     if(bookedSeats.length > 0){
+
                         if(workspace.status === "occupied"){
-                            console.log("Inside match");
+                            console.log("occupied = ",workspace.numberOfSeats);
                             var returnData = {
                                 maxSeats        : workspace.numberOfSeats,
                                 bookedSeats     : workspace.numberOfSeats,
@@ -370,7 +371,7 @@ exports.availableSeats = (req,res,next)=>{
                             res.status(200).json(returnData);
 
                         }else{
-                            console.log("Inside not match");
+                            console.log("available = "+workspace.numberOfSeats+" - "+bookedSeats.length);
                             var returnData = {
                                 maxSeats        : workspace.numberOfSeats,
                                 bookedSeats     : bookedSeats.length,
