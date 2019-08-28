@@ -7,7 +7,7 @@ const User          = require('../../coreAdmin/models/users');
 var moment                          = require('moment');
 
 exports.chekinUser = (req,res,next)=>{
-    console.log("into seatbooking.....");
+    // console.log("into seatbooking.....");
     var currDate = new Date();
     var day = currDate.getDate();
     var month = currDate.getMonth() + 1;
@@ -18,13 +18,13 @@ exports.chekinUser = (req,res,next)=>{
     if(day<10 || day.length<2){day = '0' + day;}
     if(month<10 || month.length<2){month = '0' + month;}
     currDateISO = year+"-"+month+"-"+day;
-    console.log('currDateISO', currDateISO, typeof currDateISO)
+    // console.log('currDateISO', currDateISO, typeof currDateISO)
     var selector={ 
                 "user_id" : req.body.user_id,
                 "endDate" : {$gte : new Date()},
                 "status" : "paid" , };
 
-    console.log("selector",selector);
+    // console.log("selector",selector);
     SubscriptionOrder
         .find({ 
                 "user_id" : req.body.user_id,
@@ -33,7 +33,7 @@ exports.chekinUser = (req,res,next)=>{
              })
         .then(activeSubOrder=>{
             if(activeSubOrder.length>0){
-                console.log("activeSubOrder = ",activeSubOrder);
+                // console.log("activeSubOrder = ",activeSubOrder);
                 SeatBooking
                     .find({
                         dateuser_id : req.body.user_id, 
@@ -41,8 +41,8 @@ exports.chekinUser = (req,res,next)=>{
                     })
                     .estimatedDocumentCount()
                     .then(totCheckIns => {
-                        console.log("totCheckIns = ",totCheckIns);
-                        console.log("activeSubOrder[0].maxCheckIns = ",activeSubOrder[0].maxCheckIns);
+                        // console.log("totCheckIns = ",totCheckIns);
+                        // console.log("activeSubOrder[0].maxCheckIns = ",activeSubOrder[0].maxCheckIns);
                         if(totCheckIns < activeSubOrder[0].maxCheckIns) {
                             const seatBookingObj = new SeatBooking({
                                 _id                 :  new mongoose.Types.ObjectId(),
@@ -165,7 +165,7 @@ exports.dailyCheckins_Report=(req,res,next)=>{
         .findOne({_id : req.params.workspace_id})
         .exec()
         .then(workspace => {
-            console.log('workspace',workspace)
+            // console.log('workspace',workspace)
             SeatBooking
                 .find({
                     workSpace_id : req.params.workspace_id,
@@ -174,7 +174,7 @@ exports.dailyCheckins_Report=(req,res,next)=>{
                 // .estimatedDocumentCount()
                 .exec()
                 .then(seatdata =>{
-                    console.log("seatdata",seatdata); 
+                    // console.log("seatdata",seatdata); 
                         var returnData = {
                             reportdata        : [],
                         };
@@ -182,7 +182,7 @@ exports.dailyCheckins_Report=(req,res,next)=>{
                         async function getData(){ 
                             for(i = 0 ; i < seatdata.length ; i++){
                                var userData = await getuserDetails(seatdata[i].user_id);
-                                console.log("userDta",userData);
+                                // console.log("userDta",userData);
                                 returnData.reportdata.push({
                                  "user_id"           : userData._id,
                                  "workspace_id"      : seatdata[i].workSpace_id,
@@ -190,7 +190,7 @@ exports.dailyCheckins_Report=(req,res,next)=>{
                                  "checkOutTime"      : seatdata[i].checkOutTime,
                                  "userName"          : userData.profile.fullName,
                                 });
-                                console.log("returnData ",returnData);
+                                // console.log("returnData ",returnData);
                              }
                              if(i >= seatdata.length){
                                 res.status(200).json(returnData);
@@ -233,9 +233,9 @@ exports.dailyCheckins_Report=(req,res,next)=>{
         .findOne({_id : req.params.workspace_id})
         .exec()
         .then(workspace => {
-             console.log('workspace',workspace)
+             // console.log('workspace',workspace)
              cafedata= workspace.cafeMenu[0];
-            console.log("cafeeeeee",cafedata);   
+            // console.log("cafeeeeee",cafedata);   
            
             SeatBooking
                 .find({
@@ -246,7 +246,7 @@ exports.dailyCheckins_Report=(req,res,next)=>{
                 .exec()
                 .then(seatdata =>{
                     
-                    console.log("seatdata",seatdata); 
+                    // console.log("seatdata",seatdata); 
                         var returnData = {
 
                             
@@ -343,7 +343,9 @@ exports.availableSeats = (req,res,next)=>{
         .findOne({_id : req.params.workspace_id})
         .exec()
         .then(workspace => {
-            console.log('workspace',workspace)
+                    console.log("Inside workspace");
+
+            // console.log('workspace',workspace)
             SeatBooking
                 .find({
                     workSpace_id : req.params.workspace_id,
@@ -353,12 +355,12 @@ exports.availableSeats = (req,res,next)=>{
                 // .estimatedDocumentCount()
                 .exec()
                 .then(bookedSeats =>{
-                    console.log("bookedSeats",bookedSeats);
+                    console.log("Inside bookedSeats");
                     if(bookedSeats.length > 0){
                         // wsStatus = workspace.status;
-                        console.log("workspace.status ",workspace.status);
+                        // console.log("workspace.status ",workspace.status);
                         var bookedCount = bookedSeats.length;
-                        console.log('bookedCount',bookedCount)
+                        // console.log('bookedCount',bookedCount)
                         if(workspace.status === "occupied"){
                             console.log("Inside match");
                             var bookedSeatsNum = workspace.numberOfSeats;
@@ -377,7 +379,7 @@ exports.availableSeats = (req,res,next)=>{
                         async function getData(){ 
                             for(i = 0 ; i < bookedSeats.length ; i++){
                                var userData = await getuserDetails(bookedSeats[i].user_id);
-                                console.log("userDta",userData);
+                                // console.log("userDta",userData);
                                 returnData.userList.push({
                                  "user_id"           : userData._id,
                                  "workspace_id"      : bookedSeats[i].workSpace_id,
@@ -385,7 +387,7 @@ exports.availableSeats = (req,res,next)=>{
                                  "checkOutTime"      : bookedSeats[i].checkOutTime,
                                  "userName"          : userData.profile.fullName,
                                 });
-                                console.log("returnData ",returnData);
+                                // console.log("returnData ",returnData);
                              }
                              if(i >= bookedSeats.length){
                                 res.status(200).json(returnData);
@@ -451,14 +453,14 @@ function getworkSpaceDetails(workspaceId){
     });
 }
 exports.list_userSeatBooking=(req,res,next)=>{
-    console.log("user_id",String(req.params.user_id));
+    // console.log("user_id",String(req.params.user_id));
     var selector = { "$match" : {"user_id":String(req.params.user_id)}};
-    console.log("selector",selector);
+    // console.log("selector",selector);
     SeatBooking
         .find({"user_id":String(req.params.user_id)})
         .exec()
         .then(data=>{
-            console.log("data",data);
+            // console.log("data",data);
             if(data.length > 0){
              getData();
                 async function getData(){
