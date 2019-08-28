@@ -360,8 +360,10 @@ exports.availableSeats = (req,res,next)=>{
                         var bookedCount = bookedSeats.length;
                         console.log('bookedCount',bookedCount)
                         if(workspace.status === "occupied"){
+                            console.log("Inside match");
                             var bookedSeatsNum = workspace.numberOfSeats;
                         }else{
+                            console.log("Inside not match");
                             var bookedSeatsNum = bookedSeats.length;
                         }
                         var availableSeats = workspace.numberOfSeats - bookedSeats.length;
