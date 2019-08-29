@@ -30,9 +30,11 @@ exports.submit_subscriptionOrder = (req,res,next)=>{
                                 maxCheckIns  :  maxCheckIns,
                                 startDate    :  currDate,
                                 endDate      :  endDate,
-                                pgTransId    :  '123456',
-                                status       :  "paid",
-                                createdAt     :  new Date(),                               
+                                status       :  req.body.status,
+                                id           :  req.body.id,
+                                billnumbers  :  req.body.billnumbers,
+                                paymentId    : req.body.paymentId,
+                                createdAt    :  new Date(),                               
                         });
 
             newSubscriptionOrder
@@ -137,7 +139,7 @@ exports.list_subscriptionOrder = (req,res,next)=>{
 exports.paymentResponse = (req,res,next)=>{
     console.log("QW Response = ", req.query);
     //res.writeHead(301, { "Location": "http://" + req.headers['host'] + '/page-b.html' });
-    res.writeHead(301, { "Location": "/payment-success/"+req.query.status+"/"+req.query.id });
+    res.writeHead(301, { "Location": "/payment-success/"+req.query.status+"/"+req.query.id+"/"+req.query.billnumbers });
     return res.end();
 }
 
