@@ -15,5 +15,8 @@ router.get('/get/activesub/:user_id', subscriptionOrderController.single_actives
 
 router.get('/quickwallet-redirecturl', subscriptionOrderController.paymentResponse);
 
+router.get('/payment-success/:status/:id', subscriptionOrderController.paymentSuccess);
+
+
 
 module.exports = router;
