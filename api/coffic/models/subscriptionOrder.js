@@ -9,6 +9,8 @@ const subscriptionOrderSchema = mongoose.Schema({
 	endDate		 :  Date,
 	pgTransId 	 :  String,
 	status 		 :  String,
+	id           :  String,
+	billnumbers  :  String,
 	createdBy 	 :  String,
 	createdAt 	 :  Date,
 });
