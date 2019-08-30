@@ -1453,38 +1453,38 @@ exports.users_count = (req,res,next)=>{
 // =====================  Forgot Password ==============
 
 exports.user_otpverification_forgotpassword = (req,res,next)=>{
-	User.find({'mobileNumber':req.body.mobileNumber,'profile.emailId': req.body.emailId})
+	User.findOne({'mobileNumber':req.body.mobileNumber,'profile.emailId': req.body.emailId})
 		.limit(1)
 		.exec()
 		.then(user =>{
-		
+	if(user){	
 	
-	var user = {
-					
-		emailOTP		: req.body.emailOTP,
-		mobileOTP		: req.body.mobileOTP,
-		emailId       	: req.body.emailId,
-		mobileNumber  	: req.body.mobileNumber,
-		
-	};	
+			var forgotuserotp = {
+							
+				emailOTP		: req.body.emailOTP,
+				mobileOTP		: req.body.mobileOTP,
+				emailId       	: req.body.emailId,
+				mobileNumber  	: req.body.mobileNumber,
+				
+			};	
 	
-	if(user){
+	
 					
-		console.log('New USER = ',user);
+		console.log('New USER = ',forgotuserotp);
 		request({
 			
 			"method"    : "POST",
 			"url"       : "http://localhost:5012/send-email",
 			"body"      : 	{
-								"email"     : user.emailId,
+								"email"     : forgotuserotp.emailId,
 								"subject"   : 'Verify your Account',
 								"text"      : "WOW Its done",
-								// "mail"      : "Hello"+user.profile.firstName+','+'\n'+"Your account verifcation code is"+OTP,
-								"mail"      : 'Dear '+user.firstName+','+'\n'+"\n <br><br>Your account verification code is "+"<b>"+user.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
+								// "mail"      : "Hello"+forgotuserotp.profile.firstName+','+'\n'+"Your account verifcation code is"+OTP,
+								"mail"      : 'Dear '+forgotuserotp.firstName+','+'\n'+"\n <br><br>Your account verification code is "+"<b>"+forgotuserotp.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
 							},
 			"json"      : true,
 			"headers"   : {
-							"User-Agent": "Test App"
+							"forgotuserotp-Agent": "Test App"
 						}
 		})
 	
@@ -1503,10 +1503,10 @@ exports.user_otpverification_forgotpassword = (req,res,next)=>{
 		});    
 		
 		
-		console.log('Plivo Client = ',user.mobileNumber);
+		console.log('Plivo Client = ',forgotuserotp.mobileNumber);
 		const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
 		const sourceMobile = "+919923393733";
-		var text = "Dear "+user.firstName+','+'\n'+"Your account verification code is "+user.mobileOTP+"\nRegards,\nTeam Coffic"
+		var text = "Dear "+forgotuserotp.firstName+','+'\n'+"Your account verification code is "+forgotuserotp.mobileOTP+"\nRegards,\nTeam Coffic"
 		
 		client.messages.create(
 			src=sourceMobile,
@@ -1517,7 +1517,7 @@ exports.user_otpverification_forgotpassword = (req,res,next)=>{
 			// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 			return res.status(200).json({
 				"message" : 'OTP-SEND-SUCCESSFULLY',
-				"otp"     : user.emailOTP,
+				"otp"     : forgotuserotp.emailOTP,
 			});			
 		})
 		.catch(otpError=>{
@@ -1526,6 +1526,11 @@ exports.user_otpverification_forgotpassword = (req,res,next)=>{
 				error: otpError
 			});        
 		}); 
+			}else{
+				res.status(200).json({
+					message:"MOBILE-NUMBER-OR-EMAILID-NOT-FOUND", 
+					error: err,
+				});
 			}
 		})
 		.catch(err =>{
