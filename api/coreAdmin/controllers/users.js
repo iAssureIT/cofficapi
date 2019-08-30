@@ -189,7 +189,7 @@ exports.user_signupadmin = (req,res,next)=>{
 								console.log('Plivo Client = ',newUser.mobileNumber);
 								const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
 								const sourceMobile = "+919923393733";
-								var text = 'Dear Vendor ,'+"\nYour account has been created successfully on Coffic. Your Login details are as follows:\nEmail ID  :"+newUser.profile.emailId+"Default Password:<b>test123<b/>"+'\n'+'\n'+'\nRegards,\nTeam Coffic';
+								var text = 'Dear Vendor ,'+"\nYour account has been created successfully on Coffic. Your Login details are as follows:\nEmail ID  :"+newUser.profile.emailId+"Default Password:test123"+'\n'+'\n'+'\nRegards,\nTeam Coffic';
 								
 								client.messages.create(
 									src=sourceMobile,
