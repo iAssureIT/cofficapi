@@ -159,11 +159,12 @@ exports.user_signupadmin = (req,res,next)=>{
 									"method"    : "POST",
 									"url"       : "http://localhost:5012/send-email",
 									"body"      : 	{
-														"email"     : newUser.emailId,
+														"email"     : newUser.profile.emailId,
 														"subject"   : 'Verify your Account',
 														"text"      : "WOW Its done",
 														// "mail"      : "Hello"+newUser.profile.firstName+','+'\n'+"Your account verifcation code is"+OTP,
-														"mail"      : 'Dear Vendor ,'+"\n <br><br>Your account has been created successfully on Coffic. Your Login details are as follows:<br>Email ID  :"+newUser.profile.emailId+"<b> <br>Default Password  :test123<b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
+														// "mail"      : 'Dear '+newUser.firstName+','+'\n'+"\n <br><br>Your account verification code is "+"<b>"+newUser.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
+														"mail"      : 'Dear Vendor ,'+"\n <br><br>Your account has been created successfully on Coffic. Your Login details are as follows:<br>Email ID  :"+newUser.profile.emailId+"<br>Default Password  :<b>test123<b/>"+'\n'+'\n'+'<br><br>\nRegards,<br>Team Coffic',
 													},
 									"json"      : true,
 									"headers"   : {
@@ -188,11 +189,11 @@ exports.user_signupadmin = (req,res,next)=>{
 								console.log('Plivo Client = ',newUser.mobileNumber);
 								const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
 								const sourceMobile = "+919923393733";
-								var text = 'Dear Vendor ,'+"\n <br><br>Your account has been created successfully on Coffic. Your Login details are as follows:<br>Email ID  :"+newUser.profile.emailId+"<b> <br>Default Password  :test123<b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic';
+								var text = 'Dear Vendor ,'+"\nYour account has been created successfully on Coffic. Your Login details are as follows:\nEmail ID  :"+newUser.profile.emailId+"Default Password:<b>test123<b/>"+'\n'+'\n'+'\nRegards,\nTeam Coffic';
 								
 								client.messages.create(
 									src=sourceMobile,
-									dst="+91"+req.body.mobileNumber,
+									dst=req.body.mobileNumber,
 									text=text
 								).then((result)=> {
 									// console.log("src = ",src," | DST = ", dst, " | result = ", result);
@@ -217,6 +218,7 @@ exports.user_signupadmin = (req,res,next)=>{
 									error: err
 								});
 							});
+							
 					}			
 				});
 
@@ -1451,13 +1453,13 @@ exports.users_count = (req,res,next)=>{
 // =====================  Forgot Password ==============
 
 exports.user_otpverification_forgotpassword = (req,res,next)=>{
-	User.find({'mobileNumber':req.body.mobileNumber,'emails.address': req.body.emailId})
+	User.find({'mobileNumber':req.body.mobileNumber,'profile.emailId': req.body.emailId})
 		.limit(1)
 		.exec()
 		.then(user =>{
 		
 	
-	var newUser = {
+	var user = {
 					
 		emailOTP		: req.body.emailOTP,
 		mobileOTP		: req.body.mobileOTP,
@@ -1466,19 +1468,19 @@ exports.user_otpverification_forgotpassword = (req,res,next)=>{
 		
 	};	
 	
-	if(newUser){
+	if(user){
 					
-		console.log('New USER = ',newUser);
+		console.log('New USER = ',user);
 		request({
 			
 			"method"    : "POST",
 			"url"       : "http://localhost:5012/send-email",
 			"body"      : 	{
-								"email"     : newUser.emailId,
+								"email"     : user.emailId,
 								"subject"   : 'Verify your Account',
 								"text"      : "WOW Its done",
-								// "mail"      : "Hello"+newUser.profile.firstName+','+'\n'+"Your account verifcation code is"+OTP,
-								"mail"      : 'Dear '+newUser.firstName+','+'\n'+"\n <br><br>Your account verification code is "+"<b>"+newUser.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
+								// "mail"      : "Hello"+user.profile.firstName+','+'\n'+"Your account verifcation code is"+OTP,
+								"mail"      : 'Dear '+user.firstName+','+'\n'+"\n <br><br>Your account verification code is "+"<b>"+user.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
 							},
 			"json"      : true,
 			"headers"   : {
@@ -1495,15 +1497,16 @@ exports.user_otpverification_forgotpassword = (req,res,next)=>{
 		.catch((err) =>{
 			console.log("call to api",err);
 			res.status(500).json({
+				message:"EMAIL-ID-NOT-FOUND", 
 				error: err
 			});
 		});    
 		
 		
-		console.log('Plivo Client = ',newUser.mobileNumber);
+		console.log('Plivo Client = ',user.mobileNumber);
 		const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
 		const sourceMobile = "+919923393733";
-		var text = "Dear "+newUser.firstName+','+'\n'+"Your account verification code is "+newUser.mobileOTP+"\nRegards,\nTeam Coffic"
+		var text = "Dear "+user.firstName+','+'\n'+"Your account verification code is "+user.mobileOTP+"\nRegards,\nTeam Coffic"
 		
 		client.messages.create(
 			src=sourceMobile,
@@ -1514,7 +1517,7 @@ exports.user_otpverification_forgotpassword = (req,res,next)=>{
 			// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 			return res.status(200).json({
 				"message" : 'OTP-SEND-SUCCESSFULLY',
-				"otp"     : newUser.emailOTP,
+				"otp"     : user.emailOTP,
 			});			
 		})
 		.catch(otpError=>{
@@ -1528,7 +1531,7 @@ exports.user_otpverification_forgotpassword = (req,res,next)=>{
 		.catch(err =>{
 			console.log(err);
 			res.status(200).json({
-				message:"MOBILE-NUMBER-NOT-FOUND", 
+				message:"MOBILE-NUMBER-OR-EMAILID-NOT-FOUND", 
 				error: err,
 			});
 		});
