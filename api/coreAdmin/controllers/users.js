@@ -308,11 +308,17 @@ exports.user_otpverification = (req,res,next)=>{
 
 
 exports.user_signupmobile = (req,res,next)=>{
-
-console.log('req',req)
-User.find()
+	var emailIddata = req.body.emailId;
+    
+    console.log('emailIddata ',req.body.emailId);
+	User.findOne({'profile.emailId':emailIddata})
 	.exec()
-	.then(user =>{				
+	.then(user =>{		
+		if(user){
+			return res.status(200).json({
+				message: 'Email Id already exists'
+			});
+		}else{		
 			bcrypt.hash(req.body.pwd,10,(err,hash)=>{
 				if(err){
 					return res.status(500).json({
@@ -348,6 +354,7 @@ User.find()
 						roles 		   : (req.body.roles),
 						
 					});	
+					
 					user.save()
 					.then(newUser =>{
 						if(newUser){
@@ -356,64 +363,7 @@ User.find()
 										"user_id" : newUser._id,
 										
 							});			
-							// console.log('New USER = ',newUser);
-							
-							
-							// request({
-								
-							// 	"method"    : "POST",
-							// 	"url"       : "http://localhost:5012/send-email",
-							// 	"body"      : 	{
-							// 						"email"     : newUser.profile.emailId,
-							// 						"subject"   : 'Verify your Account',
-							// 						"text"      : "WOW Its done",
-							// 						// "mail"      : "Hello"+newUser.profile.firstName+','+'\n'+"Your account verifcation code is"+OTP,
-							// 						"mail"      : 'Hello '+newUser.profile.firstName+','+'\n'+"\n <br><br>Your account verifcation code is "+"<b>"+OTP+"</b>"+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
-							// 					},
-							// 	"json"      : true,
-							// 	"headers"   : {
-							// 					"User-Agent": "Test App"
-							// 				}
-							// })
 						
-							// .then((sentemail)=>{
-							// 	console.log("call to api");
-							// 	res.header("Access-Control-Allow-Origin","*");
-
-							// 	res.status(200).json({message:"Mail Sent successfully"});
-							// })
-							// .catch((err) =>{
-							// 	console.log("call to api",err);
-							// 	res.status(500).json({
-							// 		error: err
-							// 	});
-							// });    
-							
-							
-							// console.log('Plivo Client = ',newUser.profile.mobileNumber);
-							// const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
-							// const sourceMobile = "+919923393733";
-							// var text = "Dear User, "+'\n'+"To verify your account on Coffic, Enter this verification code : \n"+OTP; 
-							
-							// client.messages.create(
-							// 	src=sourceMobile,
-							// 	dst=req.body.mobileNumber,
-							// 	text=text
-							// ).then((result)=> {
-							// 	console.log("src = ",src," | DST = ", dst, " | result = ", result);
-							// 	// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
-							// 	return res.status(200).json({
-							// 		"message" : 'NEW-USER-CREATED',
-							// 		"user_id" : newUser._id,
-							// 		"otp"     : OTP,
-							// 	});			
-							// })
-							// .catch(otpError=>{
-							// 	return res.status(501).json({
-							// 		message: "Some Error Occurred in OTP Send Function",
-							// 		error: otpError
-							// 	});        
-							// }); 
 						}
 						
 					})	
@@ -425,7 +375,7 @@ User.find()
 						});
 				}			
 			});
-		
+		}
 	})
 	.catch(err =>{
 		console.log(err);
