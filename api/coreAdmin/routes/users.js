@@ -22,6 +22,8 @@ router.post('/post/loginwithuser',UserController.user_loginwithuser);
 
 router.post('/post/forgot-pwd',UserController.forgot_pwd); 
 
+router.post('/post/forgotpwdOTP',UserController.user_otpverification_forgotpassword); 
+
 router.post('/post/otpverificationsend',UserController.user_otpverification); 
 
 

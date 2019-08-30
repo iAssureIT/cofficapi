@@ -1448,6 +1448,92 @@ exports.users_count = (req,res,next)=>{
 
 
 
+// =====================  Forgot Password ==============
+
+exports.user_otpverification_forgotpassword = (req,res,next)=>{
+	User.find({'mobileNumber':req.body.mobileNumber})
+		.limit(1)
+		.exec()
+		.then(user =>{
+		
+	
+	var newUser = {
+					
+		emailOTP		: req.body.emailOTP,
+		mobileOTP		: req.body.mobileOTP,
+		emailId       	: req.body.emailId,
+		mobileNumber  	: req.body.mobileNumber,
+		
+	};	
+	
+	if(newUser){
+					
+		console.log('New USER = ',newUser);
+		request({
+			
+			"method"    : "POST",
+			"url"       : "http://localhost:5012/send-email",
+			"body"      : 	{
+								"email"     : newUser.emailId,
+								"subject"   : 'Verify your Account',
+								"text"      : "WOW Its done",
+								// "mail"      : "Hello"+newUser.profile.firstName+','+'\n'+"Your account verifcation code is"+OTP,
+								"mail"      : 'Dear '+newUser.firstName+','+'\n'+"\n <br><br>Your account verification code is "+"<b>"+newUser.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
+							},
+			"json"      : true,
+			"headers"   : {
+							"User-Agent": "Test App"
+						}
+		})
+	
+		.then((sentemail)=>{
+			// console.log("call to api");
+			res.header("Access-Control-Allow-Origin","*");
+
+			res.status(200).json({message:"Mail Sent successfully"});
+		})
+		.catch((err) =>{
+			console.log("call to api",err);
+			res.status(500).json({
+				error: err
+			});
+		});    
+		
+		
+		console.log('Plivo Client = ',newUser.mobileNumber);
+		const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+		const sourceMobile = "+919923393733";
+		var text = "Dear "+newUser.firstName+','+'\n'+"Your account verification code is "+newUser.mobileOTP+"\nRegards,\nTeam Coffic"
+		
+		client.messages.create(
+			src=sourceMobile,
+			dst=req.body.mobileNumber,
+			text=text
+		).then((result)=> {
+			// console.log("src = ",src," | DST = ", dst, " | result = ", result);
+			// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
+			return res.status(200).json({
+				"message" : 'OTP-SEND-SUCCESSFULLY',
+				"otp"     : newUser.emailOTP,
+			});			
+		})
+		.catch(otpError=>{
+			return res.status(501).json({
+				message: "Some Error Occurred in OTP Send Function",
+				error: otpError
+			});        
+		}); 
+			}
+		})
+		.catch(err =>{
+			console.log(err);
+			res.status(200).json({
+				message:"MOBILE-NUMBER-NOT-FOUND", 
+				error: err,
+			});
+		});
+	};
+
 
 exports.forgot_pwd = (req,res,next)=>{
 
