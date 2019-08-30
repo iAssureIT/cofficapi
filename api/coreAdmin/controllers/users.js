@@ -112,7 +112,7 @@ exports.user_signupadmin = (req,res,next)=>{
 		if(user){
 			return res.status(200).json({
 				"message" : 'USER_ALREADY_EXIST',
-				"user_id" : user._id,
+				
 			
 			});	
 		}else{

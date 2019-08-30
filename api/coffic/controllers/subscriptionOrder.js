@@ -145,10 +145,10 @@ exports.paymentResponse = (req,res,next)=>{
 
 
 exports.paymentSuccess = (req,res,next)=>{
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    res.write('<div style="margin-top:200px;text-align:center;width:50%;margin-left:23%; padding: 30px; border: 1px solid #aaa;"><h1 style="color:#00aa00"> Congratulations !</h1><h3> Your Payment is Successful! <br/> Click below button to proceed. </h3></div>');
-    res.status(200);
-    res.end();   
+    // res.writeHead(200, { 'Content-Type': 'text/html' });
+    // res.write('<div style="margin-top:200px;text-align:center;width:50%;margin-left:23%; padding: 30px; border: 1px solid #aaa;"><h1 style="color:#00aa00"> Congratulations !</h1><h3> Your Payment is Successful! <br/> Click below button to proceed. </h3></div>');
+    // res.status(200);
+    // res.end();   
 }
 
 
