@@ -423,34 +423,34 @@ exports.availableSeats = (req,res,next)=>{
 };
 
 
-exports.list_seatBooking_available= (req,res,next)=>{
-    SeatBooking.find({})
-        .exec()
-        .then(data=>{
-            if(data){
-                console.log("data.length",data.length);
-                for(i=0; i < data.length; i++){
+// exports.list_seatBooking_available= (req,res,next)=>{
+//     SeatBooking.find({})
+//         .exec()
+//         .then(data=>{
+//             if(data){
+//                 console.log("data.length",data.length);
+//                 for(i=0; i < data.length; i++){
                 
-                console.log("data.workSpace_id",data[i].workSpace_id);
+//                 console.log("data.workSpace_id",data[i].workSpace_id);
 
-                res.status(200).json({
+//                 res.status(200).json({
                     
-                    workSpace_id        : data.workSpace_id,
+//                     workSpace_id        : data.workSpace_id,
                     
-                });
-            }
-                // res.status(200).json(data);
-            }else{
-                res.status(404).json('Not found');
-            }
-        })
-        .catch(err =>{
-            console.log(err);
-            res.status(500).json({
-                error: err
-            });
-        });
-};
+//                 });
+//             }
+//                 // res.status(200).json(data);
+//             }else{
+//                 res.status(404).json('Not found');
+//             }
+//         })
+//         .catch(err =>{
+//             console.log(err);
+//             res.status(500).json({
+//                 error: err
+//             });
+//         });
+// };
 exports.list_seatBooking = (req,res,next)=>{
     SeatBooking.find({})
         .exec()

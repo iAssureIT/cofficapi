@@ -57,7 +57,7 @@ router.patch('/patch/:rolestatus',UserController.user_change_role);
 
 router.get('/get/one/:userID',UserController.user_details); 
 
-router.put('/put/one/resetpwd/:userID',UserController.update_user_resetpassword);  
+router.patch('/patch/one/resetpwd/:userID',UserController.update_user_resetpassword);  
 
 router.delete('/delete/one/:userID',UserController.delete_user);
 
