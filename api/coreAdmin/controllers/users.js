@@ -709,7 +709,10 @@ exports.update_user_resetpassword = (req,res,next)=>{
 	User.findOne({_id:req.body.userID})
 		.exec()
 		.then(user=>{
+				console.log('user ',user);
+
 		if(user){
+
 				bcrypt.hash(req.body.pwd,10,(err,hash)=>{
 					User.updateOne(
 						{_id:req.body.userID}, 
@@ -725,7 +728,7 @@ exports.update_user_resetpassword = (req,res,next)=>{
 					)
 			.exec()
 			.then(data=>{
-				// console.log('data ',data);
+				console.log('data ',data);
 				if(data.nModified == 1){
 					res.status(200).json("Password Updated");
 				}else{
