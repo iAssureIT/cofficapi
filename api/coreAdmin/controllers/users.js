@@ -159,12 +159,13 @@ exports.user_signupadmin = (req,res,next)=>{
 									"method"    : "POST",
 									"url"       : "http://localhost:5012/send-email",
 									"body"      : 	{
-														"email"     : newUser.profile.emailId,
+
+														"email"     : newUser.emailId,
 														"subject"   : 'Verify your Account',
 														"text"      : "WOW Its done",
 														// "mail"      : "Hello"+newUser.profile.firstName+','+'\n'+"Your account verifcation code is"+OTP,
-														// "mail"      : 'Dear '+newUser.firstName+','+'\n'+"\n <br><br>Your account verification code is "+"<b>"+newUser.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
-														"mail"      : 'Dear Vendor ,'+"\n <br><br>Your account has been created successfully on Coffic. Your Login details are as follows:<br>Email ID  :"+newUser.profile.emailId+"\n<br>Default Password  :<b>test123<b/>"+'\n'+'\n'+'<br><br>\nRegards,<br>Team Coffic',
+														"mail"      : 'Dear '+newUser.firstName+','+'\n'+"\n <br><br>Your account verification code is "+"<b>"+newUser.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
+
 													},
 									"json"      : true,
 									"headers"   : {
@@ -187,6 +188,7 @@ exports.user_signupadmin = (req,res,next)=>{
 								
 								
 								console.log('Plivo Client = ',newUser.mobileNumber);
+
 								// const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz'); // iAssureIT
 								const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
 								const sourceMobile = "+919923393733";
@@ -195,6 +197,7 @@ exports.user_signupadmin = (req,res,next)=>{
 								client.messages.create(
 									src=sourceMobile,
 									dst=req.body.mobileNumber,
+
 									text=text
 								).then((result)=> {
 									// console.log("src = ",src," | DST = ", dst, " | result = ", result);
