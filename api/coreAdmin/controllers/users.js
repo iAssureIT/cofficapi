@@ -689,7 +689,7 @@ exports.update_user_resetpassword = (req,res,next)=>{
         )
         .exec()
         .then(data=>{
-            // console.log('data ',data);
+            console.log('data ',data);
             if(data.nModified == 1){
 				// console.log('data =========>>>',data);
                 res.status(200).json("Password  Updated");
