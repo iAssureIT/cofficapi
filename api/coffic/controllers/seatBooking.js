@@ -428,7 +428,9 @@ exports.list_seatBooking_available= (req,res,next)=>{
         .exec()
         .then(data=>{
             if(data){
+                console.log("data.length",data.length);
                 for(i=0; i < data.length; i++){
+                
                 console.log("data.workSpace_id",data[i].workSpace_id);
 
                 res.status(200).json({
