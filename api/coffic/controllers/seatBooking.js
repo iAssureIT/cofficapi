@@ -424,7 +424,7 @@ exports.availableSeats = (req,res,next)=>{
 
 
 exports.list_seatBooking_available= (req,res,next)=>{
-    SeatBooking.findOne({"workSpace_id" : workSpace_id})
+    SeatBooking.findOne({"workSpace_id" : _id})
         .exec()
         .then(data=>{
             if(data){
