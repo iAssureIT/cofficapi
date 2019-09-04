@@ -164,7 +164,7 @@ exports.user_signupadmin = (req,res,next)=>{
 														"text"      : "WOW Its done",
 														// "mail"      : "Hello"+newUser.profile.firstName+','+'\n'+"Your account verifcation code is"+OTP,
 														// "mail"      : 'Dear '+newUser.firstName+','+'\n'+"\n <br><br>Your account verification code is "+"<b>"+newUser.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
-														"mail"      : 'Dear Vendor ,'+"\n <br><br>Your account has been created successfully on Coffic. Your Login details are as follows:<br>Email ID  :"+newUser.profile.emailId+"<br>Default Password  :<b>test123<b/>"+'\n'+'\n'+'<br><br>\nRegards,<br>Team Coffic',
+														"mail"      : 'Dear Vendor ,'+"\n <br><br>Your account has been created successfully on Coffic. Your Login details are as follows:<br>Email ID  :"+newUser.profile.emailId+"\n<br>Default Password  :<b>test123<b/>"+'\n'+'\n'+'<br><br>\nRegards,<br>Team Coffic',
 													},
 									"json"      : true,
 									"headers"   : {

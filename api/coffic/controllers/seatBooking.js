@@ -371,10 +371,11 @@ exports.availableSeats = (req,res,next)=>{
                         if(bookedSeats.length>0){
                             console.log("available = "+workspace.numberOfSeats+" - "+bookedSeats.length);
                             var returnData = {
-                                maxSeats        : workspace.numberOfSeats,
-                                bookedSeats     : bookedSeats.length,
-                                availableSeats  : workspace.numberOfSeats - bookedSeats.length,
-                                userList        : [],
+                                "user_id"         : user_id,
+                                "maxSeats"        : workspace.numberOfSeats,
+                                "bookedSeats"     : bookedSeats.length,
+                                "availableSeats"  : workspace.numberOfSeats - bookedSeats.length,
+                                "userList"        : [],
                             };
                             getData();
                             async function getData(){ 
