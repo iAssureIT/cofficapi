@@ -670,40 +670,86 @@ exports.users_verify_mobileOTP = (req,res,next)=>{
 
 
 exports.update_user_resetpassword = (req,res,next)=>{
-	bcrypt.hash(req.body.pwd,10,(err,hash)=>{
-    User.updateOne(
-            { _id:req.params.userID},  
-            {
-                $set:{
+	// bcrypt.hash(req.body.pwd,10,(err,hash)=>{
+    // User.updateOne(
+    //         { _id:req.body.userID},  
+    //         {
+    //             $set:{
 				
-					services		: {
-										password:{
-												bcrypt:hash
-												},
-					},
+	// 				services		: {
+	// 									password:{
+	// 											bcrypt:hash
+	// 											},
+	// 				},
 
 					
-					}			
+	// 				}			
 				
-            }
-        )
-        .exec()
-        .then(data=>{
-            console.log('data ',data);
-            if(data.nModified == 1){
-				// console.log('data =========>>>',data);
-                res.status(200).json("Password  Updated");
-            }else{
-                res.status(401).json("Password  Not Found");
-            }
-        })
-        .catch(err =>{
-            console.log(err);
-            res.status(500).json({
-                error: err
-            });
-		});
+    //         }
+    //     )
+    //     .exec()
+    //     .then(data=>{
+    //         console.log('data ',data);
+    //         if(data.nModified == 1){
+	// 			// console.log('data =========>>>',data);
+    //             res.status(200).json("Password  Updated");
+    //         }else{
+    //             res.status(401).json("Password  Not Found");
+    //         }
+    //     })
+    //     .catch(err =>{
+    //         console.log(err);
+    //         res.status(500).json({
+    //             error: err
+    //         });
+	// 	});
+	// });
+
+
+	User.findOne({_id:req.body.userID})
+		.exec()
+		.then(user=>{
+		if(user){
+				bcrypt.hash(req.body.pwd,10,(err,hash)=>{
+					User.updateOne(
+						{_id:req.body.userID}, 
+						{
+							$set:{
+								services: {
+											password: 	{
+															bcrypt:hash
+														},
+								},
+							}
+						}
+					)
+			.exec()
+			.then(data=>{
+				// console.log('data ',data);
+				if(data.nModified == 1){
+					res.status(200).json("Password Updated");
+				}else{
+					res.status(401).json("Password Not Found");
+				}
+			})
+			.catch(err =>{
+				console.log(err);
+				res.status(500).json({
+					error: err
+				});
+			});
+			});
+		}else{
+			res.status(404).json("User Not Found");
+		}
+	})
+	.catch(err=>{
+	// console.log('update user status error ',err);
+	res.status(500).json({
+	error:err
 	});
+});
+
 }
 
 // exports.users_password = (req,res,next)=>{
