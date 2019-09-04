@@ -705,9 +705,11 @@ exports.update_user_resetpassword = (req,res,next)=>{
 	// 	});
 	// });
 
+	console.log('req.body=====> ',req.body);
 
-	User.findOne({_id:req.body.userID})
+	User.findOne({"profile.emailId" : req.body.emailId })
 		.exec()
+		
 		.then(user=>{
 				console.log('user ',user);
 
@@ -715,7 +717,7 @@ exports.update_user_resetpassword = (req,res,next)=>{
 
 				bcrypt.hash(req.body.pwd,10,(err,hash)=>{
 					User.updateOne(
-						{_id:req.body.userID}, 
+						{_id:user._id}, 
 						{
 							$set:{
 								services: {
