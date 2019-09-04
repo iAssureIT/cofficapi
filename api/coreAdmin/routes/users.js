@@ -16,8 +16,6 @@ router.post('/post/mobSignup',UserController.user_signupmobile);
 
 router.post('/post/vendor', UserController.user_createVendor);
 
-router.post('/post/admin', UserController.user_loginwithadmin);
-
 router.post('/post/loginwithvendor',UserController.user_loginwithvendor); 
 
 router.post('/post/loginwithuser',UserController.user_loginwithuser); 
