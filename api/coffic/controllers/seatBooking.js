@@ -424,11 +424,17 @@ exports.availableSeats = (req,res,next)=>{
 
 
 exports.list_seatBooking_available= (req,res,next)=>{
-    SeatBooking.findOne({"workSpace_id" : _id})
+    SeatBooking.find({})
         .exec()
         .then(data=>{
             if(data){
-                res.status(200).json(data);
+                console.log("data.workSpace_id",data.workSpace_id);
+                res.status(200).json({
+                    
+                    workSpace_id        : data.workSpace_id,
+                    
+                });
+                // res.status(200).json(data);
             }else{
                 res.status(404).json('Not found');
             }
