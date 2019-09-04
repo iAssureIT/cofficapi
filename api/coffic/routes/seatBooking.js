@@ -9,7 +9,7 @@ router.post('/post/checkinUser', seatBookingController.chekinUser);
 
 router.get('/get/list',seatBookingController.list_seatBooking);
 
-router.get('/get/list/available',seatBookingController.list_seatBooking_available);
+// router.get('/get/list/available',seatBookingController.list_seatBooking_available);
 
 router.get('/get/one/:user_id',seatBookingController.list_userSeatBooking);
 
