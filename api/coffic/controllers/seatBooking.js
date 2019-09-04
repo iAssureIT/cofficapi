@@ -428,12 +428,15 @@ exports.list_seatBooking_available= (req,res,next)=>{
         .exec()
         .then(data=>{
             if(data){
-                console.log("data.workSpace_id",data[1].workSpace_id);
+                for(i=0; i < data.length; i++){
+                console.log("data.workSpace_id",data[i].workSpace_id);
+
                 res.status(200).json({
                     
                     workSpace_id        : data.workSpace_id,
                     
                 });
+            }
                 // res.status(200).json(data);
             }else{
                 res.status(404).json('Not found');
