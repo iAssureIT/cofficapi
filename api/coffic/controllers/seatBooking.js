@@ -371,7 +371,7 @@ exports.availableSeats = (req,res,next)=>{
                         if(bookedSeats.length>0){
                             console.log("available = "+workspace.numberOfSeats+" - "+bookedSeats.length);
                             var returnData = {
-                                workSpace_id    : req.params.workspace_id,
+                                
                                 maxSeats        : workspace.numberOfSeats,
                                 bookedSeats     : bookedSeats.length,
                                 availableSeats  : workspace.numberOfSeats - bookedSeats.length,
@@ -423,6 +423,23 @@ exports.availableSeats = (req,res,next)=>{
 };
 
 
+exports.list_seatBooking_available= (req,res,next)=>{
+    SeatBooking.findOne({"workSpace_id" : workSpace_id})
+        .exec()
+        .then(data=>{
+            if(data){
+                res.status(200).json(data);
+            }else{
+                res.status(404).json('Not found');
+            }
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+};
 exports.list_seatBooking = (req,res,next)=>{
     SeatBooking.find({})
         .exec()
