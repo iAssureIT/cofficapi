@@ -371,7 +371,7 @@ exports.availableSeats = (req,res,next)=>{
                         if(bookedSeats.length>0){
                             console.log("available = "+workspace.numberOfSeats+" - "+bookedSeats.length);
                             var returnData = {
-                                
+                                user_id         : workspace.user_id,
                                 maxSeats        : workspace.numberOfSeats,
                                 bookedSeats     : bookedSeats.length,
                                 availableSeats  : workspace.numberOfSeats - bookedSeats.length,
@@ -397,7 +397,7 @@ exports.availableSeats = (req,res,next)=>{
                         }else{
                             console.log("bookedSeats length ",bookedSeats.length);
                             res.status(200).json({
-                                user_id         : user_id,
+                                
                                 maxSeats        : workspace.numberOfSeats,
                                 bookedSeats     : 0,
                                 availableSeats  : workspace.numberOfSeats,
