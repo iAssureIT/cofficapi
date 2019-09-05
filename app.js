@@ -5,13 +5,13 @@
 	const mongoose 						= require ('mongoose');
     var nodeMailer                      = require('nodemailer');
     var moment                          = require('moment');
-    const dbname = "qacoffic";
+    const globalVariable                = require('./nodemon.js');
 
-	global.JWT_KEY = "secret";	
+	global.JWT_KEY = globalVariable.JWT_KEY;	
 	
 	/*mongoose.connect('mongodb://localhost/'+dbname,{*/
   /* mongoose.connect('mongodb://localhost/onlineExamSystem',{*/
-     mongoose.connect('mongodb://localhost/qacoffic',{
+     mongoose.connect('mongodb://localhost/'+globalVariable.dbname,{
         useNewUrlParser: true
     })
     mongoose.promise = global.Promise;

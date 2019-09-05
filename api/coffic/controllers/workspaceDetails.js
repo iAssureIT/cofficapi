@@ -1,12 +1,14 @@
-const mongoose  = require("mongoose");
-const ObjectID  = require("mongodb").ObjectID;
-const WorkspaceDetails = require('../models/workspaceDetails');
-const CafeMenu = require('../models/CafeMenu');
-const SeatBooking = require('../models/seatBooking');
-const User          = require('../../coreAdmin/models/users');
+const mongoose              = require("mongoose");
+const ObjectID              = require("mongodb").ObjectID;
+const WorkspaceDetails      = require('../models/workspaceDetails');
+const CafeMenu              = require('../models/CafeMenu');
+const SeatBooking           = require('../models/seatBooking');
+const User                  = require('../../coreAdmin/models/users');
+var   request               =require ('request-promise');
+const globaleVaiable        = require('../../../nodemon.js');
 
 exports.create_workspace = (req,res,next)=>{
-    console.log("create_workspace>",req.body);
+ console.log("create_workspace>",req.body);
     const workspaceDetails = new WorkspaceDetails({
                 _id                    : new mongoose.Types.ObjectId(),
                 nameOfCafe             : req.body.nameOfCafe,
@@ -32,9 +34,10 @@ exports.create_workspace = (req,res,next)=>{
                 banner                 : req.body.banner,
                 workspaceImages        : req.body.workspaceImages,
                 cafeAdmin              : req.body.cafeAdmin,
+                reason                 : req.body.reason,
                 isOpen                 : true,
                 status                 : '',
-                reason                 : req.body.reason,
+            
         });
         workspaceDetails.save()
                         .then(data=>{
@@ -48,24 +51,62 @@ exports.create_workspace = (req,res,next)=>{
              });
 };
 
-exports.list_workspace = (req,res,next)=>{
-    console.log('list_workspace WorkspaceDetails');
-    WorkspaceDetails.find()
-    .sort({"createdAt":-1})
-        .exec()
-        .then(data=>{
-            if(data){
-                res.status(200).json(data);
-            }else{
-                res.status(200).json('Workspace Details not found');
-            }
+function availableSeats(workSpace_id){
+    return new Promise(function(resolve,reject){
+        request({
+            "method" : "GET",
+            "url"    : "http://localhost:"+globaleVaiable.PORT+"/api/seatbooking/get/availableSeats/"+workSpace_id,
+            // "body"   : "",
+            "json"   : true,
+            "header" : {
+                            "User-Agent" : "Test Agent",
+                        }
         })
-        .catch(err =>{
-            console.log(err);
-            res.status(500).json({
-                error: err
-            });
+        .then(data=>{
+            resolve(data);
+        })
+        .catch(err=>{
+            console.log("err ",err);
+            reject(err);
+        })
+    });
+}
+
+
+
+exports.list_workspace = (req,res,next)=>{
+ console.log('list_workspace WorkspaceDetails');
+    WorkspaceDetails
+    .find()
+    .sort({"createdAt":-1})
+    .exec()
+    .then(data=>{
+        if(data.length > 0 ){
+            getData();
+            async function getData(){
+            var returndata= [];
+            for(k = 0 ; k < data.length ; k++){
+             var seatData = await availableSeats(data[k]._id);
+              returndata.push({
+                "nameOfCafe" : data[k].nameOfCafe,  
+                "seatData"   : seatData,
+              })
+             }
+             if(k >= data.length){
+                res.status(200).json(returndata);
+             }
+        }
+        }else{
+            res.status(200).json({message : "Data not found"});
+        }
+        
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({
+            error: err
         });
+    });
 }
 
 exports.listcity_workspace = (req,res,next)=>{
@@ -81,7 +122,7 @@ exports.listcity_workspace = (req,res,next)=>{
 
                }) 
                info = [...new Set(info)];
-            console.log('info',info)
+                console.log('info',info)
                 res.status(200).json(info);
             }else{
                 res.status(200).json('Not found');
@@ -94,6 +135,7 @@ exports.listcity_workspace = (req,res,next)=>{
             });
         });
 }
+
 exports.single_workspace = (req,res,next)=>{
    console.log('list_workspace-');
    CafeMenu.find({'workspaceID':req.params.workspaceID})
