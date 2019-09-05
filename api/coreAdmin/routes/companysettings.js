@@ -19,7 +19,6 @@ router.patch('/taxSettings', CompanySettingController.update_companysettings_tax
 router.patch('/information', CompanySettingController.update_companysettinginfo);
 
 
-
 router.delete('/:companysettingsID',CompanySettingController.delete_companysettings);
 
 
