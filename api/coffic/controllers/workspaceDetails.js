@@ -88,8 +88,28 @@ exports.list_workspace = (req,res,next)=>{
             for(k = 0 ; k < data.length ; k++){
              var seatData = await availableSeats(data[k]._id);
               returndata.push({
-                "nameOfCafe" : data[k].nameOfCafe,  
-                "seatData"   : seatData,
+                "workspace_id"    : data[k]._id,
+                "nameOfCafe"      : data[k].nameOfCafe,
+                "address"         : data[k].address,
+                "landmark"        : data[k].landmark,
+                "area"            : data[k].area,
+                "city"            : data[k].city,
+                "state"           : data[k].state,
+                "country"         : data[k].country,
+                "pin"             : data[k].pin,
+                "location"        : data[k].location,
+                "numberOfSeats"   : data[k].numberOfSeats,
+                "name"            : data[k].name,
+                "email"           : data[k].email,
+                "facilities"      : data[k].facilities,
+                "cost"            : data[k].cost,
+                "openingtime"     : data[k].openingtime,
+                "closingtime"     : data[k].closingtime,
+                "logo"            : data[k].logo,
+                "banner"          : data[k].banner,
+                "workspaceImages" : data[k].workspaceImages,
+                "seatData"        : seatData,
+                
               })
              }
              if(k >= data.length){
