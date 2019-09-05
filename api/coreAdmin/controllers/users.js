@@ -189,8 +189,8 @@ exports.user_signupadmin = (req,res,next)=>{
 								
 								console.log('Plivo Client = ',newUser.mobileNumber);
 
-								// const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz'); // iAssureIT
-								const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
+								const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz'); // iAssureIT
+								// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
 								const sourceMobile = "+919923393733";
 								var text = 'Dear Vendor ,'+"\nYour account has been created successfully on Coffic. Your Login details are as follows:\nEmail ID  :"+newUser.profile.emailId+"Default Password:test123"+'\n'+'\n'+'\nRegards,\nTeam Coffic';
 								
@@ -286,8 +286,8 @@ exports.user_otpverification = (req,res,next)=>{
 		
 		
 		console.log('Plivo Client = ',newUser.mobileNumber);
-		// const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
-		const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
+		const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+		// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
 
 		const sourceMobile = "+919923393733";
 		var text = "Dear "+newUser.firstName+','+'\n'+"Your account verification code is "+newUser.mobileOTP+"\nRegards,\nTeam Coffic"
@@ -437,8 +437,8 @@ exports.user_createVendor = (req,res,next)=>{
 							if(newUser){
 								console.log('New USER = ',newUser);
 								// console.log('Plivo Client = ',mobileNumber);
-								// const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
-								const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
+								const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+								// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
 
 								const sourceMobile = "+919923393733";
 								var text = "Dear User, "+'\n'+"To verify your account on Coffic, Enter this verification code : \n"+OTP; 
@@ -1622,8 +1622,8 @@ exports.user_otpverification_forgotpassword = (req,res,next)=>{
 		
 		
 		// console.log('Plivo Client = ',forgotuserotp.mobileNumber);
-		// const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
-		const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw'); 
+		const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+		// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw'); 
 		const sourceMobile = "+919923393733";
 		var text = "Dear User,"+'\n'+"Your account verification code is "+forgotuserotp.mobileOTP+"\nRegards,\nTeam Coffic"
 		
