@@ -50,6 +50,8 @@
     const NotificationTemp             = require("./api/coreAdmin/routes/masternotifications");
     const paymentgatewayurl             = require("./api/coreAdmin/routes/paymentgateway");
 
+    const Reports                       = require("./api/coffic/routes/reports");
+
     
 
 
@@ -74,7 +76,7 @@
     app.use("/api/seatbooking",SeatBookingurl);
     app.use("/api/subscriptionorder",SubscriptionOrder);
 
-
+    app.use("/api/report",Reports);
 
 
 	app.post('/send-email', (req, res)=> {

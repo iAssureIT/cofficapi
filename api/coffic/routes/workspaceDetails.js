@@ -36,4 +36,6 @@ router.get('/get/dailyBeverageReport/:workspace_id',workspaceController.dailyBev
 
 
 
+
+
 module.exports = router;
