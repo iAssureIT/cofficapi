@@ -72,7 +72,9 @@ exports.users_verify_mobile = (req,res,next)=>{
 				.then( data =>{
 					if(data){
 						console.log('USER AFTER OTP GENERATED = ',data);
-                        const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+                        // const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+                        const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
+
                         const sourceMobile = "+919923393733";
                         var text = "Dear User, "+'\n'+"To verify your account on TGK, Enter this verification code : \n"+OTP; 
                         client.messages.create(

@@ -286,7 +286,9 @@ exports.user_otpverification = (req,res,next)=>{
 		
 		
 		console.log('Plivo Client = ',newUser.mobileNumber);
-		const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+		// const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+		const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
+
 		const sourceMobile = "+919923393733";
 		var text = "Dear "+newUser.firstName+','+'\n'+"Your account verification code is "+newUser.mobileOTP+"\nRegards,\nTeam Coffic"
 		
@@ -435,7 +437,9 @@ exports.user_createVendor = (req,res,next)=>{
 							if(newUser){
 								console.log('New USER = ',newUser);
 								// console.log('Plivo Client = ',mobileNumber);
-								const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+								// const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+								const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
+
 								const sourceMobile = "+919923393733";
 								var text = "Dear User, "+'\n'+"To verify your account on Coffic, Enter this verification code : \n"+OTP; 
 				
@@ -1594,7 +1598,7 @@ exports.user_otpverification_forgotpassword = (req,res,next)=>{
 								"subject"   : 'Verify your Account',
 								"text"      : "WOW Its done",
 								// "mail"      : "Hello"+forgotuserotp.profile.firstName+','+'\n'+"Your account verifcation code is"+OTP,
-								"mail"      : 'Dear '+forgotuserotp.firstName+','+'\n'+"\n <br><br>Your account verification code is "+"<b>"+forgotuserotp.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
+								"mail"      : 'Dear User,'+'\n'+"\n <br><br>Your account verification code is "+"<b>"+forgotuserotp.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
 							},
 			"json"      : true,
 			"headers"   : {
@@ -1617,10 +1621,11 @@ exports.user_otpverification_forgotpassword = (req,res,next)=>{
 		});    
 		
 		
-		console.log('Plivo Client = ',forgotuserotp.mobileNumber);
-		const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+		// console.log('Plivo Client = ',forgotuserotp.mobileNumber);
+		// const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+		const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw'); 
 		const sourceMobile = "+919923393733";
-		var text = "Dear "+forgotuserotp.firstName+','+'\n'+"Your account verification code is "+forgotuserotp.mobileOTP+"\nRegards,\nTeam Coffic"
+		var text = "Dear User,"+'\n'+"Your account verification code is "+forgotuserotp.mobileOTP+"\nRegards,\nTeam Coffic"
 		
 		client.messages.create(
 			src=sourceMobile,
