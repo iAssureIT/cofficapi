@@ -29,7 +29,7 @@ exports.create_workspace = (req,res,next)=>{
                 openingtime            : req.body.openingtime ,
                 closingtime            : req.body.closingtime ,
                 createdBy              : "user_id" ,
-                createdAt               : new  Date(),
+                createdAt              : new  Date(),
                 logo                   : req.body.logo,
                 banner                 : req.body.banner,
                 workspaceImages        : req.body.workspaceImages,
