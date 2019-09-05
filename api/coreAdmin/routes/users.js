@@ -43,6 +43,8 @@ router.post('/post/roledelete',UserController.account_role_remove);
 
 router.get('/get/list', UserController.users_list); 
 
+router.post('/post/checkuser',UserController.user_checkUser);
+
 // router.get('/userslist', UserController.users_directlist); 
 
 router.get('/get/count', UserController.users_count); 

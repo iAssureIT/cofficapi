@@ -101,6 +101,29 @@ function getRandomInt(min, max) {
 // 		});
 // };
 
+exports.user_checkUser = (req,res,next)=>{
+	var emailData = req.body.emailId;
+	
+	User.findOne({'profile.emailId':emailData})
+	.exec()
+	.then(user=>{
+		if(user){
+			return res.status(200).json({
+				message: 'Email Id already exists'
+			});
+		}else{
+			return res.status(200).json({
+				message: 'New User'
+			});
+		}
+	})
+	.catch(err=>{
+		console.log(err);
+		res.status(500).json({
+			error: err
+		});
+	})
+}
 
 exports.user_signupadmin = (req,res,next)=>{
 	console.log('req',req)
