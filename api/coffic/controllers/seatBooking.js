@@ -36,14 +36,14 @@ exports.chekinUser = (req,res,next)=>{
                 // console.log("activeSubOrder = ",activeSubOrder);
                 SeatBooking
                     .find({
-                        dateuser_id : req.body.user_id, 
+                        user_id : req.body.user_id, 
                         plan_id : activeSubOrder[0].plan_id
                     })
                     .estimatedDocumentCount()
                     .then(totCheckIns => {
                         // console.log("totCheckIns = ",totCheckIns);
                         // console.log("activeSubOrder[0].maxCheckIns = ",activeSubOrder[0].maxCheckIns);
-                        if(totCheckIns < activeSubOrder[0].maxCheckIns) {
+                        if(totCheckIns <= activeSubOrder[0].maxCheckIns) {
                             const seatBookingObj = new SeatBooking({
                                 _id                 :  new mongoose.Types.ObjectId(),
                                 plan_id             :  activeSubOrder[0].plan_id,
