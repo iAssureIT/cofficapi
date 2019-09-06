@@ -1,8 +1,8 @@
-const mongoose	= require("mongoose");
-var moment                          = require('moment');
+const mongoose	        = require("mongoose");
+var moment              = require('moment');
 
 const SubscriptionOrder = require('../models/subscriptionOrder');
-const SubscriptionPlan = require('../models/subscriptionPlan');
+const SubscriptionPlan  = require('../models/subscriptionPlan');
 
 exports.submit_subscriptionOrder = (req,res,next)=>{     
 
