@@ -40,7 +40,7 @@ exports.configure_insert = (req, res, next) => {
                     });          
                 }
                 res.status(200).json({ 
-                    message: 'New payment created!',
+                    message: 'New configure inserted!',
                 });
             }
         );    
