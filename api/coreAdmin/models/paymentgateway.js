@@ -17,6 +17,7 @@ const paymentgatewaySchema = mongoose.Schema({
     partnerid           : Number,
     status              : String,
     url                 : String,
+    
     updatedAt           : Date
 });
 
