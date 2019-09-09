@@ -21,7 +21,7 @@ exports.fetch_details = (req,res,next)=>{
 }
 
 
-exports.makepayment = (req, res, next) => {   
+exports.configure_insert = (req, res, next) => {   
         const quickWalletMasters = new QuickWalletMasters({
             _id              : mongoose.Types.ObjectId(),      
             "partnerid"      : req.body.partnerid,
