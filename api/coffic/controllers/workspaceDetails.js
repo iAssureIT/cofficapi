@@ -544,13 +544,13 @@ exports.dailyBeverage_Report=(req,res,next)=>{
     };
 
     exports.cafe_search = (req,res,next)=>{
-        // console.log("req.body.searchText",req.body.searchText);
+        console.log("req.body.searchText",req.body.searchText);
     
-        User.find(
+        WorkspaceDetails.find(
             {$or:[
-                {"area"		:	{ "$regex": req.body.searchText, $options: "i"}},
-                {"cafeName"	:	{ "$regex": req.body.searchText, $options: "i"}},
-                {"city"		:	{ "$regex": req.body.searchText, $options: "i"}},
+                {"area"		    :	{ "$regex": req.body.searchText, $options: "i"}},
+                {"nameOfCafe"	:	{ "$regex": req.body.searchText, $options: "i"}},
+                {"city"	    	:	{ "$regex": req.body.searchText, $options: "i"}},
             ]},
             
         )
