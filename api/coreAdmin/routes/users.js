@@ -14,6 +14,8 @@ router.get('/get/single/:user_id', UserController.id_cafeAdmin);
 
 router.post('/post/mobSignup',UserController.user_signupmobile);
 
+router.post('/post/googlesignup',UserController.user_signupgoogle);
+
 router.post('/post/admin',UserController.user_loginwithadmin);
 
 router.post('/post/vendor', UserController.user_createVendor);

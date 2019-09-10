@@ -324,6 +324,62 @@ exports.user_otpverification = (req,res,next)=>{
 	
 	};
 
+exports.user_signupgoogle = (req,res,next)=>{
+	User.findOne({'profile.emailId':req.body.emailId})
+		.exec()
+		.then(user=>{
+			if(user){
+				return res.status(200).json({
+					message: 'User already exists'
+				})
+			}else{
+				const user = new User({
+					_id: new mongoose.Types.ObjectId(),
+					createdAt			: new Date,
+					mobileNumber 	: req.body.mobileNumber,
+					emails 				: [
+						{
+							address: req.body.emailId,
+							verified: true
+						}
+					],
+					profile		:{
+									firstName     : req.body.firstName,
+									lastName      : req.body.lastName,
+									fullName      : req.body.firstName+' '+req.body.lastName,
+									emailId       : req.body.emailId,
+									mobileNumber  : req.body.mobileNumber,
+									status		  	: req.body.status,
+								
+
+						},
+						roles 		   : (req.body.roles),
+				});
+				user.save()
+				.then(newUser=>{
+					if(newUser){
+						return res.status(200).json({
+										"message" : 'NEW-USER-CREATED',
+										"user_id" : newUser._id,
+										
+							});	
+					}
+				})
+				.catch(err =>{
+					console.log(err);
+					res.status(500).json({
+						error: err
+					});
+				});
+			}
+		})
+		.catch(err =>{
+		console.log(err);
+		res.status(500).json({
+			error: err
+		});
+	});
+}
 
 exports.user_signupmobile = (req,res,next)=>{
 	var emailIddata = req.body.emailId;
