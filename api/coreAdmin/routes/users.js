@@ -8,7 +8,7 @@ const UserController = require('../controllers/users');
 
 // router.post('/', UserController.user_signup); 
 
-router.post('/post', UserController.user_signupadmin); 
+router.post('/post', UserController.user_signupadmin);  
 
 router.get('/get/single/:user_id', UserController.id_cafeAdmin); 
 

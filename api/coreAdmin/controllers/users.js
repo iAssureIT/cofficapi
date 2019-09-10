@@ -5,6 +5,7 @@ const plivo 		= require('plivo');
 const User 			= require('../models/users');
 var request 		= require('request-promise');
 const WorkspaceDetails = require('../../coffic/models/workspaceDetails');
+const globalVariable = require('../../../nodemon.js');
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -126,7 +127,6 @@ exports.user_checkUser = (req,res,next)=>{
 }
 
 exports.user_signupadmin = (req,res,next)=>{
-	console.log('req',req)
 	User
 	.findOne({'emails.address': req.body.emailId})
 	.exec()
@@ -134,9 +134,7 @@ exports.user_signupadmin = (req,res,next)=>{
 		console.log("user",user)
 		if(user){
 			return res.status(200).json({
-				"message" : 'USER_ALREADY_EXIST',
-				
-			
+				"message" : 'USER_ALREADY_EXIST',			
 			});	
 		}else{
 			bcrypt.hash(req.body.pwd,10,(err,hash)=>{
@@ -175,15 +173,13 @@ exports.user_signupadmin = (req,res,next)=>{
 						user.save()
 						.then(newUser =>{
 							if(newUser){
-					
-								console.log('New USER = ',newUser);
 								request({
 									
 									"method"    : "POST",
-									"url"       : "http://localhost:5012/send-email",
+									"url"       : "http://localhost:"+globalVariable.PORT+"/send-email",
 									"body"      : 	{
 
-														"email"     : newUser.emailId,
+														"email"     : newUser.profile.emailId,
 														"subject"   : 'Verify your Account',
 														"text"      : "WOW Its done",
 														// "mail"      : "Hello"+newUser.profile.firstName+','+'\n'+"Your account verifcation code is"+OTP,
@@ -208,21 +204,14 @@ exports.user_signupadmin = (req,res,next)=>{
 										error: err
 									});
 								});    
-								
-								
-								console.log('Plivo Client = ',newUser.mobileNumber);
 								const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz'); // iAssureIT
-								// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
 								const sourceMobile = "+919923393733";
 								var text = 'Dear Vendor ,'+"\nYour account has been created successfully on Coffic. Your Login details are as follows:\nEmail ID  :"+newUser.profile.emailId+"Default Password:test123"+'\n'+'\n'+'\nRegards,\nTeam Coffic';
-								
 								client.messages.create(
 									src=sourceMobile,
 									dst=req.body.mobileNumber,
 									text=text
 								).then((result)=> {
-									// console.log("src = ",src," | DST = ", dst, " | result = ", result);
-									// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 									return res.status(200).json({
 										"message" : 'OTP-SEND-SUCCESSFULLY',
 										"otp"     : newUser.emailOTP,
@@ -415,16 +404,18 @@ exports.user_signupmobile = (req,res,next)=>{
 
 };
 exports.user_createVendor = (req,res,next)=>{
-	User.find()
+	User.findOne({emails:{$elemMatch:{address:req.body.emailId}}})
 		.exec()
 		.then(user =>{				
+			if(user){
+				res.status(200).json({"message" : 'USER_ALREADY_EXIST'});
+			}else{
 				bcrypt.hash(req.body.pwd,10,(err,hash)=>{
 					if(err){
 						return res.status(500).json({
 							error:err
 						});
 					}else{
-						const OTP = getRandomInt(1000,9999);
 						const user = new User({
 							_id: new mongoose.Types.ObjectId(),
 							createdAt		: new Date,
@@ -456,14 +447,9 @@ exports.user_createVendor = (req,res,next)=>{
 
 						.then(newUser =>{
 							if(newUser){
-								console.log('New USER = ',newUser);
-								// console.log('Plivo Client = ',mobileNumber);
 								const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
-								// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
-
 								const sourceMobile = "+919923393733";
-								var text = "Dear User, "+'\n'+"To verify your account on Coffic, Enter this verification code : \n"+OTP; 
-				
+								var text = 'Dear Vendor ,'+"\nYour account has been created successfully on Coffic. Your Login details are as follows:\nEmail ID  :"+newUser.profile.emailId+"Default Password:test123"+'\n'+'\n'+'\nRegards,\nTeam Coffic';
 								client.messages.create(
 									src=sourceMobile,
 									dst=req.body.mobileNumber,
@@ -474,7 +460,7 @@ exports.user_createVendor = (req,res,next)=>{
 									return res.status(200).json({
 										"message" : 'NEW-USER-CREATED',
 										"user_id" : newUser._id,
-										"otp"     : OTP,
+										// "otp"     : OTP,
 									});			
 
 								})
@@ -495,6 +481,7 @@ exports.user_createVendor = (req,res,next)=>{
 							});
 					}			
 				});
+			}
 			
 		})
 		.catch(err =>{
