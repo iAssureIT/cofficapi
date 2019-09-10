@@ -109,6 +109,7 @@ exports.list_workspace = (req,res,next)=>{
                 "banner"          : data[k].banner,
                 "workspaceImages" : data[k].workspaceImages,
                 "seatData"        : seatData,
+                "cafeAdmin"       : data[k].cafeAdmin
                 
               })
              }
