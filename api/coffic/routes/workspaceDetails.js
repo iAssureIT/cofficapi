@@ -9,6 +9,8 @@ console.log("in work spacerouter---list---------->");
 
 router.post('/post', workspaceController.create_workspace);
 
+router.post('/cafesearch', workspaceController.cafe_search);
+
 router.get('/get/list', workspaceController.list_workspace);
 
 router.get('/get/list/city', workspaceController.listcity_workspace);

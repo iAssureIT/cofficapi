@@ -543,7 +543,39 @@ exports.dailyBeverage_Report=(req,res,next)=>{
         
     };
 
-
+    exports.cafe_search = (req,res,next)=>{
+        // console.log("req.body.searchText",req.body.searchText);
+    
+        User.find(
+            {$or:[
+                {"area"		:	{ "$regex": req.body.searchText, $options: "i"}},
+                {"cafeName"	:	{ "$regex": req.body.searchText, $options: "i"}},
+                {"city"		:	{ "$regex": req.body.searchText, $options: "i"}},
+            ]},
+            
+        )
+        .exec()
+        .then( data =>{
+            console.log('data ',data);
+            if(data.length > 0){
+                return res.status(200).json({
+                    "message" : 'Search-Successfull',
+                        "data": data
+                });		
+            }else{
+                return res.status(404).json({
+                    "message" : 'No-Data-Available',		
+                });	
+            }	
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                
+                error: err
+            });
+        });
+    }
 
 
 
