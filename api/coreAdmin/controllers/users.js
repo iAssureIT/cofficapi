@@ -1027,6 +1027,34 @@ exports.user_loginwithvendor = (req,res,next)=>{
         });
 };
 
+exports.user_loginwithgoogle = (req,res,next)=>{
+	User.findOne({emails:{$elemMatch:{address:req.body.emailId}},roles: "user"})
+		.exec()
+		.then(user=>{
+			if(user){
+        const token = jwt.sign({
+            email   : req.body.email,
+            // userId   : mongoose.Types.ObjectId(user._id) ,
+            userId  : user._id ,
+        },global.JWT_KEY,
+        {
+            expiresIn: "1h"
+        }
+        );
+        res.header("Access-Control-Allow-Origin","*");
+        return res.status(200).json({
+            message             : 'Auth successful',
+            token               : token,
+            user_ID             : user._id,
+						userFullName       	: user.profile.fullName,
+						useremailId					: user.profile.emailId,						
+						// roles 							: user.roles,
+			                  // userProfileImg      : user.profile.userProfile,
+			    }); 
+			}
+		})
+}
+
 exports.user_loginwithuser = (req,res,next)=>{
     console.log('login',req.body);
     User.findOne({emails:{$elemMatch:{address:req.body.email}},roles: "user",emailId:req.body.emailId})
