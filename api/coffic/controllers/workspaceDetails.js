@@ -37,6 +37,14 @@ exports.create_workspace = (req,res,next)=>{
                 reason                 : req.body.reason,
                 isOpen                 : true,
                 status                 : '',
+                bankDetails            : {
+
+                                       bankName         :req.body.bankDetails.bankName,
+                                       AccountNumber    :req.body.bankDetails.AccountNumber,
+                                       ifscCode         :req.body.bankDetails.ifscCode,
+                                       branchName       :req.body.bankDetails.branchName,
+                                       accHolderName    :req.body.bankDetails.accHolderName,
+                }
             
         });
         workspaceDetails.save()
@@ -107,7 +115,8 @@ exports.list_workspace = (req,res,next)=>{
                 "banner"          : data[k].banner,
                 "workspaceImages" : data[k].workspaceImages,
                 "seatData"        : seatData,
-                "cafeAdmin"       : data[k].cafeAdmin
+                "cafeAdmin"       : data[k].cafeAdmin,
+                "bankDetails"     : data[k].bankDetails,
                 
               })
              }
@@ -219,6 +228,14 @@ exports.update_workspace = (req,res,next)=>{
                             workspaceImages        : req.body.workspaceImages,
                             // cafeAdmin              : req.body.cafeAdmin,
                             isOpen                 : true,
+                             bankDetails           : {  
+
+                                                   bankName         :req.body.bankName,
+                                                   AccountNumber    :req.body.AccountNumber,
+                                                   ifscCode         :req.body.ifscCode,
+                                                   branchName       :req.body.branchName,
+                                                   accHolderName    :req.body.accHolderName,
+                                  }
                             }
                                     
                         })
