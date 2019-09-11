@@ -10,22 +10,17 @@ router.get('/get/vendordailycheckins/:workspace_ID',reportController.vendor_dail
  
 router.get('/get/checkInOut/:type/:startDate/:endDate/:workSpace_id',reportController.checkInOut);
 
-
-// router.get('/get/checkInOut/:workSpace_id',reportController.checkInOut);
+//type : checkIn or checkOut or both
 
 router.get('/get/cafewisebooking' ,reportController.cafewiseSeatBooking);
 
-//type : checkIn or checkOut or both
-
-/*Sales Transaction Report*/
-
 router.get('/get/sales/:startDate/:endDate/:plan_ID/:typeUser',reportController.salesTransaction);
-
-/*subscription Details*/
 
 router.get('/get/subscription/:startDate/:endDate',reportController.subscription);
 
+router.get('/get/settlementReport/:startDate/:endDate',reportController.settlementSummary);
 
+router.get('/get/dashboard',reportController.dashboardBlock);
 
 module.exports = router;
 

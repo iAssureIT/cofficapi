@@ -1,9 +1,7 @@
 const express 	= require("express");
 const router 	= express.Router();
 
-
 const cafeMenuController = require('../controllers/CafeMenu');
-
 
 router.post('/post', cafeMenuController.submit_cafeItem);
 
