@@ -260,7 +260,7 @@ exports.user_signupadmin = (req,res,next)=>{
 
 exports.user_otpverification = (req,res,next)=>{
 
-	console.log('req',req)
+	// console.log('req',req)
 	
 	var newUser = {
 					
@@ -274,11 +274,11 @@ exports.user_otpverification = (req,res,next)=>{
 	
 	if(newUser){
 					
-		console.log('New USER = ',newUser);
+		console.log('New USER ==============>>>>>> ',newUser);
 		request({
 			
 			"method"    : "POST",
-			"url"       : "http://localhost:5012/api/masternotifications/post/sendNotification",
+			"url"       : "http://localhost:5012/send-email",
 			"body"      : 	{
 								"email"     : newUser.emailId,
 								"subject"   : 'Verify your Account',
