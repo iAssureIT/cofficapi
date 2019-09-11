@@ -72,8 +72,6 @@ function availableSeats(workSpace_id){
     });
 }
 
-
-
 exports.list_workspace = (req,res,next)=>{
  console.log('list_workspace WorkspaceDetails');
     WorkspaceDetails
@@ -129,7 +127,6 @@ exports.list_workspace = (req,res,next)=>{
         });
     });
 }
-
 exports.listcity_workspace = (req,res,next)=>{
     console.log('list_workspace WorkspaceDetails');
     WorkspaceDetails.find()
