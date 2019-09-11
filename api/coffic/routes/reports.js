@@ -16,9 +16,10 @@ router.get('/get/cafewisebooking' ,reportController.cafewiseSeatBooking);
 
 router.get('/get/sales/:startDate/:endDate/:plan_ID/:typeUser',reportController.salesTransaction);
 
-router.get('/get/subscription/:startDate/:endDate',reportController.subscription);
+// router.get('/get/subscription/:startDate/:endDate',reportController.subscription);
 
-router.get('/get/settlementReport/:startDate/:endDate',reportController.settlementSummary);
+router.get('/get/settlementReportSummary/:startDate/:endDate',reportController.settlementSummary);
+router.get('/get/settlementReportDetail/:startDate/:endDate/:vendor_ID',reportController.settlementDetail);
 
 router.get('/get/dashboard',reportController.dashboardBlock);
 

@@ -82,39 +82,42 @@ function getEarning(startDate,endDate){
 				 });
 	});	
 }
-exports.dashboardBlock = (req,res,next)=>{
+exports.dashboardBlock = (req,res,next)=>{	
 	getData();
 	async function getData(){
-		// var year  			= (req.params.startDate).moment.format("YYYY");
-		// var month 			= (req.params.endDate).moment.format("MM"); 
-		var year  			= new Date().getYear();
-		var month 			= new Date().getMonth();
+		var year  			= new Date().getFullYear();
+		var month 			= new Date().getMonth()+1;
 		var yearStartDate   = new Date(year+"-01-01");
 		var monthStartDate   = new Date(year+"-"+month+"-01");
-
 		var userInfo 		= await getUserCount("user");
 		var vendorInfo		= await getUserCount("vendor");
 		var activeVendor 	= await getActiveVendor();
 		var subUser 		= await getSubUser();
 		var earningYTD		= await getEarning(yearStartDate,new Date());
 		var earningMTD		= await getEarning(monthStartDate,new Date());
-
-		// var twelveMonthGrossEarning = await getMonthlyGrossEarnings(month, year);
-		var twelveMonthGrossEarning = [
-										{monthYear:"Oct", earning:10000},
-										{monthYear:"Nov", earning:20000},
-										{monthYear:"Dec", earning:30000},
-										{monthYear:"Jan", earning:40000},
-										{monthYear:"Feb", earning:50000},
-										{monthYear:"Mar", earning:60000},
-										{monthYear:"Apr", earning:70000},
-										{monthYear:"May", earning:80000},
-										{monthYear:"Jun", earning:90000},
-										{monthYear:"Jul", earning:100000},
-										{monthYear:"Aug", earning:110000},
-										{monthYear:"Sep", earning:120000},
-									  ];
-
+		var twelveMonthGrossEarning = [];
+		var i = 0;
+		var y = year - 1;
+		var m = month + 1;
+		if(month === 13){
+			y = year-1;	
+			m = 1;
+		}
+		for(i = 1 ; i <= 12 ; i++ ){
+			var firstDay = new Date(y, m-1, 2);
+			var lastDay = new Date(y, m , 1);
+			var grossEarning = await getEarning(firstDay,lastDay);
+			twelveMonthGrossEarning.push({
+												"monthYear"	: firstDay.toLocaleString('default', { month: 'short' }),
+												"earning"  	: grossEarning.totalAmt
+										});
+			m = m + 1;
+			if(m === 13){
+				m = 1;
+				y = y + 1;
+			}
+		}
+		var subscrptionData = await subscription(yearStartDate,new Date());
 		res.status(200).json({
 			"totalUsers" 				: userInfo,
 			"subUsers"					: subUser,
@@ -125,6 +128,7 @@ exports.dashboardBlock = (req,res,next)=>{
 			"menuYTD"					: earningYTD.totalCount,
 			"menuMTD"					: earningMTD.totalCount,
 			"twelveMonthGrossEarning" 	: twelveMonthGrossEarning,
+			"subscrptionData"			: subscrptionData
 		});
 	};
 };
@@ -134,16 +138,31 @@ function getMenuDetails(vendor_ID,startDate,endDate){
 								{
 									$match : {
 										"workSpace_id" 		: vendor_ID,
-										"date"				: {$gte : req.params.startDate, $lte : req.params.endDate}
+										"orderedAt"			: {$gte : new Date(startDate), $lte : new Date(endDate)},
+										"isDelivered"		: true
 									}
 								},
 								{
-
+									$group:{
+										"_id" 	: null,
+										"count"	: {"$sum" : 1},
+										"total"	: {"$sum":"$price"}
+									}
 								}
 				])
 				 .exec()
 				 .then(data=>{
-				 	res.status(200).json(data);
+				 	if(data.length > 0){
+				 		resolve({
+				 			"numTransaction" : data[0].count,
+				 			"totalAmount"	 : data[0].total
+				 		});
+				 	}else{
+				 		resolve({
+				 			"numTransaction" : 0,
+				 			"totalAmount"	 : 0
+				 		});
+				 	}
 				 })
 				 .catch(err=>{
 				 	reject(err)
@@ -158,22 +177,40 @@ exports.settlementSummary = (req,res,next)=>{
 						if(vendor.length > 0){
 							getData();
 							async function getData(){
-								var returnData = [];
-								var i = 0;
+								var returnData 		= [];
+								var i 				= 0;
+								var numTransaction 	= 0;
+								var totalAmount		= 0;
+								var deduction 		= 0;
+								var payableAmount	= 0;
 								for(i = 0; i < vendor.length; i++){
-									var menuDetails = await getMenuDetails(vendor._id,req.params.startDate,req.params.endDate);
+									var menuDetails 	 = await getMenuDetails(vendor[i]._id,req.params.startDate,req.params.endDate);
+									numTransaction		+= menuDetails.numTransaction;
+									totalAmount			+= menuDetails.totalAmount;
+									deduction 			+= menuDetails.totalAmount >= 3000 ? "-10%" : 0;
+									payableAmount 		+= menuDetails.totalAmount >= 3000 ? (menuDetails.totalAmount - (menuDetails.totalAmount * 0.1)) : menuDetails.totalAmount;  
 									returnData.push({
-										"vendorId" 			: i,
+										"vendorId" 			: i+1,
 										"vendorName"		: vendor[i].nameOfCafe,
-										"numTransaction"	: 1,
-										"totalAmt"			: 1,
-										"deduction"			: 0,
-										"payableAmount"		: 1,
+										"numTransaction"	: menuDetails.numTransaction,
+										"totalAmt"			: menuDetails.totalAmount,
+										"deduction"			: menuDetails.totalAmount >= 3000 ? "-10%" : 0 ,
+										"payableAmount"		: menuDetails.totalAmount >= 3000 ? (menuDetails.totalAmount - (menuDetails.totalAmount * 0.1)) : menuDetails.totalAmount,
 										"status"			: "UnPaid",
 										"action"			: "Pay"
 									});
 								}	
 								if(i >= vendor.length){
+									returnData.push({
+										"vendorId" 			: " ",
+										"vendorName"		: "Total",
+										"numTransaction"	: numTransaction,
+										"totalAmt"			: totalAmount,
+										"deduction"			: deduction,
+										"payableAmount"		: payableAmount,
+										"status"			: "UnPaid",
+										"action"			: ""
+									});
 									res.status(200).json(returnData);
 								}
 							}
@@ -185,6 +222,56 @@ exports.settlementSummary = (req,res,next)=>{
 						res.status(200).json({error:err});
 					});
 };
+exports.settlementDetail = (req,res,next)=>{
+	MenuOrder.find()
+			 .exec()
+			 .then(menu=>{
+			 	if(menu.length > 0){
+			 		getData();
+			 		async function getData(){
+			 			var returnData 	= [];
+			 			var i 			= 0;
+			 			var quantity 	= 0;
+			 			var itemAmount	= 0;
+			 			var gst 		= 0;
+			 			var totalAmount	= 0;
+			 			for(i = 0 ; i < menu.length; i++){
+			 				quantity	+= 1;
+			 				itemAmount	+= menu[i].price;
+			 				gst 		+= 2.00;
+			 				totalAmount += menu[i].price+2.00;
+			 				var userInfor = await getuserDetails(menu[i].user_id);
+			 				returnData.push({
+			 					"dateTime"		: menu[i].orderedAt,
+			 					"userName"		: userInfor.profile.fullName,
+			 					"menuItem"		: menu[i].item,
+			 					"quantity"		: 1,
+			 					"itemAmount" 	: menu[i].price,
+			 					"gst"			: 2.00,
+			 					"totalAmount"	: menu[i].price+2.00
+			 				});
+			 			}
+			 			if(i >= menu.length){
+			 				returnData.push({
+			 					"dateTime"		: "Total",
+			 					"userName"		: "Transaction",
+			 					"menuItem"		: "",
+			 					"quantity"		: quantity,
+			 					"itemAmount" 	: itemAmount,
+			 					"gst"			: gst,
+			 					"totalAmount"	: totalAmount
+			 				});
+			 				res.status(200).json(returnData);
+			 			}
+			 		}
+			 	}else{
+			 		res.status(200).json({message:"Data not found"});
+			 	}
+			 })
+			 .catch(err=>{
+			 	res.status(200).json({error:err})
+			 });
+}
 function getMenuOrder(data){
     return new Promise(function(resolve,reject){
         MenuOrder.aggregate(
@@ -217,12 +304,10 @@ function getMenuOrder(data){
             });
 }
 function getuserDetails(user_id){
-	console.log("user_id",user_id);
     return new Promise(function(resolve,reject){
         User.findOne({"_id": new ObjectID(user_id)})
                         .exec()
                         .then(data=>{
-                        	console.log("data ",data);
                             resolve(data);
                         })
                         .catch(err=>{
@@ -399,11 +484,10 @@ exports.vendor_dailycheckins = (req,res,next)=>{
 }
 //Subscription Details
 function countPlan(plan_ID,startDate,endDate){
-	console.log("plan_id",plan_ID);
 	return new Promise(function(resolve,reject){
-		SubscriptionOrder.find({
+		SubscriptionOrder.countDocuments({
 									"plan_ID"   : String(plan_ID),
-									// "createdAt"		: {$gte : startDate, $lte : endDate}
+									"createdAt"		: {$gte : startDate, $lte : endDate}
 						})
 						 .exec()
 						 .then(data=>{
@@ -414,34 +498,35 @@ function countPlan(plan_ID,startDate,endDate){
 						 })
 	});
 }
-exports.subscription = (req,res,next)=>{
-	SubscriptionPlan.find()
-					.exec()
-					.then(subDetails=>{
-						if(subDetails.length > 0 ){
-							getData();
-							async function getData(){
-								var returnData = [];
-								var i = 0;
-								for(i = 0 ; i < subDetails.length ; i++){
-									console.log("subDetails....",subDetails[i]._id)
-									var count = await countPlan(subDetails[i]._id,req.params.startDate,req.params.endDate);
-									returnData.push({
-										"packageName" : subDetails[i].planName,
-										"count"		  : count
-									});
+function subscription(startDate,endDate){
+	return new Promise(function(resolve,reject){
+		SubscriptionPlan.find()
+						.exec()
+						.then(subDetails=>{
+							if(subDetails.length > 0 ){
+								getData();
+								async function getData(){
+									var returnData = [];
+									var i = 0;
+									for(i = 0 ; i < subDetails.length ; i++){
+										var count = await countPlan(subDetails[i]._id,startDate,endDate);
+										returnData.push({
+											"packageName" : subDetails[i].planName,
+											"count"		  : count
+										});
+									}
+									if(i >= subDetails.length){
+										resolve(returnData);
+									}
 								}
-								if(i >= subDetails.length){
-									res.status(200).json(returnData);
-								}
+							}else{
+								resolve({message : "Data not found"});
 							}
-						}else{
-							res.status(200).json({message : "Data not found"});
-						}
-					})
-					.catch(err=>{
-						res.status(200).json({error:err});
-					});
+						})
+						.catch(err=>{
+							reject({error:err});
+						});
+	});
 }
 //Sales Transactions
 function getPlanDetails(plan_id){
