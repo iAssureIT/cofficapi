@@ -79,80 +79,34 @@
     app.use("/api/report",Reports);
 
 
-	// app.post('/send-email', (req, res)=> {
-	// 	console.log('send mail');
-	// 	let transporter = nodeMailer.createTransport({
-	// 		service : 'gmail',
-	// 		host: 'smtp.gmail.com',
-	// 		port: 587,
-	// 		auth: {
-	// 			user: 'Appstore@coffic.com',
-    //             pass: 'Coffic@123'
-    //             // user: 'testtprm321@gmail.com',
-    //             // pass: 'tprm1234'
-
-	// 		}
-	// 	});
-	// 	console.log('after transport');
-	// 	let mailOptions = {
-			
-	// 		from   : '"Coffic" <Appstore@coffic.com>', // sender address
-	// 		to     : req.body.email, // list of receivers
-	// 		subject: req.body.subject, // Subject line
-	// 		text   : req.body.text, // plain text body
-    //         html   : req.body.mail // html body
-            
-    //         // from   : '"Coffic" <testtprm321@gmail.com>', // sender address
-    //         // to     : req.body.email, // list of receivers
-    //         // subject: req.body.subject, // Subject line
-    //         // text   : req.body.text, // plain text body
-    //         // html   : req.body.mail // html body
-	// 	};
-	// 	console.log('after mailoption');
-	// 	//name email mobilenumber message
-	// 	// console.log("mailOptions",mailOptions);
-		
-	// 	transporter.sendMail(mailOptions, (error, info) => {
-	// 		console.log('in mail');
-	// 		if (error) {
-				
-	// 			console.log("send mail error",error);
-	// 			return "Failed";
-	// 		}
-	// 		if(info){
-	// 			console.log('in info');
-	// 			// return "Success";
-	// 			res.status(200).json({ 
-					
-	// 				message: "Success",
-	// 				// return "Success",
-
-	// 			});
-	// 		}
-	
-	// 		res.render('index');
-	// 	});
-    // });
-    
-    app.post('/send-email', (req, res)=> {
+	app.post('/send-email', (req, res)=> {
 		console.log('send mail');
 		let transporter = nodeMailer.createTransport({
-			
+			service : 'gmail',
 			host: 'smtp.gmail.com',
 			port: 587,
 			auth: {
-				user: 'testtprm321@gmail.com',
-				pass: 'tprm1234'
+				user: 'Appstore@coffic.com',
+                pass: 'Coffic@123'
+                // user: 'testtprm321@gmail.com',
+                // pass: 'tprm1234'
+
 			}
 		});
 		console.log('after transport');
 		let mailOptions = {
 			
-			from   : '"TGK" <testtprm321@gmail.com>', // sender address
+			from   : '"Coffic" <Appstore@coffic.com>', // sender address
 			to     : req.body.email, // list of receivers
 			subject: req.body.subject, // Subject line
 			text   : req.body.text, // plain text body
-			html   : req.body.mail // html body
+            html   : req.body.mail // html body
+            
+            // from   : '"Coffic" <testtprm321@gmail.com>', // sender address
+            // to     : req.body.email, // list of receivers
+            // subject: req.body.subject, // Subject line
+            // text   : req.body.text, // plain text body
+            // html   : req.body.mail // html body
 		};
 		console.log('after mailoption');
 		//name email mobilenumber message
@@ -179,7 +133,6 @@
 			res.render('index');
 		});
 	});
-
 
 
     app.use((req, res, next) => {

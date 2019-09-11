@@ -138,9 +138,9 @@ exports.update_notifications = (req,res,next)=>{
 //send Mail Notification -Rushikesh Salunkhe
 exports.send_notifications = (req,res,next)=>{
     // console.log('req',req.body);
-    const senderEmail = 'testtprm321@gmail.com';
-    const senderEmailPwd = 'tprm1234';
-
+    const senderEmail = 'Appstore@coffic.com';
+    const senderEmailPwd = 'Coffic@123';
+    
     let transporter = nodeMailer.createTransport({                
         host: 'smtp.gmail.com',
         port: 587,
@@ -153,7 +153,7 @@ exports.send_notifications = (req,res,next)=>{
     async function main(){
         var userProfile = {};
         if(req.body.toUserId === "admin"){
-            toEmail = "testtprm321@gmail.com"; 
+            toEmail = "appstore@coffic.com"; 
         }else{
             userProfile = await getProfileByUserId(req.body.toUserId);
             if(userProfile && userProfile!== null & userProfile!==""){
@@ -164,7 +164,7 @@ exports.send_notifications = (req,res,next)=>{
         const templateDetails = await getTemplateDetails(req.body.templateName, req.body.variables);
 
         var mailOptions = {                
-            from        : '"TGK Admin" <'+senderEmail+'>', // sender address
+            from        : '"Coffic Admin" <'+senderEmail+'>', // sender address
             to          : toEmail , // list of receiver
             subject     : templateDetails.subject, // Subject line
             html        : templateDetails.content, // html body
@@ -209,32 +209,10 @@ function getProfileByUserId(toUserId){
         });
 }
 
-// function getAdminEmail(){
-//     //First record in CompanySetting belongs to Company
-//     return new Promise(function(resolve,reject){
-//         Companysettings
-//             .find({})
-//             .exec()
-//             .then(data=>{
-//                 var email = data[0].companyEmail;
-//                 resolve(email);
-//             })
-//             .catch(err =>{
-//                 console.log(err);
-//                 res.status(500).json({
-//                     error: err
-//                 });
-//             });
- 
-//     })
-
-// }
-
-//get TemplateDeatails - Rushikesh Salunkhe
 function getTemplateDetails(templateName,variables){
     return new Promise(function(resolve,reject){
         Masternotifications
-        .findOne({"templateName":templateName})
+        .findOne({"templateName":templateName , "templateType": Email,})
         .exec()
         .then(NotificationData=>{
                     // console.log('serverside NotificationData: ', NotificationData);
