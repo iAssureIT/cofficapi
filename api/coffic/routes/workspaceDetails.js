@@ -5,7 +5,6 @@ const router 	= express.Router();
 
 const workspaceController = require('../controllers/workspaceDetails');
 
-console.log("in work spacerouter---list---------->");
 
 router.post('/post', workspaceController.create_workspace);
 

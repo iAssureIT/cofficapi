@@ -1,14 +1,190 @@
-const mongoose	= require("mongoose");
-const ObjectID  = require("mongodb").ObjectID;
-const WorkspaceDetails      = require('../models/workspaceDetails');
-const SeatBooking 		=	require("../models/seatBooking");
-const MenuOrder			=   require("../models/menuOrders");
-const User              =   require('../../coreAdmin/models/users');
-var   request               =require ('request-promise');
-const globaleVaiable        = require('../../../nodemon.js');
-const SubscriptionOrder	= 	require("../models/subscriptionOrder.js");
-const SubscriptionPlan  = 	require("../models//subscriptionPlan.js");
+const mongoose			= require("mongoose");
+const ObjectID  		= require("mongodb").ObjectID;
+var   request           =require ('request-promise');
+var   moment            = require('moment');
+const WorkspaceDetails  = require('../models/workspaceDetails');
+const SeatBooking 		= require("../models/seatBooking");
+const MenuOrder			= require("../models/menuOrders");
+const User              = require('../../coreAdmin/models/users');
+const globaleVaiable    = require('../../../nodemon.js');
+const SubscriptionOrder	= require("../models/subscriptionOrder.js");
+const SubscriptionPlan  = require("../models//subscriptionPlan.js");
 
+function getUserCount(role){
+	return new Promise(function(resolve,reject){
+		User.countDocuments({ "roles" : {$in:[role]}})
+			.exec()
+			.then(data=>{
+				resolve(data);
+			})
+			.catch(err=>{
+				reject(err);
+			})
+	});
+}
+function getActiveVendor(){
+	return new Promise(function(resolve,reject){
+		User.countDocuments({ "roles" : {$in:["vendor"]},"profile.status":"Active"})
+			.exec()
+			.then(data=>{
+				resolve(data);
+			})
+			.catch(err=>{
+				reject(err);
+			})
+	});	
+}
+function getSubUser(){
+	return new Promise(function(resolve,reject){
+		SubscriptionOrder.countDocuments({"status" : "paid"})
+			.exec()
+			.then(data=>{
+				resolve(data);
+			})
+			.catch(err=>{
+				reject(err);
+			})
+	});	
+}
+function getEarning(startDate,endDate){
+	return new Promise(function(resolve,reject){
+		MenuOrder.aggregate([
+					{
+						$match :{
+							"date"			: {$gte : startDate, $lte : endDate},
+							"isDelivered"	: true
+						}
+					},
+					{
+						$group:{
+							"_id" 	: null,
+							"count"	: {"$sum" : 1},
+							"total"	: {"$sum":"$price"}
+						}
+					}
+				])
+				 .exec()
+				 .then(data=>{
+				 	if(data.length > 0 ){
+					 	resolve({ 
+					 			"totalAmt" 		: data[0].total,
+					 			"totalCount"	: data[0].count
+					 		});
+				 	}else{
+				 		resolve({ 
+					 			"totalAmt" 		: 0,
+					 			"totalCount"	: 0
+					 		});
+				 	}
+				 })
+				 .catch(err=>{
+				 	reject(err)
+				 });
+	});	
+}
+exports.dashboardBlock = (req,res,next)=>{
+	getData();
+	async function getData(){
+		// var year  			= (req.params.startDate).moment.format("YYYY");
+		// var month 			= (req.params.endDate).moment.format("MM"); 
+		var year  			= new Date().getYear();
+		var month 			= new Date().getMonth();
+		var yearStartDate   = new Date(year+"-01-01");
+		var monthStartDate   = new Date(year+"-"+month+"-01");
+
+		var userInfo 		= await getUserCount("user");
+		var vendorInfo		= await getUserCount("vendor");
+		var activeVendor 	= await getActiveVendor();
+		var subUser 		= await getSubUser();
+		var earningYTD		= await getEarning(yearStartDate,new Date());
+		var earningMTD		= await getEarning(monthStartDate,new Date());
+
+		// var twelveMonthGrossEarning = await getMonthlyGrossEarnings(month, year);
+		var twelveMonthGrossEarning = [
+										{monthYear:"Oct", earning:10000},
+										{monthYear:"Nov", earning:20000},
+										{monthYear:"Dec", earning:30000},
+										{monthYear:"Jan", earning:40000},
+										{monthYear:"Feb", earning:50000},
+										{monthYear:"Mar", earning:60000},
+										{monthYear:"Apr", earning:70000},
+										{monthYear:"May", earning:80000},
+										{monthYear:"Jun", earning:90000},
+										{monthYear:"Jul", earning:100000},
+										{monthYear:"Aug", earning:110000},
+										{monthYear:"Sep", earning:120000},
+									  ];
+
+		res.status(200).json({
+			"totalUsers" 				: userInfo,
+			"subUsers"					: subUser,
+			"totalVendor"				: vendorInfo,
+			"activeVendor"				: activeVendor,
+			"earningYTD"				: earningYTD.totalAmt,
+			"earningMTD"				: earningMTD.totalAmt,
+			"menuYTD"					: earningYTD.totalCount,
+			"menuMTD"					: earningMTD.totalCount,
+			"twelveMonthGrossEarning" 	: twelveMonthGrossEarning,
+		});
+	};
+};
+function getMenuDetails(vendor_ID,startDate,endDate){
+	return new Promise(function(resolve,reject){
+		MenuOrder.aggregate([
+								{
+									$match : {
+										"workSpace_id" 		: vendor_ID,
+										"date"				: {$gte : req.params.startDate, $lte : req.params.endDate}
+									}
+								},
+								{
+
+								}
+				])
+				 .exec()
+				 .then(data=>{
+				 	res.status(200).json(data);
+				 })
+				 .catch(err=>{
+				 	reject(err)
+				 });
+	});
+}
+/*Settlement Summary Report*/
+exports.settlementSummary = (req,res,next)=>{
+	WorkspaceDetails.find()
+					.exec()
+					.then(vendor=>{
+						if(vendor.length > 0){
+							getData();
+							async function getData(){
+								var returnData = [];
+								var i = 0;
+								for(i = 0; i < vendor.length; i++){
+									var menuDetails = await getMenuDetails(vendor._id,req.params.startDate,req.params.endDate);
+									returnData.push({
+										"vendorId" 			: i,
+										"vendorName"		: vendor[i].nameOfCafe,
+										"numTransaction"	: 1,
+										"totalAmt"			: 1,
+										"deduction"			: 0,
+										"payableAmount"		: 1,
+										"status"			: "UnPaid",
+										"action"			: "Pay"
+									});
+								}	
+								if(i >= vendor.length){
+									res.status(200).json(returnData);
+								}
+							}
+						}else{
+							res.status(200).json({message:"Data not found"});
+						}
+					})
+					.catch(err=>{
+						res.status(200).json({error:err});
+					});
+};
 function getMenuOrder(data){
     return new Promise(function(resolve,reject){
         MenuOrder.aggregate(
@@ -40,7 +216,6 @@ function getMenuOrder(data){
                   });
             });
 }
-
 function getuserDetails(user_id){
 	console.log("user_id",user_id);
     return new Promise(function(resolve,reject){
@@ -102,7 +277,6 @@ function availableSeats(workSpace_id){
         })
     });
 }
-
 exports.vendor_monthly = (req,res,next)=>{
 	// SeatBooking .find({"workSpace_id": req.params.workspace_ID}
 	SeatBooking .aggregate(
@@ -223,7 +397,6 @@ exports.vendor_dailycheckins = (req,res,next)=>{
 					res.status(200).json({error:err});
 				});
 }
-
 //Subscription Details
 function countPlan(plan_ID,startDate,endDate){
 	console.log("plan_id",plan_ID);
@@ -270,8 +443,6 @@ exports.subscription = (req,res,next)=>{
 						res.status(200).json({error:err});
 					});
 }
-
-
 //Sales Transactions
 function getPlanDetails(plan_id){
 	return new Promise(function(resolve,reject){
@@ -378,11 +549,6 @@ exports.salesTransaction = (req,res,next)=>{
 							})
 	}
 }
-
-
-
-
-
 exports.checkInOut=(req,res,next)=>{
 	var query = {};
 	switch(req.params.type){
@@ -465,10 +631,8 @@ exports.checkInOut=(req,res,next)=>{
 
 	 }else{
 
-	 }
-	
+	 }	
 }
-
 exports.cafewiseSeatBooking=(req,res,next)=>{
 	WorkspaceDetails.find()
 	.exec()
@@ -500,7 +664,6 @@ exports.cafewiseSeatBooking=(req,res,next)=>{
 	.catch(err=>{
 		res.status(200).json({error:err})
 	})
-	
 }
 /*
 cafewise_old
