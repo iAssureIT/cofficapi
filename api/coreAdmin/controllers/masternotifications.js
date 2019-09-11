@@ -136,123 +136,123 @@ exports.update_notifications = (req,res,next)=>{
 
 
 //send Mail Notification -Rushikesh Salunkhe
-// exports.send_notifications = (req,res,next)=>{
-//     // console.log('req',req.body);
-//     const senderEmail = 'Appstore@coffic.com';
-//     const senderEmailPwd = 'Coffic@123';
+exports.send_notifications = (req,res,next)=>{
+    // console.log('req',req.body);
+    const senderEmail = 'Appstore@coffic.com';
+    const senderEmailPwd = 'Coffic@123';
     
-//     let transporter = nodeMailer.createTransport({                
-//         host: 'smtp.gmail.com',
-//         port: 587,
-//         auth: {
-//             user: senderEmail,
-//             pass: senderEmailPwd
-//         }
-//     });
-//     main();
-//     async function main(){
-//         var userProfile = {};
-//         if(req.body.toUserId === "admin"){
-//             toEmail = "appstore@coffic.com"; 
-//         }else{
-//             userProfile = await getProfileByUserId(req.body.toUserId);
-//             if(userProfile && userProfile!== null & userProfile!==""){
-//                 // console.log("userProfile",userProfile);
-//                 toEmail = userProfile.profile.emailId;
-//             }
-//         }
-//         const templateDetails = await getTemplateDetails(req.body.templateName, req.body.variables);
+    let transporter = nodeMailer.createTransport({                
+        host: 'smtp.gmail.com',
+        port: 587,
+        auth: {
+            user: senderEmail,
+            pass: senderEmailPwd
+        }
+    });
+    main();
+    async function main(){
+        var userProfile = {};
+        if(req.body.toUserId === "admin"){
+            toEmail = "appstore@coffic.com"; 
+        }else{
+            userProfile = await getProfileByUserId(req.body.toUserId);
+            if(userProfile && userProfile!== null & userProfile!==""){
+                // console.log("userProfile",userProfile);
+                toEmail = userProfile.profile.emailId;
+            }
+        }
+        const templateDetails = await getTemplateDetails(req.body.templateName, req.body.variables);
 
-//         var mailOptions = {                
-//             from        : '"Coffic Admin" <'+senderEmail+'>', // sender address
-//             to          : toEmail , // list of receiver
-//             subject     : templateDetails.subject, // Subject line
-//             html        : templateDetails.content, // html body
-//         };
-//         transporter.sendMail(mailOptions, (error, info) => {
-//             if (error) {                    
-//                 console.log("send mail error",error);
-//                 res.status(500).json({              
-//                     message: "Send Email Failed",
-//                 });
-//             }
-//             if(info){
-//                 res.status(200).json({              
-//                     message: "Mail Sent Successfully",
-//                 });
-//             }
-//             res.render('index');
-//         });
+        var mailOptions = {                
+            from        : '"Coffic Admin" <'+senderEmail+'>', // sender address
+            to          : toEmail , // list of receiver
+            subject     : templateDetails.subject, // Subject line
+            html        : templateDetails.content, // html body
+        };
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {                    
+                console.log("send mail error",error);
+                res.status(500).json({              
+                    message: "Send Email Failed",
+                });
+            }
+            if(info){
+                res.status(200).json({              
+                    message: "Mail Sent Successfully",
+                });
+            }
+            res.render('index');
+        });
 
-//     }
+    }
     
-// }
+}
 
-// //get getEmailByUserId - Rushikesh Salunkhe
-// function getProfileByUserId(toUserId){
-//     return new Promise(function(resolve,reject){
-//         // console.log("getProfileByUserId",toUserId);
-//     User
-//     .findOne({"_id":toUserId})
-//     .exec()
-//         .then(data=>{
-//             // console.log('data',data);
-//             resolve(data);          
-//         })
-//         .catch(err =>{
-//             console.log(err);
-//             res.status(500).json({
-//                 error: err
-//             });
-//         });
+//get getEmailByUserId - Rushikesh Salunkhe
+function getProfileByUserId(toUserId){
+    return new Promise(function(resolve,reject){
+        // console.log("getProfileByUserId",toUserId);
+    User
+    .findOne({"_id":toUserId})
+    .exec()
+        .then(data=>{
+            // console.log('data',data);
+            resolve(data);          
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
 
-//         });
-// }
+        });
+}
 
-// function getTemplateDetails(templateName,variables){
-//     return new Promise(function(resolve,reject){
-//         Masternotifications
-//         .findOne({"templateName":templateName , "templateType": Email,})
-//         .exec()
-//         .then(NotificationData=>{
-//                     // console.log('serverside NotificationData: ', NotificationData);
-//                     if(NotificationData){
-//                         var content = NotificationData.content;
-//                         if(content.indexOf('[') > -1 ){
-//                             var wordsplit = content.split('[');
-//                         }
+function getTemplateDetails(templateName,variables){
+    return new Promise(function(resolve,reject){
+        Masternotifications
+        .findOne({"templateName":templateName , "templateType": Email,})
+        .exec()
+        .then(NotificationData=>{
+                    // console.log('serverside NotificationData: ', NotificationData);
+                    if(NotificationData){
+                        var content = NotificationData.content;
+                        if(content.indexOf('[') > -1 ){
+                            var wordsplit = content.split('[');
+                        }
 
-//                         var tokens = [];
-//                         var n = 0;
-//                         for(i=0;i<wordsplit.length;i++){
-//                             if(wordsplit[i].indexOf(']') > -1 ){
-//                                 tokensArr = wordsplit[i].split(']');
-//                                 tokens[n] = tokensArr[0];
-//                                 n++;
-//                             }
-//                         }
-//                         var numOfVar = Object.keys(variables).length;
+                        var tokens = [];
+                        var n = 0;
+                        for(i=0;i<wordsplit.length;i++){
+                            if(wordsplit[i].indexOf(']') > -1 ){
+                                tokensArr = wordsplit[i].split(']');
+                                tokens[n] = tokensArr[0];
+                                n++;
+                            }
+                        }
+                        var numOfVar = Object.keys(variables).length;
 
-//                         for(i=0; i<numOfVar; i++){
-//                             var tokVar = tokens[i].substr(1,tokens[i].length-2);
-//                             content = content.replace(tokens[i],variables[tokens[i]]);
-//                         }
-//                         content = content.split("[").join("'");
-//                         content = content.split("]").join("'");
-//                         // console.log("content = ",content);
-//                         var tData={
-//                             content:content,
-//                             subject:NotificationData.subject
-//                         }
-//                         resolve(tData);          
-//                     }//NotificationData
+                        for(i=0; i<numOfVar; i++){
+                            var tokVar = tokens[i].substr(1,tokens[i].length-2);
+                            content = content.replace(tokens[i],variables[tokens[i]]);
+                        }
+                        content = content.split("[").join("'");
+                        content = content.split("]").join("'");
+                        // console.log("content = ",content);
+                        var tData={
+                            content:content,
+                            subject:NotificationData.subject
+                        }
+                        resolve(tData);          
+                    }//NotificationData
                     
-//             })
-//             .catch(err =>{
-//                 console.log(err);
-//                 err.status(500).json({
-//                     error: err
-//                 });
-//             });
-//         }); 
-//     }
+            })
+            .catch(err =>{
+                console.log(err);
+                err.status(500).json({
+                    error: err
+                });
+            });
+        }); 
+    }
