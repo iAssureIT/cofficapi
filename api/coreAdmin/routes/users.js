@@ -14,7 +14,7 @@ router.get('/get/single/:user_id', UserController.id_cafeAdmin);
 
 router.post('/post/mobSignup',UserController.user_signupmobile);
 
-router.post('/post/googlesignup',UserController.user_signupgoogle);
+// router.post('/post/googlesignup',UserController.user_signupgoogle);
 
 router.post('/post/admin',UserController.user_loginwithadmin);
 
@@ -24,7 +24,7 @@ router.post('/post/loginwithvendor',UserController.user_loginwithvendor);
 
 router.post('/post/loginwithuser',UserController.user_loginwithuser);
 
-router.post('/post/loginwithgoogle',UserController.user_loginwithgoogle); 
+// router.post('/post/loginwithgoogle',UserController.user_loginwithgoogle); 
 
 router.post('/post/forgot-pwd',UserController.forgot_pwd); 
 

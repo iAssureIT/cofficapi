@@ -25,6 +25,6 @@ router.get('/:notificationmasterID', masterNotificationsController.detail_fetch)
 
 router.put('/:notificationmasterID', masterNotificationsController.update_notifications);
 
-
+router.post('/post/sendNotification', masterNotificationsController.send_notifications);
 
 module.exports = router;
