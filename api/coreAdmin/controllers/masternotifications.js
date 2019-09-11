@@ -138,9 +138,9 @@ exports.update_notifications = (req,res,next)=>{
 //send Mail Notification -Rushikesh Salunkhe
 exports.send_notifications = (req,res,next)=>{
     // console.log('req',req.body);
-    const senderEmail = 'appstore@coffic.com';
+    const senderEmail = 'Appstore@coffic.com';
     const senderEmailPwd = 'Coffic@123';
-
+    
     let transporter = nodeMailer.createTransport({                
         host: 'smtp.gmail.com',
         port: 587,
