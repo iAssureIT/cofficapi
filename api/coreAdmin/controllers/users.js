@@ -278,13 +278,13 @@ exports.user_otpverification = (req,res,next)=>{
 		request({
 			
 			"method"    : "POST",
-			"url"       : "http://localhost:5012/send-email",
+			// "url"       : "http://localhost:5012/send-email",
 			"body"      : 	{
 								"email"     : newUser.emailId,
 								"subject"   : 'Verify your Account',
 								"text"      : "WOW Its done",
 								// "mail"      : "Hello"+newUser.profile.firstName+','+'\n'+"Your account verifcation code is"+OTP,
-								"mail"      : 'Dear '+newUser.firstName+','+'\n'+"\n <br><br>Your account verification code is "+"<b>"+newUser.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
+								"mail"      : 'Dear '+newUser.profile.firstName+','+'\n'+"\n <br><br>Your account verification code is "+"<b>"+newUser.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
 							},
 			"json"      : true,
 			"headers"   : {

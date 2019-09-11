@@ -32,6 +32,7 @@ router.post('/post/forgotpwdOTP',UserController.user_otpverification_forgotpassw
 
 router.post('/post/otpverificationsend',UserController.user_otpverification); 
 
+
 router.post('/post/userslist',UserController.users_fetch); 
 
 router.post('/post/searchValue',UserController.user_search); 
