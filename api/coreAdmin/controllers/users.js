@@ -275,35 +275,35 @@ exports.user_otpverification = (req,res,next)=>{
 	if(newUser){
 					
 		console.log('New USER = ',newUser);
-		// request({
+		request({
 			
-		// 	"method"    : "POST",
-		// 	"url"       : "http://localhost:5012/send-email",
-		// 	"body"      : 	{
-		// 						"email"     : newUser.emailId,
-		// 						"subject"   : 'Verify your Account',
-		// 						"text"      : "WOW Its done",
-		// 						// "mail"      : "Hello"+newUser.profile.firstName+','+'\n'+"Your account verifcation code is"+OTP,
-		// 						"mail"      : 'Dear '+newUser.firstName+','+'\n'+"\n <br><br>Your account verification code is "+"<b>"+newUser.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
-		// 					},
-		// 	"json"      : true,
-		// 	"headers"   : {
-		// 					"User-Agent": "Test App"
-		// 				}
-		// })
+			"method"    : "POST",
+			"url"       : "http://localhost:5012/post/sendNotification",
+			"body"      : 	{
+								"email"     : newUser.emailId,
+								"subject"   : 'Verify your Account',
+								"text"      : "WOW Its done",
+								// "mail"      : "Hello"+newUser.profile.firstName+','+'\n'+"Your account verifcation code is"+OTP,
+								"mail"      : 'Dear '+newUser.firstName+','+'\n'+"\n <br><br>Your account verification code is "+"<b>"+newUser.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
+							},
+			"json"      : true,
+			"headers"   : {
+							"User-Agent": "Test App"
+						}
+		})
 	
-		// .then((sentemail)=>{
-		// 	// console.log("call to api");
-		// 	res.header("Access-Control-Allow-Origin","*");
+		.then((sentemail)=>{
+			// console.log("call to api");
+			res.header("Access-Control-Allow-Origin","*");
 
-		// 	res.status(200).json({message:"Mail Sent successfully"});
-		// })
-		// .catch((err) =>{
-		// 	console.log("call to api",err);
-		// 	res.status(500).json({
-		// 		error: err
-		// 	});
-		// });    
+			res.status(200).json({message:"Mail Sent successfully"});
+		})
+		.catch((err) =>{
+			console.log("call to api",err);
+			res.status(500).json({
+				error: err
+			});
+		});    
 		
 		
 		console.log('Plivo Client = ',newUser.mobileNumber);
