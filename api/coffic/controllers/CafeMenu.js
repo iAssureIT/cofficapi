@@ -2,6 +2,16 @@ const mongoose	= require("mongoose");
 
 const CafeMenu = require('../models/CafeMenu');
 
+exports.fetchMenu = (res,req,next)=>{
+    CafeMenu.find({workspaceID : req.params.workspace_ID})
+            .exec()
+            .then(data=>{
+                res.status(200).json(data);
+            })
+            .catch(err=>{
+                res.status(200).json({error:err})
+            })
+};
 exports.submit_cafeItem = (req,res,next)=>{ 
     CafeMenu.findOne({"itemName":req.body.itemName})
             .exec()

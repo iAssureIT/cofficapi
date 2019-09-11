@@ -29,6 +29,13 @@ const WorkspaceDetailsSchema = mongoose.Schema({
     status                 : String,
     reason                 : String,
     cafeMenu               : Array,
+    bankDetails            :{
+                                 bankName       : String,
+                                 accHolderName  : String,
+                                 branchName     : String,
+                                 AccountNumber  : Number,
+                                 ifscCode       : String,
+                             },
 });
 
 module.exports = mongoose.model('workspaceDetails',WorkspaceDetailsSchema);

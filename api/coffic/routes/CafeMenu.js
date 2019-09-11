@@ -15,5 +15,6 @@ router.get('/get/List',cafeMenuController.get_cafeItemList);
 
 router.get('/get/:id',cafeMenuController.get_cafeItemSingle);
  
+router.get('/get/list/:workspace_ID',cafeMenuController.fetchMenu);
 
 module.exports = router;

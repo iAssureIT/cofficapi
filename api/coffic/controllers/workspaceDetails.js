@@ -74,62 +74,61 @@ function availableSeats(workSpace_id){
 
 
 
-
-// exports.list_workspace = (req,res,next)=>{
-//  console.log('list_workspace WorkspaceDetails');
-//     WorkspaceDetails
-//     .find()
-//     .sort({"createdAt":-1})
-//     .exec()
-//     .then(data=>{
-//         if(data.length > 0 ){
-//             getData();
-//             async function getData(){
-//             var returndata= [];
-//             for(k = 0 ; k < data.length ; k++){
-//              var seatData = await availableSeats(data[k]._id);
-//               returndata.push({
-//                 "workspace_id"    : data[k]._id,
-//                 "nameOfCafe"      : data[k].nameOfCafe,
-//                 "address"         : data[k].address,
-//                 "landmark"        : data[k].landmark,
-//                 "area"            : data[k].area,
-//                 "city"            : data[k].city,
-//                 "state"           : data[k].state,
-//                 "country"         : data[k].country,
-//                 "pin"             : data[k].pin,
-//                 "location"        : data[k].location,
-//                 "numberOfSeats"   : data[k].numberOfSeats,
-//                 "name"            : data[k].name,
-//                 "email"           : data[k].email,
-//                 "facilities"      : data[k].facilities,
-//                 "cost"            : data[k].cost,
-//                 "openingtime"     : data[k].openingtime,
-//                 "closingtime"     : data[k].closingtime,
-//                 "logo"            : data[k].logo,
-//                 "banner"          : data[k].banner,
-//                 "workspaceImages" : data[k].workspaceImages,
-//                 "seatData"        : seatData,
-//                 "cafeAdmin"       : data[k].cafeAdmin
+exports.list_workspace = (req,res,next)=>{
+ console.log('list_workspace WorkspaceDetails');
+    WorkspaceDetails
+    .find()
+    .sort({"createdAt":-1})
+    .exec()
+    .then(data=>{
+        if(data.length > 0 ){
+            getData();
+            async function getData(){
+            var returndata= [];
+            for(k = 0 ; k < data.length ; k++){
+             var seatData = await availableSeats(data[k]._id);
+              returndata.push({
+                "workspace_id"    : data[k]._id,
+                "nameOfCafe"      : data[k].nameOfCafe,
+                "address"         : data[k].address,
+                "landmark"        : data[k].landmark,
+                "area"            : data[k].area,
+                "city"            : data[k].city,
+                "state"           : data[k].state,
+                "country"         : data[k].country,
+                "pin"             : data[k].pin,
+                "location"        : data[k].location,
+                "numberOfSeats"   : data[k].numberOfSeats,
+                "name"            : data[k].name,
+                "email"           : data[k].email,
+                "facilities"      : data[k].facilities,
+                "cost"            : data[k].cost,
+                "openingtime"     : data[k].openingtime,
+                "closingtime"     : data[k].closingtime,
+                "logo"            : data[k].logo,
+                "banner"          : data[k].banner,
+                "workspaceImages" : data[k].workspaceImages,
+                "seatData"        : seatData,
+                "cafeAdmin"       : data[k].cafeAdmin
                 
-//               })
-//              }
-//              if(k >= data.length){
-//                 res.status(200).json(returndata);
-//              }
-//         }
-//         }else{
-//             res.status(200).json({message : "Data not found"});
-//         }
+              })
+             }
+             if(k >= data.length){
+                res.status(200).json(returndata);
+             }
+        }
+        }else{
+            res.status(200).json({message : "Data not found"});
+        }
         
-//     })
-//     .catch(err =>{
-//         console.log(err);
-//         res.status(500).json({
-//             error: err
-//         });
-//     });
-// }
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    });
+}
 
 exports.listcity_workspace = (req,res,next)=>{
     console.log('list_workspace WorkspaceDetails');
@@ -367,62 +366,6 @@ exports.dailyCheckins_Report=(req,res,next)=>{
  };
 
 
- // exports.monthly_Report=(req,res,next)=>{
- //    WorkspaceDetails.
- //    findOne({_id :  req.params.workspace_id}) 
- //    .exec()
- //    .then(data=>{
- //        if(data.length>0){
- //          for(var i=0; i<=data.length;i++){
- //            const Amount=data.cafeMenu.cost;
- //            console.log("price",Amount);
- //           }  
- //        }
- //        console.log("data",data);
- //         SeatBooking
- //         .find({
- //            workSpace_id :req.params.workspace_id,
- //        }) 
- //        .then(seat=>{
- //            console.log("seat",seat);
- //            if(seat.length>0){
- //                const checkIn=seat.length;
- //                console.log("checkIn",checkIn);
- //                var seatdata=[];
- //                seatdata.push({
- //                    TotalCheckIns:checkIn,
-
- //                });
- //                for(var i=0; i<=seat.length;i++)
- //                {
- //                // seatdata.push({
- //                //     Date:seat[i].date,
- //                //   });
- //                }
-
- //                console.log("seatdata",seatdata);
- //                res.status(200).json(seatdata);
-
- //            }
-
- //            })
- //            .catch(err=>{
- //                console.log(err);
- //                res.status(500).json({
- //                    error:err
- //                })
- //            })  
-
- //        // res.status(200).json(data);
-  
- //    })
- //    .catch(err=>{
- //        console.log(err);
- //        res.status(500).json({
- //            error:err
- //        })
- //    })
- // }
 
  exports.dailyOrder_Report=(req,res,next)=>{
 
@@ -545,124 +488,30 @@ exports.dailyBeverage_Report=(req,res,next)=>{
         
     };
 
-    exports.list_workspace = (req,res,next)=>{
-        console.log('list_workspace WorkspaceDetails');
-           WorkspaceDetails
-           .find()
-           .sort({"createdAt":-1})
-           .exec()
-           .then(data=>{
-               if(data.length > 0 ){
-                   getData();
-                   async function getData(){
-                   var returndata= [];
-                   for(k = 0 ; k < data.length ; k++){
-                    var seatData = await availableSeats(data[k]._id);
-                     returndata.push({
-                       "workspace_id"    : data[k]._id,
-                       "nameOfCafe"      : data[k].nameOfCafe,
-                       "address"         : data[k].address,
-                       "landmark"        : data[k].landmark,
-                       "area"            : data[k].area,
-                       "city"            : data[k].city,
-                       "state"           : data[k].state,
-                       "country"         : data[k].country,
-                       "pin"             : data[k].pin,
-                       "location"        : data[k].location,
-                       "numberOfSeats"   : data[k].numberOfSeats,
-                       "name"            : data[k].name,
-                       "email"           : data[k].email,
-                       "facilities"      : data[k].facilities,
-                       "cost"            : data[k].cost,
-                       "openingtime"     : data[k].openingtime,
-                       "closingtime"     : data[k].closingtime,
-                       "logo"            : data[k].logo,
-                       "banner"          : data[k].banner,
-                       "workspaceImages" : data[k].workspaceImages,
-                       "seatData"        : seatData,
-                       
-                     })
-                    }
-                    if(k >= data.length){
-                       res.status(200).json(returndata);
-                    }
-               }
-               }else{
-                   res.status(200).json({message : "Data not found"});
-               }
-               
-           })
-           .catch(err =>{
-               console.log(err);
-               res.status(500).json({
-                   error: err
-               });
-           });
-       }
     exports.cafe_search = (req,res,next)=>{
         console.log("req.body.searchText",req.body.searchText);
     
         WorkspaceDetails.find(
             {$or:[
-                {"area"		    :	{ "$regex": req.body.searchText, $options: "i"}},
-                {"nameOfCafe"	:	{ "$regex": req.body.searchText, $options: "i"}},
-                {"city"	    	:	{ "$regex": req.body.searchText, $options: "i"}},
+                {"area"         :   { "$regex": req.body.searchText, $options: "i"}},
+                {"nameOfCafe"   :   { "$regex": req.body.searchText, $options: "i"}},
+                {"city"         :   { "$regex": req.body.searchText, $options: "i"}},
             ]},
             
         )
         .exec()
         .then( data =>{
             console.log('data ',data);
-            // if(data.length > 0){
-            //     return res.status(200).json({
-            //         "message" : 'Search-Successfull',
-            //             "data": data
-            //     });		
-            // }else{
-            //     return res.status(404).json({
-            //         "message" : 'No-Data-Available',		
-            //     });	
-            // }	
-
-
-            if(data.length > 0 ){
-                getData();
-                async function getData(){
-                var returndata= [];
-                for(k = 0 ; k < data.length ; k++){
-                 var seatData = await availableSeats(data[k]._id);
-                  returndata.push({
-                    "workspace_id"    : data[k]._id,
-                    "nameOfCafe"      : data[k].nameOfCafe,
-                    "address"         : data[k].address,
-                    "landmark"        : data[k].landmark,
-                    "area"            : data[k].area,
-                    "city"            : data[k].city,
-                    "state"           : data[k].state,
-                    "country"         : data[k].country,
-                    "pin"             : data[k].pin,
-                    "location"        : data[k].location,
-                    "numberOfSeats"   : data[k].numberOfSeats,
-                    "name"            : data[k].name,
-                    "email"           : data[k].email,
-                    "facilities"      : data[k].facilities,
-                    "cost"            : data[k].cost,
-                    "openingtime"     : data[k].openingtime,
-                    "closingtime"     : data[k].closingtime,
-                    "logo"            : data[k].logo,
-                    "banner"          : data[k].banner,
-                    "workspaceImages" : data[k].workspaceImages,
-                    "seatData"        : seatData,
-                    
-                  })
-                 }
-                 if(k >= data.length){
-                    res.status(200).json(returndata);
-                 }
-            }
+            if(data.length > 0){
+                return res.status(200).json({
+                    "message" : 'Search-Successfull',
+                        "data": data
+                });     
             }else{
-                res.status(200).json({message : "Data not found"});
-            }
+                return res.status(404).json({
+                    "message" : 'No-Data-Available',        
+                }); 
+            }   
         })
         .catch(err =>{
             console.log(err);
@@ -672,8 +521,3 @@ exports.dailyBeverage_Report=(req,res,next)=>{
             });
         });
     }
-
-
-
-
-

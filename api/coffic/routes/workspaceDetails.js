@@ -23,6 +23,8 @@ router.patch('/patch/update/:workspaceID', workspaceController.update_workspace)
 
 router.delete('/delete/:workspaceID',workspaceController.delete_workspace);
 
+router.get('/get/banklist',workspaceController.list_bankdetails);
+
 // router.get('/get/one:workspaceID',workspaceController.single_seatNumbers);
 
 
