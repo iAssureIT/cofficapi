@@ -278,7 +278,7 @@ exports.user_otpverification = (req,res,next)=>{
 		request({
 			
 			"method"    : "POST",
-			"url"       : "http://localhost:5012/post/sendNotification",
+			"url"       : "http://localhost:5012/send-email",
 			"body"      : 	{
 								"email"     : newUser.emailId,
 								"subject"   : 'Verify your Account',
