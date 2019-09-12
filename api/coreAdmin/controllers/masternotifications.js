@@ -212,7 +212,7 @@ function getProfileByUserId(toUserId){
 function getTemplateDetails(templateName,variables){
     return new Promise(function(resolve,reject){
         Masternotifications
-        .findOne({"templateName":templateName , "templateType": Email,})
+        .findOne({"templateName":templateName})
         .exec()
         .then(NotificationData=>{
                     // console.log('serverside NotificationData: ', NotificationData);
