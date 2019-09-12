@@ -392,7 +392,8 @@ exports.user_signupmobile = (req,res,next)=>{
 							return res.status(200).json({
 										"message" : 'NEW-USER-CREATED',
 										"user_id" : newUser._id,
-										
+										"profile" : newUser.profile,
+										"emailId" : newUser.profile.emailId,
 							});			
 						
 						}
