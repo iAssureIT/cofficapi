@@ -464,7 +464,7 @@ exports.user_createVendor = (req,res,next)=>{
 								// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
 
 								const sourceMobile = "+919923393733";
-								var text = "Dear User, "+'\n'+"To verify your account on Coffic, Enter this verification code : \n"+OTP; 
+								var text = 'Dear Vendor ,'+"\nYour account has been created successfully on Coffic. Your Login details are as follows:\nEmail ID  :"+newUser.profile.emailId+"\nDefault Password:test123"+'\n'+'\n'+'\nRegards,\nTeam Coffic';
 				
 								client.messages.create(
 									src=sourceMobile,
