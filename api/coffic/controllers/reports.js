@@ -9,6 +9,68 @@ const User              = require('../../coreAdmin/models/users');
 const globaleVaiable    = require('../../../nodemon.js');
 const SubscriptionOrder	= require("../models/subscriptionOrder.js");
 const SubscriptionPlan  = require("../models//subscriptionPlan.js");
+
+exports.dailyBeverage_Report=(req,res,next)=>{
+	MenuOrder.aggregate([
+							{
+								$match : {
+										"workSpace_id" 		: req.params.workspace_id,
+										"date"				: new Date(req.params.date)
+								}
+							},
+							{
+								$group : { 
+										"_id"	: "$item",
+										"count" : {"$sum" : 1}
+									}
+							},
+							{
+								$project:{
+									"beverage"  : "$_id",
+									"count"		: 1,
+									"_id"		: 0,
+								}
+							}
+			])
+			 .exec()
+			 .then(data=>{
+			 	res.status(200).json(data);
+			 })
+			 .catch(err=>{
+			 	res.status(200).json({error:err});
+			 });
+}
+exports.dailyOrder_Report=(req,res,next)=>{
+	MenuOrder.find({"workSpace_id" : req.params.workspace_id, "date": new Date(req.params.date)})
+			 // .select("user_id,item,orderedAt,isDelivered")
+			 .exec()
+			 .then(data=>{
+			 	if(data.length > 0){
+			 		getData();
+			 		async function getData(){
+			 			var i = 0;
+			 			var returnData = [];
+			 			for(i = 0 ; i < data.length ; i++){
+			 				var userInfo = await getuserDetails(data[i].user_id);
+			 				returnData.push({
+			 					"UserName" 		: userInfo.profile.fullName,
+			 					"Item"	   		: data[i].item,
+			 					"OrderedAt"		: data[i].orderedAt,
+			 					"isDelivered"	: data[i].isDelivered,
+			 				});
+			 			}
+			 			if(i >= data.length){
+			 				res.status(200).json(returnData);
+			 			}
+			 		}
+			 	}
+			 	// res.status(200).json(data);
+			 })
+			 .catch(err=>{
+			 	res.status(200).json({error:err});
+			 });
+}
+
 /*Bank Report*/
 exports.bankreport=(req,res,next)=>{
 	WorkspaceDetails.find()
@@ -311,37 +373,6 @@ exports.settlementDetail = (req,res,next)=>{
 			 	res.status(200).json({error:err})
 			 });
 }
-function getMenuOrder(data){
-    return new Promise(function(resolve,reject){
-        MenuOrder.aggregate(
-        				[
-        					{
-        						$match : {
-        							"workSpace_id" : data.workSpace_id,
-        							"date"			: data.date
-        						}
-        					},
-        					{
-        						$group : {
-        							_id 		: null,
-	        						"amount"	: {"$sum" : "$price"}
-        						}
-        					}
-        				]
-        		)
-                .exec()
-                .then(menuOrder=>{
-                	if(menuOrder.length > 0){
-	                    resolve(menuOrder[0].amount);
-                	}else{
-                		resolve(0);
-                	}
-                })
-                .catch(err=>{
-                    reject(err);
-                  });
-            });
-}
 function getuserDetails(user_id){
     return new Promise(function(resolve,reject){
         User.findOne({"_id": new ObjectID(user_id)})
@@ -401,6 +432,37 @@ function availableSeats(workSpace_id){
         })
     });
 }
+function getMenuOrder(data){
+    return new Promise(function(resolve,reject){
+        MenuOrder.aggregate(
+        				[
+        					{
+        						$match : {
+        							"workSpace_id" 	: String(data.workSpace_id),
+        							"date"			: new Date(data.date),
+        						}
+        					},
+        					{
+        						$group : {
+        							_id 		: null,
+	        						"amount"	: {"$sum" : "$price"}
+        						}
+        					}
+        				]
+        		)
+                .exec()
+                .then(menuOrder=>{
+                	if(menuOrder.length > 0){
+	                    resolve(menuOrder[0].amount);
+                	}else{
+                		resolve(0);
+                	}
+                })
+                .catch(err=>{
+                    reject(err);
+                  });
+            });
+}
 exports.vendor_monthly = (req,res,next)=>{
 	// SeatBooking .find({"workSpace_id": req.params.workspace_ID}
 	SeatBooking .aggregate(
@@ -452,6 +514,7 @@ exports.vendor_monthly = (req,res,next)=>{
 				)
 				.exec()
 				.then(seatBooking=>{
+					console.log('seatBooking ',seatBooking);
 					getData();
 					async function getData(){
 						var returnData = [];

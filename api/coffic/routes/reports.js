@@ -25,6 +25,11 @@ router.get('/get/settlementReportDetail/:startDate/:endDate/:vendor_ID',reportCo
 router.get('/get/dashboard',reportController.dashboardBlock);
 
 router.get('/get/bankreport/:startDate/:endDate',reportController.bankreport);
+
+router.get('/get/dailyBeverageReport/:date/:workspace_id',reportController.dailyBeverage_Report);
+
+router.get('/get/dailyOrderReport/:date/:workspace_id',reportController.dailyOrder_Report);
+
 module.exports = router;
 
 

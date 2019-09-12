@@ -33,9 +33,8 @@ router.delete('/delete/:workspaceID',workspaceController.delete_workspace);
 
 router.get('/get/dailyCheckInReport/:workspace_id',workspaceController.dailyCheckins_Report);
 
-router.get('/get/dailyOrderReport/:workspace_id',workspaceController.dailyOrder_Report);
+// router.get('/get/dailyOrderReport/:workspace_id',workspaceController.dailyOrder_Report);
 
-router.get('/get/dailyBeverageReport/:workspace_id',workspaceController.dailyBeverage_Report);
 
 
 

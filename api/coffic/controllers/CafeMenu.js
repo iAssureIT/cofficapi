@@ -3,7 +3,7 @@ const mongoose	= require("mongoose");
 const CafeMenu = require('../models/CafeMenu');
 
 exports.fetchMenu = (res,req,next)=>{
-    CafeMenu.find({workspaceID : req.params.workspace_ID})
+    CafeMenu.find({workspaceID : Sting(req.params.workspace_ID)})
             .exec()
             .then(data=>{
                 res.status(200).json(data);
