@@ -230,11 +230,11 @@ exports.update_workspace = (req,res,next)=>{
                             isOpen                 : true,
                              bankDetails           : {  
 
-                                                   bankName         :req.body.bankName,
-                                                   AccountNumber    :req.body.AccountNumber,
-                                                   ifscCode         :req.body.ifscCode,
-                                                   branchName       :req.body.branchName,
-                                                   accHolderName    :req.body.accHolderName,
+                                               bankName         :req.body.bankDetails.bankName,
+                                               AccountNumber    :req.body.bankDetails.AccountNumber,
+                                               ifscCode         :req.body.bankDetails.ifscCode,
+                                               branchName       :req.body.bankDetails.branchName,
+                                               accHolderName    :req.body.bankDetails.accHolderName,
                                   }
                             }
                                     

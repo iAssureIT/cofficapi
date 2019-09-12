@@ -30,6 +30,8 @@ router.get('/get/dailyBeverageReport/:date/:workspace_id',reportController.daily
 
 router.get('/get/dailyOrderReport/:date/:workspace_id',reportController.dailyOrder_Report);
 
+
+
 module.exports = router;
 
 

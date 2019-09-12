@@ -46,6 +46,7 @@ exports.detail_userorders = (req,res,next)=>{
     Menuorders.find({"user_id":String(req.params.user_id)})
         .exec()
          .then(data=>{
+            
             if(data.length > 0){
                 getData();
                 async function getData(){

@@ -573,6 +573,7 @@ exports.vendor_dailycheckins = (req,res,next)=>{
 								"userName"          : userdata.profile.fullName,
 							});
 						}
+						console.log("returndata",returnData);
 						if( i >= seatBooking.length){
 							res.status(200).json(returnData);		
 				     	}
@@ -852,6 +853,9 @@ exports.cafewiseSeatBooking=(req,res,next)=>{
 		res.status(200).json({error:err})
 	})
 }
+
+ 
+
 /*
 cafewise_old
 
