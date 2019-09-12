@@ -155,7 +155,7 @@ exports.send_notifications = (req,res,next)=>{
         if(req.body.toUserId === "admin"){
             toEmail = "appstore@coffic.com"; 
         }else{
-            toEmail = userProfile.profile.emailId;
+            toEmail = req.body.emailId;
             // userProfile = req.body.toUserId;
             // if(userProfile && userProfile!== null & userProfile!==""){
             //     // console.log("userProfile",userProfile);
