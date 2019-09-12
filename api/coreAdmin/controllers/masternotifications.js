@@ -155,11 +155,12 @@ exports.send_notifications = (req,res,next)=>{
         if(req.body.toUserId === "admin"){
             toEmail = "appstore@coffic.com"; 
         }else{
-            userProfile = await getProfileByUserId(req.body.toUserId);
-            if(userProfile && userProfile!== null & userProfile!==""){
-                // console.log("userProfile",userProfile);
-                toEmail = userProfile.profile.emailId;
-            }
+            toEmail = userProfile.profile.emailId;
+            // userProfile = req.body.toUserId;
+            // if(userProfile && userProfile!== null & userProfile!==""){
+            //     // console.log("userProfile",userProfile);
+              
+            // }
         }
         const templateDetails = await getTemplateDetails(req.body.templateName, req.body.variables);
 
@@ -188,31 +189,31 @@ exports.send_notifications = (req,res,next)=>{
     
 }
 
-//get getEmailByUserId - Rushikesh Salunkhe
-function getProfileByUserId(toUserId){
-    return new Promise(function(resolve,reject){
-        // console.log("getProfileByUserId",toUserId);
-    User
-    .findOne({"_id":toUserId})
-    .exec()
-        .then(data=>{
-            // console.log('data',data);
-            resolve(data);          
-        })
-        .catch(err =>{
-            console.log(err);
-            res.status(500).json({
-                error: err
-            });
-        });
+// //get getEmailByUserId - Rushikesh Salunkhe
+// function getProfileByUserId(toUserId){
+//     return new Promise(function(resolve,reject){
+//         // console.log("getProfileByUserId",toUserId);
+//     User
+//     .findOne({"_id":toUserId})
+//     .exec()
+//         .then(data=>{
+//             // console.log('data',data);
+//             resolve(data);          
+//         })
+//         .catch(err =>{
+//             console.log(err);
+//             res.status(500).json({
+//                 error: err
+//             });
+//         });
 
-        });
-}
+//         });
+// }
 
 function getTemplateDetails(templateName,variables){
     return new Promise(function(resolve,reject){
         Masternotifications
-        .findOne({"templateName":templateName , "templateType": Email,})
+        .findOne({"templateName":templateName})
         .exec()
         .then(NotificationData=>{
                     // console.log('serverside NotificationData: ', NotificationData);
