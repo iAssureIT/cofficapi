@@ -9,7 +9,45 @@ const User              = require('../../coreAdmin/models/users');
 const globaleVaiable    = require('../../../nodemon.js');
 const SubscriptionOrder	= require("../models/subscriptionOrder.js");
 const SubscriptionPlan  = require("../models//subscriptionPlan.js");
-
+/*Bank Report*/
+exports.bankreport=(req,res,next)=>{
+	WorkspaceDetails.find()
+					.exec()
+					.then(data=>{
+						getData();
+						async function getData(){
+							var returnData  = [];
+							var i 			= 0;
+							var amountToPay 		= 0;
+							for(i = 0 ; i < data.length ; i++){
+								var amount 	= await getMenuDetails(data[i]._id,req.params.startDate,req.params.endDate);
+								amountToPay	+= amount.totalAmount; 
+								returnData.push({
+									"partyName"		: data[i].nameOfCafe,
+									"accountNumber"	: data[i].bankDetails.AccountNumber,
+									"bankName"		: data[i].bankDetails.bankName,
+									"IFSCCode"		: data[i].bankDetails.ifscCode,
+									"branch"		: data[i].bankDetails.branchName,
+									"amountToPay"	: amount.totalAmount,
+								});
+							}
+							if(i >= data.length){
+								returnData.push({
+									"partyName"		: "Total",
+									"accountNumber"	: "Num of Transactions",
+									"bankName"		: ":"+(i+1),
+									"IFSCCode"		: " ",
+									"branch"		: " ",
+									"amountToPay"	: amountToPay,
+								});	
+								res.status(200).json(returnData);
+							}
+						}
+					})
+					.catch(err=>{
+						res.status(200).json({error:err});
+					});
+};
 function getUserCount(role){
 	return new Promise(function(resolve,reject){
 		User.countDocuments({ "roles" : {$in:[role]}})
@@ -133,11 +171,12 @@ exports.dashboardBlock = (req,res,next)=>{
 	};
 };
 function getMenuDetails(vendor_ID,startDate,endDate){
+	console.log('vendor_ID',vendor_ID);
 	return new Promise(function(resolve,reject){
 		MenuOrder.aggregate([
 								{
 									$match : {
-										"workSpace_id" 		: vendor_ID,
+										"workSpace_id" 		: String(vendor_ID),
 										"orderedAt"			: {$gte : new Date(startDate), $lte : new Date(endDate)},
 										"isDelivered"		: true
 									}
