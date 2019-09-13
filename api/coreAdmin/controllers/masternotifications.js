@@ -1,8 +1,9 @@
-const mongoose              = require("mongoose");
-const Masternotifications   = require("../models/masternotifications");
-var nodeMailer              = require('nodemailer');
-const User                  = require('../models/users');
-const plivo 		        = require('plivo');
+const mongoose = require("mongoose");
+
+const Masternotifications = require("../models/masternotifications");
+var nodeMailer                      = require('nodemailer');
+const User          = require('../models/users');
+
 
 exports.create_template = (req, res, next) => {
     console.log('req=>',req)
@@ -169,7 +170,7 @@ exports.send_notifications = (req,res,next)=>{
         // console.log("after mail=====>");
         // getTemplateDetails();
         const templateDetailsEmail = await getTemplateDetailsEmail(req.body.templateName, req.body.variables);
-        const templateDetailsSMS = await getTemplateDetailsSMS(req.body.templateName, req.body.variables);
+        const templateDetailsSMS    = await getTemplateDetailsSMS(req.body.templateName, req.body.variables);
         // console.log("toEmail=====>",toEmail);
         // console.log("templateDetails = ",templateDetails);
 
@@ -181,12 +182,11 @@ exports.send_notifications = (req,res,next)=>{
         };
         console.log("mailOptions=====>",mailOptions);
         var SMSOptions = {                
-           
+            // from        : '"Coffic Admin" <'+senderEmail+'>', // sender address
             to          : toMobileNumber , // list of receiver
            
-            html        : templateDetailsEmail.content, // html body
+            html        : templateDetailsSMS.content, // html body
         };
-        console.log("SMSOptions=====>",SMSOptions);
 
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {                    
@@ -207,14 +207,13 @@ exports.send_notifications = (req,res,next)=>{
 		// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw'); 
 		const sourceMobile = "+919923393733";
 		var text = SMSOptions.html
-        
 		
 		client.messages.create(
 			src=sourceMobile,
 			dst=SMSOptions.toMobileNumber,
 			text=text
 		).then((result)=> {
-			console.log("src = ",src," | DST = ", dst, " | result = ", result);
+			// console.log("src = ",src," | DST = ", dst, " | result = ", result);
 			// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 			return res.status(200).json({
 				"message" : 'SMS-SEND-SUCCESSFULLY',
