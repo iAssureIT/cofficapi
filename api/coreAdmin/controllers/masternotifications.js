@@ -155,22 +155,21 @@ exports.send_notifications = (req,res,next)=>{
         var userProfile = {};
         if(req.body.toUserId === "admin"){
             toEmail = "appstore@coffic.com"; 
-            toMobileNumber = ""
         }else{
             // getProfileByUserId();
             userProfile = await getProfileByUserId(req.body.toUserId);
             if(userProfile && userProfile!== null & userProfile!==""){
-                console.log("userProfile=====>",userProfile);
-                toEmail         = userProfile.emails[0].address;
-                toMobileNumber  = userProfile.profile.mobileNumber;
-                 
-                console.log("toMobileNumber=====>",toMobileNumber);
+                // console.log("userProfile=====>",userProfile);
+                toEmail = userProfile.emails[0].address;
+                toMobile = userProfile.profile.mobileNumber;
+                console.log("toEmail=====>",toEmail);
+                console.log("toMobile=====>",toMobile);
 
             }
         }
         // console.log("after mail=====>");
         // getTemplateDetails();
-        const templateDetailsEmail = await getTemplateDetailsEmail(req.body.templateName, req.body.variables);
+        const templateDetailsEmail  = await getTemplateDetailsEmail(req.body.templateName, req.body.variables);
         const templateDetailsSMS    = await getTemplateDetailsSMS(req.body.templateName, req.body.variables);
         // console.log("toEmail=====>",toEmail);
         // console.log("templateDetails = ",templateDetails);
@@ -182,12 +181,6 @@ exports.send_notifications = (req,res,next)=>{
             html        : templateDetailsEmail.content, // html body
         };
         console.log("mailOptions=====>",mailOptions);
-        var SMSOptions = {                
-            // from        : '"Coffic Admin" <'+senderEmail+'>', // sender address
-            to          : toMobileNumber , // list of receiver
-           
-            html        : templateDetailsSMS.content, // html body
-        };
 
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {                    
@@ -204,20 +197,21 @@ exports.send_notifications = (req,res,next)=>{
             res.render('index');
         });
 
-        const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
-		// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw'); 
+
+
+        console.log('Plivo Client =======+> ',toMobile);
+		const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+		// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
+
 		const sourceMobile = "+919923393733";
-		var text = SMSOptions.html
-        console.log("text======>>>",text);
-        console.log("SMSOptions====>",SMSOptions);
-		
+		var text = templateDetailsSMS.content;
 		
 		client.messages.create(
 			src=sourceMobile,
-			dst=SMSOptions.toMobileNumber,
+			dst=toMobile,
 			text=text
-		).then((res)=> {
-			console.log("src = ",src," | DST = ", dst, " | result = ", res);
+		).then((result)=> {
+			// console.log("src = ",src," | DST = ", dst, " | result = ", result);
 			// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 			return res.status(200).json({
 				"message" : 'SMS-SEND-SUCCESSFULLY',
@@ -310,13 +304,13 @@ function getTemplateDetailsEmail(templateName,variables){
         }); 
     }
     function getTemplateDetailsSMS(templateName,variables){
-        console.log("Inside getTemplateDetails templateName = ",templateName);
-        console.log("Inside getTemplateDetails variables = ",variables);
+        console.log("Inside getTemplateDetails SMS templateName = ",templateName);
+        console.log("Inside getTemplateDetails  SMS variables = ",variables);
         return new Promise(function(resolve,reject){
             console.log("2. Inside promise = ",templateName);
     
             Masternotifications
-            .findOne({"templateName":templateName, "templateType": "SMS"})
+            .findOne({"templateName":templateName, "templateType":'SMS'})
             .exec()
             .then(NotificationData=>{
                         console.log('serverside NotificationData: ', NotificationData);
