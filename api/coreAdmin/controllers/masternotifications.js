@@ -160,11 +160,11 @@ exports.send_notifications = (req,res,next)=>{
             // getProfileByUserId();
             userProfile = await getProfileByUserId(req.body.toUserId);
             if(userProfile && userProfile!== null & userProfile!==""){
-                // console.log("userProfile=====>",userProfile);
+                console.log("userProfile=====>",userProfile);
                 toEmail         = userProfile.emails[0].address;
                 toMobileNumber  = userProfile.profile.mobileNumber;
                  
-                // console.log("toEmail=====>",toEmail);
+                console.log("toMobileNumber=====>",toMobileNumber);
 
             }
         }
@@ -217,7 +217,7 @@ exports.send_notifications = (req,res,next)=>{
 			dst=SMSOptions.toMobileNumber,
 			text=text
 		).then((res)=> {
-			// console.log("src = ",src," | DST = ", dst, " | result = ", result);
+			console.log("src = ",src," | DST = ", dst, " | result = ", res);
 			// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 			return res.status(200).json({
 				"message" : 'SMS-SEND-SUCCESSFULLY',
