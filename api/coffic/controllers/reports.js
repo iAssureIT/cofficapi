@@ -55,7 +55,7 @@ exports.dailyOrder_Report=(req,res,next)=>{
 								"item" 			: 1,
 								"orderedAt"		: 1,
 								"isDelivered"	: 1,
-								"date"			: 1,
+								// "date"			: 1,
 								"month"			: {$month: '$date'},
 								"year"			: {$year: '$date'},
 								"day"			: { $dayOfMonth: "$date" },
