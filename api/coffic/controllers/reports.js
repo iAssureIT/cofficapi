@@ -44,7 +44,7 @@ exports.dailyOrder_Report=(req,res,next)=>{
 	var year  = moment(req.params.date).format("YYYY");
 	var month = moment(req.params.date).format("MM"); 
 	var dd  = moment(req.params.date).format("DD");
-	console.log("year ",year, " month ",month, " date ",date); 
+	console.log("year ",year, " month ",month, " date ",dd); 
 	// "workSpace_id" : req.params.workspace_id,
 	MenuOrder.aggregate([
 						{
