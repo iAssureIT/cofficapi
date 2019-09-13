@@ -222,15 +222,18 @@ function getTemplateDetails(templateName,variables){
     console.log("Inside getTemplateDetails templateName = ",templateName);
     console.log("Inside getTemplateDetails variables = ",variables);
     return new Promise(function(resolve,reject){
+        console.log("2. Inside promise = ",templateName);
+
         Masternotifications
         .findOne({"templateName":templateName})
         .exec()
         .then(NotificationData=>{
-                    // console.log('serverside NotificationData: ', NotificationData);
+                    console.log('serverside NotificationData: ', NotificationData);
                     if(NotificationData){
                         var content = NotificationData.content;
+                        var wordsplit = [];
                         if(content.indexOf('[') > -1 ){
-                            var wordsplit = content.split('[');
+                            wordsplit = content.split('[');
                         }
 
                         var tokens = [];
@@ -245,12 +248,12 @@ function getTemplateDetails(templateName,variables){
                         var numOfVar = Object.keys(variables).length;
 
                         for(i=0; i<numOfVar; i++){
-                            var tokVar = tokens[i].substr(1,tokens[i].length-2);
+                            // var tokVar = tokens[i].substr(1,tokens[i].length-2);
                             content = content.replace(tokens[i],variables[tokens[i]]);
                         }
                         content = content.split("[").join("'");
                         content = content.split("]").join("'");
-                        // console.log("content = ",content);
+                        console.log("content = ",content);
                         var tData={
                             content:content,
                             subject:NotificationData.subject
