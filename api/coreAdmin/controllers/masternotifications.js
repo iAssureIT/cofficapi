@@ -182,11 +182,12 @@ exports.send_notifications = (req,res,next)=>{
         };
         console.log("mailOptions=====>",mailOptions);
         var SMSOptions = {                
-            from        : '"Coffic Admin" <'+senderEmail+'>', // sender address
+           
             to          : toMobileNumber , // list of receiver
            
             html        : templateDetailsEmail.content, // html body
         };
+        console.log("SMSOptions=====>",SMSOptions);
 
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {                    
@@ -207,6 +208,8 @@ exports.send_notifications = (req,res,next)=>{
 		// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw'); 
 		const sourceMobile = "+919923393733";
 		var text = SMSOptions.html
+        console.log("text======>",text);
+        console.log("SMSOptions.toMobileNumber======>",SMSOptions.toMobileNumber);
 		
 		client.messages.create(
 			src=sourceMobile,
