@@ -313,7 +313,7 @@ function getTemplateDetailsEmail(templateName,variables){
             console.log("2. Inside promise = ",templateName);
     
             Masternotifications
-            .findOne({"templateName":templateName, "templateType":'SMS'})
+            .findOne({"templateName":templateName, "templateType": "SMS"})
             .exec()
             .then(NotificationData=>{
                         console.log('serverside NotificationData: ', NotificationData);
