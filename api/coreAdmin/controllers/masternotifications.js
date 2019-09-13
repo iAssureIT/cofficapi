@@ -155,7 +155,7 @@ exports.send_notifications = (req,res,next)=>{
         if(req.body.toUserId === "admin"){
             toEmail = "appstore@coffic.com"; 
         }else{
-            getProfileByUserId();
+            // getProfileByUserId();
             userProfile = await getProfileByUserId(req.body.toUserId);
             if(userProfile && userProfile!== null & userProfile!==""){
                 console.log("userProfile=====>",userProfile);
@@ -165,7 +165,7 @@ exports.send_notifications = (req,res,next)=>{
             }
         }
         console.log("after mail=====>");
-        getTemplateDetails();
+        // getTemplateDetails();
         const templateDetails = await getTemplateDetails(req.body.templateName, req.body.variables);
         // console.log("toEmail=====>",toEmail);
         console.log("templateDetails = ",templateDetails);
