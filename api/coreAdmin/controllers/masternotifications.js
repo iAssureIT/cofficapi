@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Masternotifications = require("../models/masternotifications");
 var nodeMailer                      = require('nodemailer');
 const User          = require('../models/users');
+const plivo 		= require('plivo');
 
 
 exports.create_template = (req, res, next) => {
