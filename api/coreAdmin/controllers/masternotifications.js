@@ -159,10 +159,12 @@ exports.send_notifications = (req,res,next)=>{
             if(userProfile && userProfile!== null & userProfile!==""){
                 console.log("userProfile=====>",userProfile);
                 toEmail = userProfile.emails[0].address;
+                console.log("toEmail=====>",toEmail);
+
             }
         }
         const templateDetails = await getTemplateDetails(req.body.templateName, req.body.variables);
-        console.log("toEmail=====>",toEmail);
+        // console.log("toEmail=====>",toEmail);
         console.log("templateDetails = ",templateDetails);
 
         var mailOptions = {                
