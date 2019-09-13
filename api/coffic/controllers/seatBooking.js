@@ -24,26 +24,26 @@ exports.chekinUser = (req,res,next)=>{
                 "endDate" : {$gte : new Date()},
                 "status" : "paid" , };
 
-    // console.log("selector",selector);
+    console.log("selector",selector);
     SubscriptionOrder
         .find({ 
                 "user_id" : req.body.user_id,
                 "endDate" : {$gte : new Date()},
-                "status" : "paid",
+                "status" : "paid" ,
              })
         .then(activeSubOrder=>{
             if(activeSubOrder.length>0){
-                console.log("activeSubOrder = ",activeSubOrder);
-                console.log("activeSubOrder length = ",activeSubOrder.length);
+                console.log("activeSubOrder = ",activeSubOrder.length);
                 SeatBooking
                     .find({
                         user_id : req.body.user_id, 
-                        plan_id : activeSubOrder[0].plan_id,
+                        plan_id : activeSubOrder[0].plan_id
                     })
-                    .then(activePlanSeatBooking => {
-                        console.log("totCheckIns = ",activePlanSeatBooking.length);
+                    .estimatedDocumentCount()
+                    .then(totCheckIns => {
+                        console.log("totCheckIns = ",totCheckIns);
                         console.log("activeSubOrder[0].maxCheckIns = ",activeSubOrder[0].maxCheckIns);
-                        if(activePlanSeatBooking.length <= activeSubOrder[0].maxCheckIns) {
+                        if(totCheckIns <= activeSubOrder[0].maxCheckIns) {
                             const seatBookingObj = new SeatBooking({
                                 _id                 :  new mongoose.Types.ObjectId(),
                                 plan_id             :  activeSubOrder[0].plan_id,
@@ -60,7 +60,7 @@ exports.chekinUser = (req,res,next)=>{
                                 .save()
                                 .then(data=>{                   
                                     var message = "Booking Successful";                 
-                                    if(activeSubOrder[0].maxCheckIns == (activePlanSeatBooking.length + 1)){
+                                    if(activeSubOrder[0].maxCheckIns == (totCheckIns+1)){
                                         SubscriptionOrder
                                             .update(
                                                 {plan_id : activeSubOrder[0].plan_id},
