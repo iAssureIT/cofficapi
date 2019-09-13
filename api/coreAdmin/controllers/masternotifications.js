@@ -154,29 +154,39 @@ exports.send_notifications = (req,res,next)=>{
         var userProfile = {};
         if(req.body.toUserId === "admin"){
             toEmail = "appstore@coffic.com"; 
+            toMobileNumber = ""
         }else{
             // getProfileByUserId();
             userProfile = await getProfileByUserId(req.body.toUserId);
             if(userProfile && userProfile!== null & userProfile!==""){
                 // console.log("userProfile=====>",userProfile);
-                toEmail = userProfile.emails[0].address;
+                toEmail         = userProfile.emails[0].address;
+                toMobileNumber  = userProfile.profile.mobileNumber;
+                 
                 // console.log("toEmail=====>",toEmail);
 
             }
         }
         // console.log("after mail=====>");
         // getTemplateDetails();
-        const templateDetails = await getTemplateDetails(req.body.templateName, req.body.variables);
+        const templateDetailsEmail = await getTemplateDetailsEmail(req.body.templateName, req.body.variables);
+        const templateDetailsSMS = await getTemplateDetailsSMS(req.body.templateName, req.body.variables);
         // console.log("toEmail=====>",toEmail);
         // console.log("templateDetails = ",templateDetails);
 
         var mailOptions = {                
             from        : '"Coffic Admin" <'+senderEmail+'>', // sender address
             to          : toEmail , // list of receiver
-            subject     : templateDetails.subject, // Subject line
-            html        : templateDetails.content, // html body
+            subject     : templateDetailsEmail.subject, // Subject line
+            html        : templateDetailsEmail.content, // html body
         };
         console.log("mailOptions=====>",mailOptions);
+        var SMSOptions = {                
+            from        : '"Coffic Admin" <'+senderEmail+'>', // sender address
+            to          : toMobileNumber , // list of receiver
+           
+            html        : templateDetailsEmail.content, // html body
+        };
 
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {                    
@@ -193,9 +203,34 @@ exports.send_notifications = (req,res,next)=>{
             res.render('index');
         });
 
+        const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+		// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw'); 
+		const sourceMobile = "+919923393733";
+		var text = SMSOptions.html
+		
+		client.messages.create(
+			src=sourceMobile,
+			dst=SMSOptions.toMobileNumber,
+			text=text
+		).then((result)=> {
+			// console.log("src = ",src," | DST = ", dst, " | result = ", result);
+			// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
+			return res.status(200).json({
+				"message" : 'SMS-SEND-SUCCESSFULLY',
+				
+			});			
+		})
+		.catch(otpError=>{
+			return res.status(501).json({
+				message: "Some Error Occurred in SMS Send Function",
+				error: otpError
+			});        
+		}); 
+
     }
     
 }
+
 
 //get getEmailByUserId - Rushikesh Salunkhe
 function getProfileByUserId(toUserId){
@@ -218,14 +253,14 @@ function getProfileByUserId(toUserId){
         });
 }
 
-function getTemplateDetails(templateName,variables){
+function getTemplateDetailsEmail(templateName,variables){
     console.log("Inside getTemplateDetails templateName = ",templateName);
     console.log("Inside getTemplateDetails variables = ",variables);
     return new Promise(function(resolve,reject){
         console.log("2. Inside promise = ",templateName);
 
         Masternotifications
-        .findOne({"templateName":templateName})
+        .findOne({"templateName":templateName, "templateType":'Email'})
         .exec()
         .then(NotificationData=>{
                     console.log('serverside NotificationData: ', NotificationData);
@@ -270,3 +305,55 @@ function getTemplateDetails(templateName,variables){
             });
         }); 
     }
+    function getTemplateDetailsSMS(templateName,variables){
+        console.log("Inside getTemplateDetails templateName = ",templateName);
+        console.log("Inside getTemplateDetails variables = ",variables);
+        return new Promise(function(resolve,reject){
+            console.log("2. Inside promise = ",templateName);
+    
+            Masternotifications
+            .findOne({"templateName":templateName, "templateType":'SMS'})
+            .exec()
+            .then(NotificationData=>{
+                        console.log('serverside NotificationData: ', NotificationData);
+                        if(NotificationData){
+                            var content = NotificationData.content;
+                            var wordsplit = [];
+                            if(content.indexOf('[') > -1 ){
+                                wordsplit = content.split('[');
+                            }
+    
+                            var tokens = [];
+                            var n = 0;
+                            for(i=0;i<wordsplit.length;i++){
+                                if(wordsplit[i].indexOf(']') > -1 ){
+                                    tokensArr = wordsplit[i].split(']');
+                                    tokens[n] = tokensArr[0];
+                                    n++;
+                                }
+                            }
+                            var numOfVar = Object.keys(variables).length;
+    
+                            for(i=0; i<numOfVar; i++){
+                                // var tokVar = tokens[i].substr(1,tokens[i].length-2);
+                                content = content.replace(tokens[i],variables[tokens[i]]);
+                            }
+                            content = content.split("[").join("'");
+                            content = content.split("]").join("'");
+                            console.log("content = ",content);
+                            var tData={
+                                content:content,
+                                subject:NotificationData.subject
+                            }
+                            resolve(tData);          
+                        }//NotificationData
+                        
+                })
+                .catch(err =>{
+                    console.log(err);
+                    err.status(500).json({
+                        error: err
+                    });
+                });
+            }); 
+        }
