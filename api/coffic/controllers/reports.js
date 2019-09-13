@@ -41,7 +41,9 @@ exports.dailyBeverage_Report=(req,res,next)=>{
 			 });
 }
 exports.dailyOrder_Report=(req,res,next)=>{
-	MenuOrder.find({"workSpace_id" : req.params.workspace_id, "date": new Date(req.params.date)})
+	MenuOrder.find({
+		            "workSpace_id" : req.params.workspace_id,
+	                "date": new Date(req.params.date)})
 			 // .select("user_id,item,orderedAt,isDelivered")
 			 .exec()
 			 .then(data=>{
@@ -543,6 +545,7 @@ exports.vendor_dailycheckins = (req,res,next)=>{
 								{
 									$match : {
 										"workSpace_id"  : req.params.workspace_ID,
+										"date"			: req.params.date
 
 									}
 								},
