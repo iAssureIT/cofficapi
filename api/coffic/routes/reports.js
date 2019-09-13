@@ -6,7 +6,7 @@ const reportController = require('../controllers/reports.js');
 
 router.get('/get/vendormonthly/:startDate/:endDate/:workspace_ID',reportController.vendor_monthly);
 
-router.get('/get/vendordailycheckins/:workspace_ID',reportController.vendor_dailycheckins);
+router.get('/get/vendordailycheckins/:workspace_ID/:date',reportController.vendor_dailycheckins);
  
 router.get('/get/checkInOut/:type/:startDate/:endDate/:workSpace_id',reportController.checkInOut);
 
