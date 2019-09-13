@@ -119,10 +119,10 @@ exports.update_companysettinginfo = (req,res,next)=>{
     // var roleData = req.body.role;
     Companysettings.updateOne(
 
+
         { companyId : req.body.companyId},    
             {
                 $set:{
-
 
                     "companyName"            : req.body.companyName,
                     "companyContactNumber"   : req.body.companyContactNumber,
