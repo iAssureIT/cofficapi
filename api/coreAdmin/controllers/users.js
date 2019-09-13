@@ -182,7 +182,7 @@ exports.user_signupadmin = (req,res,next)=>{
 									
 									"method"    : "POST",
 
-									"url"       : "http://localhost:5069/send-email",
+									"url"       : "http://localhost:5012/send-email",
 									"body"      : 	{
 														"email"     : newUser.emailId,
 														"subject"   : 'Verify your Account',
@@ -282,7 +282,7 @@ exports.user_otpverification = (req,res,next)=>{
 		request({
 			
 			"method"    : "POST",
-			"url"       : "http://localhost:5069/send-email",
+			"url"       : "http://localhost:"+globalVariable.PORT+"/send-email",
 			"body"      : 	{
 								"email"     : newUser.emailId,
 								"subject"   : 'Verify your Account',
