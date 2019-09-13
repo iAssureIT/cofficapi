@@ -158,11 +158,12 @@ exports.send_notifications = (req,res,next)=>{
             userProfile = await getProfileByUserId(req.body.toUserId);
             if(userProfile && userProfile!== null & userProfile!==""){
                 console.log("userProfile=====>",userProfile);
-                toEmail = userProfile.profile.emailId;
+                toEmail = userProfile.emails[0].address;
             }
         }
         const templateDetails = await getTemplateDetails(req.body.templateName, req.body.variables);
         console.log("toEmail=====>",toEmail);
+        console.log("templateDetails = ",templateDetails);
 
         var mailOptions = {                
             from        : '"Coffic Admin" <'+senderEmail+'>', // sender address
