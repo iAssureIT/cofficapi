@@ -41,9 +41,13 @@ exports.dailyBeverage_Report=(req,res,next)=>{
 			 });
 }
 exports.dailyOrder_Report=(req,res,next)=>{
+	console.log("inside....");
+	var Da = req.params.date;
+	var todayDate = new Date(Da);
+	console.log("todayDate",todayDate);
 	MenuOrder.find({
 		            "workSpace_id" : req.params.workspace_id,
-	                "date": new Date(req.params.date)})
+	                "date": todayDate})
 			 // .select("user_id,item,orderedAt,isDelivered")
 			 .exec()
 			 .then(data=>{
@@ -54,8 +58,9 @@ exports.dailyOrder_Report=(req,res,next)=>{
 			 			var returnData = [];
 			 			for(i = 0 ; i < data.length ; i++){
 			 				var userInfo = await getuserDetails(data[i].user_id);
+			 				console.log("userInfo",userInfo);
 			 				returnData.push({
-			 					"UserName" 		: userInfo.profile.fullName,
+			 					"UserName" 		: userInfo.profile.fullName ? userInfo.profile.fullName : "-",
 			 					"Item"	   		: data[i].item,
 			 					"OrderedAt"		: data[i].orderedAt,
 			 					"isDelivered"	: data[i].isDelivered,
@@ -65,6 +70,8 @@ exports.dailyOrder_Report=(req,res,next)=>{
 			 				res.status(200).json(returnData);
 			 			}
 			 		}
+			 	}else{
+			 		res.status(200).json("Data not Found");
 			 	}
 			 	// res.status(200).json(data);
 			 })
