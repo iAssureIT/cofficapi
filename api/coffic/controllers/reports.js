@@ -43,7 +43,7 @@ exports.dailyBeverage_Report=(req,res,next)=>{
 exports.dailyOrder_Report=(req,res,next)=>{
 	var year  = moment(req.params.date).format("YYYY");
 	var month = moment(req.params.date).format("MM"); 
-	var date  = moment(req.params.date).format("DD");
+	var dd  = moment(req.params.date).format("DD");
 	console.log("year ",year, " month ",month, " date ",date); 
 	// "workSpace_id" : req.params.workspace_id,
 	MenuOrder.aggregate([
@@ -55,18 +55,19 @@ exports.dailyOrder_Report=(req,res,next)=>{
 								"item" 			: 1,
 								"orderedAt"		: 1,
 								"isDelivered"	: 1,
+								"date"			: 1,
 								"month"			: {$month: '$date'},
 								"year"			: {$year: '$date'},
 								"day"			: { $dayOfMonth: "$date" },
 							}
 						},
-						// {
-						// 	$match: {
-						// 		month: month,
-						// 		year : year,
-						// 		day  : date
-						// 	}
-						// }
+						{
+							$match: {
+								month: month,
+								year : year,
+								day  : date
+							}
+						}
 		           ])
 			 .exec()
 			 .then(data=>{
