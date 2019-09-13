@@ -16,8 +16,12 @@ router.patch('/companyLocationsInfo', CompanySettingController.update_companyset
 
 router.patch('/taxSettings', CompanySettingController.update_companysettings_taxSettings);
 
+<<<<<<< Updated upstream
 router.patch('/information', CompanySettingController.update_companysettinginfo);
 
+=======
+router.patch('/info', CompanySettingController.update_companysettings_info);
+>>>>>>> Stashed changes
 
 router.delete('/:companysettingsID',CompanySettingController.delete_companysettings);
 

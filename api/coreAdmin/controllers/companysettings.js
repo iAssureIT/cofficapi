@@ -120,9 +120,11 @@ exports.update_companysettinginfo = (req,res,next)=>{
     Companysettings.updateOne(
 
 
+
         { companyId : req.body.companyId},    
             {
                 $set:{
+
 
                     "companyName"            : req.body.companyName,
                     "companyContactNumber"   : req.body.companyContactNumber,
