@@ -32,8 +32,11 @@ exports.dailyBeverage_Report=(req,res,next)=>{
 								}
 							}
 			])
-			 .exec()
-			 .then(data=>{
+			.sort({ "createdAt": -1 })
+			.skip(parseInt(req.params.startLimit))
+			.limit(parseInt(req.params.endLimit))
+			.exec()
+			.then(data=>{
 			 	res.status(200).json(data);
 			 })
 			 .catch(err=>{
@@ -108,6 +111,9 @@ exports.dailyOrder_Report=(req,res,next)=>{
 /*Bank Report*/
 exports.bankreport=(req,res,next)=>{
 	WorkspaceDetails.find()
+					.sort({ "createdAt": -1 })
+					.skip(parseInt(req.params.startLimit))
+					.limit(parseInt(req.params.endLimit))
 					.exec()
 					.then(data=>{
 						getData();
@@ -359,8 +365,11 @@ exports.settlementSummary = (req,res,next)=>{
 };
 exports.settlementDetail = (req,res,next)=>{
 	MenuOrder.find()
-			 .exec()
-			 .then(menu=>{
+			.sort({ "createdAt": -1 })
+			.skip(parseInt(req.params.startLimit))
+			.limit(parseInt(req.params.endLimit))
+			.exec()
+			.then(menu=>{
 			 	if(menu.length > 0){
 			 		getData();
 			 		async function getData(){
@@ -546,6 +555,9 @@ exports.vendor_monthly = (req,res,next)=>{
 								}
 							]
 				)
+				.sort({ "createdAt": -1 })
+				.skip(parseInt(req.params.startLimit))
+				.limit(parseInt(req.params.endLimit))
 				.exec()
 				.then(seatBooking=>{
 					console.log('seatBooking ',seatBooking);
@@ -592,6 +604,9 @@ exports.vendor_dailycheckins = (req,res,next)=>{
 								}
 							]
 				)
+				.sort({ "createdAt": -1 })
+				.skip(parseInt(req.params.startLimit))
+				.limit(parseInt(req.params.endLimit))
 				.exec()
 				.then(seatBooking=>{
 					console.log("seatbooking",seatBooking);
@@ -737,6 +752,9 @@ exports.salesTransaction = (req,res,next)=>{
 	if(query){
 		SubscriptionOrder 	
 		.find()
+		.sort({ "createdAt": -1 })
+				.skip(parseInt(req.params.startLimit))
+				.limit(parseInt(req.params.endLimit))
 							.exec()
 							.then(subOrder=>{
 								if(subOrder.length > 0){
@@ -823,6 +841,9 @@ exports.checkInOut=(req,res,next)=>{
 								}
 							]
 				)
+				.sort({ "createdAt": -1 })
+				.skip(parseInt(req.params.startLimit))
+				.limit(parseInt(req.params.endLimit))
 				.exec()
 				.then(seatBooking=>{
 					console.log("seatBooking......>",seatBooking);
@@ -857,7 +878,11 @@ exports.checkInOut=(req,res,next)=>{
 	 }	
 }
 exports.cafewiseSeatBooking=(req,res,next)=>{
-	WorkspaceDetails.find()
+	WorkspaceDetails
+	.find()
+	.sort({ "createdAt": -1 })
+	.skip(parseInt(req.params.startLimit))
+	.limit(parseInt(req.params.endLimit))
 	.exec()
 	.then(workspacedata=>{
 		console.log("workspacedata",workspacedata);
