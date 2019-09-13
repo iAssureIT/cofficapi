@@ -41,9 +41,9 @@ exports.dailyBeverage_Report=(req,res,next)=>{
 			 });
 }
 exports.dailyOrder_Report=(req,res,next)=>{
-	var year = (req.params.date).format("YYYY");
-	var month = (req.params.date).format("MM"); 
-	var date = (req.params.date).format("DD");
+	var year  = moment(req.params.date).format("YYYY");
+	var month = moment(req.params.date).format("MM"); 
+	var date  = moment(req.params.date).format("DD");
 	console.log("year ",year, " month ",month, " date ",date); 
 	// "workSpace_id" : req.params.workspace_id,
 	MenuOrder.aggregate([
