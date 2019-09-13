@@ -182,10 +182,8 @@ exports.user_signupadmin = (req,res,next)=>{
 									
 									"method"    : "POST",
 
-									"url"       : "http://localhost:"+globalVariable.PORT+"/send-email",
+									"url"       : "http://localhost:5069/send-email",
 									"body"      : 	{
-
-
 														"email"     : newUser.emailId,
 														"subject"   : 'Verify your Account',
 														"text"      : "WOW Its done",
@@ -214,7 +212,6 @@ exports.user_signupadmin = (req,res,next)=>{
 								
 								
 								console.log('Plivo Client = ',newUser.mobileNumber);
-
 
 								const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz'); // iAssureIT
 								// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
@@ -285,7 +282,7 @@ exports.user_otpverification = (req,res,next)=>{
 		request({
 			
 			"method"    : "POST",
-			"url"       : "http://localhost:"+globalVariable.PORT+"/send-email",
+			"url"       : "http://localhost:localhost:5069/send-email",
 			"body"      : 	{
 								"email"     : newUser.emailId,
 								"subject"   : 'Verify your Account',
