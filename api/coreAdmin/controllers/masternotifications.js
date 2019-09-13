@@ -155,6 +155,7 @@ exports.send_notifications = (req,res,next)=>{
         if(req.body.toUserId === "admin"){
             toEmail = "appstore@coffic.com"; 
         }else{
+            getProfileByUserId();
             userProfile = await getProfileByUserId(req.body.toUserId);
             if(userProfile && userProfile!== null & userProfile!==""){
                 console.log("userProfile=====>",userProfile);
