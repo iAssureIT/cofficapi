@@ -60,16 +60,17 @@ exports.dailyOrder_Report=(req,res,next)=>{
 								"day"			: { $dayOfMonth: "$date" },
 							}
 						},
-						{
-							$match: {
-								month: month,
-								year : year,
-								day  : date
-							}
-						}
+						// {
+						// 	$match: {
+						// 		month: month,
+						// 		year : year,
+						// 		day  : date
+						// 	}
+						// }
 		           ])
 			 .exec()
 			 .then(data=>{
+			 	console.log("data ",data);
 			 	if(data.length > 0){
 			 		getData();
 			 		async function getData(){
