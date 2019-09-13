@@ -50,23 +50,23 @@ exports.dailyOrder_Report=(req,res,next)=>{
 						{
 							$match : { "workSpace_id" : req.params.workspace_id }
 						},
-						{
-							$project : {
-								"item" 			: 1,
-								"orderedAt"		: 1,
-								"isDelivered"	: 1,
-								"month"			: {$month: '$date'},
-								"year"			: {$year: '$date'},
-								"day"			: { $dayOfMonth: "$date" },
-							}
-						},
-						{
-							$match: {
-								month: month,
-								year : year,
-								day  : date
-							}
-						}
+						// {
+						// 	$project : {
+						// 		"item" 			: 1,
+						// 		"orderedAt"		: 1,
+						// 		"isDelivered"	: 1,
+						// 		"month"			: {$month: '$date'},
+						// 		"year"			: {$year: '$date'},
+						// 		"day"			: { $dayOfMonth: "$date" },
+						// 	}
+						// },
+						// {
+						// 	$match: {
+						// 		month: month,
+						// 		year : year,
+						// 		day  : date
+						// 	}
+						// }
 		           ])
 			 .exec()
 			 .then(data=>{
