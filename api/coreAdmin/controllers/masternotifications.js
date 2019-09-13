@@ -158,17 +158,17 @@ exports.send_notifications = (req,res,next)=>{
             // getProfileByUserId();
             userProfile = await getProfileByUserId(req.body.toUserId);
             if(userProfile && userProfile!== null & userProfile!==""){
-                console.log("userProfile=====>",userProfile);
+                // console.log("userProfile=====>",userProfile);
                 toEmail = userProfile.emails[0].address;
-                console.log("toEmail=====>",toEmail);
+                // console.log("toEmail=====>",toEmail);
 
             }
         }
-        console.log("after mail=====>");
+        // console.log("after mail=====>");
         // getTemplateDetails();
         const templateDetails = await getTemplateDetails(req.body.templateName, req.body.variables);
         // console.log("toEmail=====>",toEmail);
-        console.log("templateDetails = ",templateDetails);
+        // console.log("templateDetails = ",templateDetails);
 
         var mailOptions = {                
             from        : '"Coffic Admin" <'+senderEmail+'>', // sender address
@@ -176,7 +176,7 @@ exports.send_notifications = (req,res,next)=>{
             subject     : templateDetails.subject, // Subject line
             html        : templateDetails.content, // html body
         };
-        console.log("mailOptions=====>",mailOptions);
+        // console.log("mailOptions=====>",mailOptions);
 
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {                    
