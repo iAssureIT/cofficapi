@@ -41,14 +41,33 @@ exports.dailyBeverage_Report=(req,res,next)=>{
 			 });
 }
 exports.dailyOrder_Report=(req,res,next)=>{
-	console.log("inside....");
-	var Da = req.params.date;
-	var todayDate = new Date(Da);
-	console.log("todayDate",todayDate);
-	MenuOrder.find({
-		            "workSpace_id" : req.params.workspace_id,
-	                "date": todayDate})
-			 // .select("user_id,item,orderedAt,isDelivered")
+	var year = (req.params.date).format("YYYY");
+	var month = (req.params.date).format("MM"); 
+	var date = (req.params.date).format("DD");
+	console.log("year ",year, " month ",month, " date ",date); 
+	// "workSpace_id" : req.params.workspace_id,
+	MenuOrder.aggregate([
+						{
+							$match : { "workSpace_id" : req.params.workspace_id }
+						},
+						{
+							$project : {
+								"item" 			: 1,
+								"orderedAt"		: 1,
+								"isDelivered"	: 1,
+								"month"			: {$month: '$date'},
+								"year"			: {$year: '$date'},
+								"day"			: { $dayOfMonth: "$date" },
+							}
+						},
+						{
+							$match: {
+								month: month,
+								year : year,
+								day  : date
+							}
+						}
+		           ])
 			 .exec()
 			 .then(data=>{
 			 	if(data.length > 0){
@@ -59,8 +78,12 @@ exports.dailyOrder_Report=(req,res,next)=>{
 			 			for(i = 0 ; i < data.length ; i++){
 			 				var userInfo = await getuserDetails(data[i].user_id);
 			 				console.log("userInfo",userInfo);
+			 				var name = "-";
+			 				if(userInfo && userInfo.profile && userInfo.profile.fullName){
+			 					name = userInfo.profile.fullName;
+			 				}
 			 				returnData.push({
-			 					"UserName" 		: userInfo.profile.fullName ? userInfo.profile.fullName : "-",
+			 					"UserName" 		: name,
 			 					"Item"	   		: data[i].item,
 			 					"OrderedAt"		: data[i].orderedAt,
 			 					"isDelivered"	: data[i].isDelivered,
