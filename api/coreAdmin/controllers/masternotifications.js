@@ -164,7 +164,7 @@ exports.send_notifications = (req,res,next)=>{
             }
         }
         console.log("after mail=====>");
-
+        getTemplateDetails();
         const templateDetails = await getTemplateDetails(req.body.templateName, req.body.variables);
         // console.log("toEmail=====>",toEmail);
         console.log("templateDetails = ",templateDetails);
@@ -218,6 +218,8 @@ function getProfileByUserId(toUserId){
 }
 
 function getTemplateDetails(templateName,variables){
+    console.log("Inside getTemplateDetails templateName = ",templateName);
+    console.log("Inside getTemplateDetails variables = ",variables);
     return new Promise(function(resolve,reject){
         Masternotifications
         .findOne({"templateName":templateName})
