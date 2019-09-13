@@ -65,7 +65,7 @@ exports.dailyOrder_Report=(req,res,next)=>{
 							$match: {
 								month: month,
 								year : year,
-								day  : day
+								day  : dd
 							}
 						}
 		           ])
