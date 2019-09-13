@@ -207,15 +207,14 @@ exports.send_notifications = (req,res,next)=>{
 		// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw'); 
 		const sourceMobile = "+919923393733";
 		var text = SMSOptions.html
-        console.log("text======>",text);
-        console.log("SMSOptions.toMobileNumber======>",SMSOptions.toMobileNumber);
+        
 		
 		client.messages.create(
 			src=sourceMobile,
 			dst=SMSOptions.toMobileNumber,
 			text=text
 		).then((result)=> {
-			// console.log("src = ",src," | DST = ", dst, " | result = ", result);
+			console.log("src = ",src," | DST = ", dst, " | result = ", result);
 			// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 			return res.status(200).json({
 				"message" : 'SMS-SEND-SUCCESSFULLY',
