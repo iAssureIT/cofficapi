@@ -163,6 +163,8 @@ exports.send_notifications = (req,res,next)=>{
 
             }
         }
+        console.log("after mail=====>");
+
         const templateDetails = await getTemplateDetails(req.body.templateName, req.body.variables);
         // console.log("toEmail=====>",toEmail);
         console.log("templateDetails = ",templateDetails);
@@ -173,6 +175,8 @@ exports.send_notifications = (req,res,next)=>{
             subject     : templateDetails.subject, // Subject line
             html        : templateDetails.content, // html body
         };
+        console.log("mailOptions=====>",mailOptions);
+
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {                    
                 console.log("send mail error",error);
