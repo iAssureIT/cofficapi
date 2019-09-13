@@ -4,6 +4,7 @@ const jwt			= require("jsonwebtoken");
 const plivo 		= require('plivo');
 const User 			= require('../models/users');
 var request 		= require('request-promise');
+const globalVariable	= require('../../../nodemon.js')
 const WorkspaceDetails = require('../../coffic/models/workspaceDetails');
 
 function getRandomInt(min, max) {
@@ -180,7 +181,7 @@ exports.user_signupadmin = (req,res,next)=>{
 								request({
 									
 									"method"    : "POST",
-									"url"       : "http://localhost:5069/send-email",
+									"url"       : "http://localhost:"+globalVariable.PORT+"/send-email",
 									"body"      : 	{
 
 														"email"     : newUser.emailId,
@@ -280,7 +281,7 @@ exports.user_otpverification = (req,res,next)=>{
 		request({
 			
 			"method"    : "POST",
-			"url"       : "http://localhost:5069/send-email",
+			"url"       : "http://localhost:"+globalVariable.PORT+"/send-email",
 			"body"      : 	{
 								"email"     : newUser.emailId,
 								"subject"   : 'Verify your Account',
@@ -1616,7 +1617,7 @@ exports.user_otpverification_forgotpassword = (req,res,next)=>{
 		request({
 			
 			"method"    : "POST",
-			"url"       : "http://localhost:5069/send-email",
+			"url"       : "http://localhost:"+globalVariable.PORT+"/send-email",
 			"body"      : 	{
 								"email"     : forgotuserotp.emailId,
 								"subject"   : 'Verify your Account',
