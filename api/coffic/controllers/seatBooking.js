@@ -641,7 +641,7 @@ if(currDateISO){
     console.log("currDate======>",currDate);
     
     SeatBooking
-    .update(
+    .updateOne(
         {
             "user_id"       : req.body.user_id, 
             "workSpace_id"  : req.body.workspace_id,
