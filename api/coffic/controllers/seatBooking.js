@@ -646,7 +646,7 @@ if(currDateISO){
         },
         {
             $set:   {
-                        checkOutTime  :  currDate,
+                        "checkOutTime"  :  currDate,
                     }
         }
     )
