@@ -656,16 +656,15 @@ if(currDateISO){
 
    
     .exec()
-    .then(data=>{
-
-        
+    .then(data=>{        
         console.log("data===============>",data);
-
             if(data.nModified==1){
-
                 res.status(200).json("Checkout is Successful");
             }else{
-                res.status(200).json("Something Went Wrong");
+                res.status(200).json({
+                    error :  data,
+                    message :  "Something Went Wrong"
+                });
             }
         
     })
