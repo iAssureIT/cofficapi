@@ -637,11 +637,11 @@ exports.checkoutUser = (req,res,next)=>{
     // console.log("currDateISO===============>",currDateISO);
 
 if(currDateISO){
-    console.log("currDateISO===============>",currDateISO);
-    console.log("currDate===============>",currDate);
+    console.log("currDateISO===>",currDateISO);
+    console.log("currDate======>",currDate);
     
     SeatBooking
-    .updateOne(
+    .update(
         {
             "user_id"       : req.body.user_id, 
             "workSpace_id"  : req.body.workspace_id,
@@ -649,7 +649,7 @@ if(currDateISO){
         },
         {
             $set:   {
-                        "checkOutTime"  :  currDate,
+                        "checkOutTime"  :  new Date(),
                     }
         }
     )
