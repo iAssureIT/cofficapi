@@ -619,6 +619,8 @@ exports.checkoutUser = (req,res,next)=>{
 
     console.log("req.body===============>",req.body);
 
+    // console.log("res.body===============>",res.body);
+
     var currDate = new Date();
     var day = currDate.getDate();
     var month = currDate.getMonth() + 1;
