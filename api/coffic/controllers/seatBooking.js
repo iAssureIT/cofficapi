@@ -634,7 +634,7 @@ exports.checkoutUser = (req,res,next)=>{
 
     var currDateISO = year+"-"+month+"-"+day;
 
-
+if(currDateISO){
     SeatBooking
     .updateOne(
         {
@@ -648,6 +648,8 @@ exports.checkoutUser = (req,res,next)=>{
                     }
         }
     )
+
+   
     .exec()
     .then(data=>{
 
@@ -668,5 +670,6 @@ exports.checkoutUser = (req,res,next)=>{
             error: err
         });
     });
+}
 };
 
