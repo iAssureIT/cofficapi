@@ -641,7 +641,7 @@ if(currDateISO){
     // console.log("currDate======>",currDate);
     var selector =         {
         "user_id"       : req.body.user_id, 
-        "workSpace_id"  : req.body.workspace_id,
+        "workSpace_id"  : req.body.workSpace_id,
         "date"          : currDateISO,
     };
     console.log("Selector = ",selector);

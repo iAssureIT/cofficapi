@@ -1,0 +1,4 @@
+db.seatbookings.find({ user_id: '5d7c802253d4b8e5c9cba51f',workSpace_id: '5d79f846268f2768ef49987d',date: "2019-09-14"})
+
+
+db.seatbookings.updateOne({ user_id: '5d7c802253d4b8e5c9cba51f',workSpace_id: '5d79f846268f2768ef49987d',date: "2019-09-14"},{$set :{checkoutTime: new Date()}})
