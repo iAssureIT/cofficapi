@@ -649,14 +649,16 @@ exports.checkoutUser = (req,res,next)=>{
     .exec()
     .then(data=>{
 
-        if(data){
+        
         console.log("data===============>",data);
 
             if(data.nModified==1){
 
                 res.status(200).json("Checkout is Successful");
+            }else{
+                res.status(200).json("Something Went Wrong");
             }
-        }
+        
     })
     .catch(err =>{
         console.log(err);
