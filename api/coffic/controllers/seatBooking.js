@@ -637,24 +637,24 @@ exports.checkoutUser = (req,res,next)=>{
     // console.log("currDateISO===============>",currDateISO);
 
 if(currDateISO){
-    console.log("currDateISO===>",currDateISO);
-    console.log("currDate======>",currDate);
+    // console.log("currDateISO===>",currDateISO);
+    // console.log("currDate======>",currDate);
+    var selector =         {
+        "user_id"       : req.body.user_id, 
+        "workSpace_id"  : req.body.workspace_id,
+        "date"          : currDateISO,
+    };
+    console.log("Selector = ",selector);
     
     SeatBooking
     .updateOne(
-        {
-            "user_id"       : req.body.user_id, 
-            "workSpace_id"  : req.body.workspace_id,
-            "date"          : currDateISO,
-        },
+       selector,
         {
             $set:   {
                         "checkOutTime"  :  new Date(),
                     }
         }
     )
-
-   
     .exec()
     .then(data=>{        
         console.log("data===============>",data);
