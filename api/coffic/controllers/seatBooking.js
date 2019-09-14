@@ -625,7 +625,7 @@ exports.checkoutUser = (req,res,next)=>{
     var day = currDate.getDate();
     var month = currDate.getMonth() + 1;
     var year = currDate.getYear();
-    console.log("currDate===============>",currDate);
+    // console.log("currDate===============>",currDate);
 
     if (year < 1900){
         year = year + 1900;
@@ -634,9 +634,12 @@ exports.checkoutUser = (req,res,next)=>{
     if(month<10 || month.length<2){month = '0' + month;}
 
     var currDateISO = year+"-"+month+"-"+day;
-    console.log("currDateISO===============>",currDateISO);
+    // console.log("currDateISO===============>",currDateISO);
 
 if(currDateISO){
+    console.log("currDateISO===============>",currDateISO);
+    console.log("currDate===============>",currDate);
+    
     SeatBooking
     .updateOne(
         {
