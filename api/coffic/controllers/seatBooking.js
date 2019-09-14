@@ -616,6 +616,9 @@ exports.validate_checkin = (req,res,next)=>{
 
 
 exports.checkoutUser = (req,res,next)=>{
+
+    console.log("req.body===============>",req.body);
+
     var currDate = new Date();
     var day = currDate.getDate();
     var month = currDate.getMonth() + 1;
@@ -645,8 +648,12 @@ exports.checkoutUser = (req,res,next)=>{
     )
     .exec()
     .then(data=>{
+
         if(data){
+        console.log("data===============>",data);
+
             if(data.nModified==1){
+
                 res.status(200).json("Checkout is Successful");
             }
         }

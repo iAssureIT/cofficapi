@@ -15,7 +15,7 @@ router.get('/get/one/:user_id',seatBookingController.list_userSeatBooking);
 
 router.get('/get/availableSeats/:workspace_id',seatBookingController.availableSeats);
 
-router.patch('/patch/checkout/', seatBookingController.checkoutUser);
+router.patch('/patch/checkout', seatBookingController.checkoutUser);
 
 router.get('/validate/:user_id',seatBookingController.validate_checkin);
 
