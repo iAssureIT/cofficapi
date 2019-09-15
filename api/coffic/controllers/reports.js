@@ -235,6 +235,7 @@ exports.dashboardBlock = (req,res,next)=>{
 		var vendorInfo		= await getUserCount("vendor");
 		var activeVendor 	= await getActiveVendor();
 		var subUser 		= await getSubUser();
+		console.log("subUser ",subUser);
 		var earningYTD		= await getEarning(yearStartDate,new Date());
 		var earningMTD		= await getEarning(monthStartDate,new Date());
 		var twelveMonthGrossEarning = [];
