@@ -180,7 +180,7 @@ function getSubUser(){
 		SubscriptionOrder.countDocuments({"status" : "paid"})
 			.exec()
 			.then(data=>{
-				console.log("data ",data);
+				// console.log("data ",data);
 				resolve(data);
 			})
 			.catch(err=>{
@@ -232,6 +232,7 @@ exports.dashboardBlock = (req,res,next)=>{
 		var yearStartDate   = new Date(year+"-01-01");
 		var monthStartDate   = new Date(year+"-"+month+"-01");
 		var userInfo 		= await getUserCount("user");
+		console.log("userInfo ",userInfo);
 		var vendorInfo		= await getUserCount("vendor");
 		var activeVendor 	= await getActiveVendor();
 		var subUser 		= await getSubUser();
