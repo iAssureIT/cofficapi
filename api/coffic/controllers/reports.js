@@ -155,11 +155,11 @@ function getUserCount(role){
 	return new Promise(function(resolve,reject){
 		var query = { "roles" : {$in:[role]}};
 		console.log("query ",query);
-		User.countDocuments({ "roles" : {$in:[role]}})
+		User.find({ "roles" : {$in:[role]}})
 			.exec()
 			.then(data=>{
-				console.log("count ",data);
-				resolve(data);
+				console.log("count ",data.length);
+				resolve(data.length);
 			})
 			.catch(err=>{
 				reject(err);
