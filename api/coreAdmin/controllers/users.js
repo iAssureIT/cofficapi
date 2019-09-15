@@ -867,7 +867,7 @@ exports.update_user_resetpassword = (req,res,next)=>{
 // };
 exports.user_loginwithadmin = (req,res,next)=>{
     console.log('login',req.body);
-    User.findOne({emails:{$elemMatch:{address:req.body.email}},roles: "Admin",emailId:req.body.emailId})
+    User.findOne({emails:{$elemMatch:{address:req.body.email}},roles: "Admin"})
         .exec()
         .then(user => {
             if(user){
