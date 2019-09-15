@@ -213,7 +213,6 @@ exports.user_signupadmin = (req,res,next)=>{
 								
 								console.log('Plivo Client = ',newUser.mobileNumber);
 
-
 								const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz'); // iAssureIT
 								// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
 								const sourceMobile = "+919923393733";
@@ -222,9 +221,6 @@ exports.user_signupadmin = (req,res,next)=>{
 								client.messages.create(
 									src=sourceMobile,
 									dst=req.body.mobileNumber,
-
-
-
 									text=text
 								).then((result)=> {
 									// console.log("src = ",src," | DST = ", dst, " | result = ", result);
