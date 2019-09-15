@@ -151,6 +151,7 @@ exports.bankreport=(req,res,next)=>{
 					});
 };
 function getUserCount(role){
+	console.log("role ",role);
 	return new Promise(function(resolve,reject){
 		User.countDocuments({ "roles" : {$in:[role]}})
 			.exec()
