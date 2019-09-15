@@ -151,7 +151,7 @@ exports.bankreport=(req,res,next)=>{
 					});
 };
 function getUserCount(role){
-	console.log("role ",role);
+	// console.log("role ",role);
 	return new Promise(function(resolve,reject){
 		User.countDocuments({ "roles" : {$in:[role]}})
 			.exec()
@@ -180,6 +180,7 @@ function getSubUser(){
 		SubscriptionOrder.countDocuments({"status" : "paid"})
 			.exec()
 			.then(data=>{
+				console.log("data ",data);
 				resolve(data);
 			})
 			.catch(err=>{
