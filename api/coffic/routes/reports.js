@@ -14,7 +14,7 @@ router.get('/get/checkInOut/:type/:startDate/:endDate/:workSpace_id/:startLimit/
 
 router.get('/get/cafewisebooking/:startLimit/:endLimit' ,reportController.cafewiseSeatBooking);
 
-router.get('/get/sales/:startDate/:endDate/:plan_ID/:typeUser/:startLimit/:endLimit',reportController.salesTransaction);
+router.get('/get/sales/:startDate/:endDate/:typeUser/:startLimit/:endLimit',reportController.salesTransaction);
 
 // router.get('/get/subscription/:startDate/:endDate',reportController.subscription);
 
