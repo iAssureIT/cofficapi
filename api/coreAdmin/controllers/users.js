@@ -1614,7 +1614,7 @@ exports.user_otpverification_forgotpassword = (req,res,next)=>{
 	
 			var forgotuserotp = {
 							
-				emailOTP		: req.body.emailOTP,
+				// emailOTP		: req.body.emailOTP,
 				mobileOTP		: req.body.mobileOTP,
 				emailId       	: req.body.emailId,
 				mobileNumber  	: req.body.mobileNumber,
@@ -1623,37 +1623,37 @@ exports.user_otpverification_forgotpassword = (req,res,next)=>{
 	
 	
 					
-		console.log('New USER = ',forgotuserotp);
-		request({
+		// console.log('New USER = ',forgotuserotp);
+		// request({
 			
-			"method"    : "POST",
-			"url"       : "http://localhost:"+globalVariable.PORT+"/send-email",
-			"body"      : 	{
-								"email"     : forgotuserotp.emailId,
-								"subject"   : 'Verify your Account',
-								"text"      : "WOW Its done",
-								// "mail"      : "Hello"+forgotuserotp.profile.firstName+','+'\n'+"Your account verifcation code is"+OTP,
-								"mail"      : 'Dear User,'+'\n'+"\n <br><br>Your account verification code is "+"<b>"+forgotuserotp.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
-							},
-			"json"      : true,
-			"headers"   : {
-							"forgotuserotp-Agent": "Test App"
-						}
-		})
+		// 	"method"    : "POST",
+		// 	"url"       : "http://localhost:"+globalVariable.PORT+"/send-email",
+		// 	"body"      : 	{
+		// 						"email"     : forgotuserotp.emailId,
+		// 						"subject"   : 'Verify your Account',
+		// 						"text"      : "WOW Its done",
+		// 						// "mail"      : "Hello"+forgotuserotp.profile.firstName+','+'\n'+"Your account verifcation code is"+OTP,
+		// 						"mail"      : 'Dear User,'+'\n'+"\n <br><br>Your account verification code is "+"<b>"+forgotuserotp.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
+		// 					},
+		// 	"json"      : true,
+		// 	"headers"   : {
+		// 					"forgotuserotp-Agent": "Test App"
+		// 				}
+		// })
 	
-		.then((sentemail)=>{
-			// console.log("call to api");
-			res.header("Access-Control-Allow-Origin","*");
+		// .then((sentemail)=>{
+		// 	// console.log("call to api");
+		// 	res.header("Access-Control-Allow-Origin","*");
 
-			res.status(200).json({message:"Mail Sent successfully"});
-		})
-		.catch((err) =>{
-			console.log("call to api",err);
-			res.status(500).json({
-				message:"EMAIL-ID-NOT-FOUND", 
-				error: err
-			});
-		});    
+		// 	res.status(200).json({message:"Mail Sent successfully"});
+		// })
+		// .catch((err) =>{
+		// 	console.log("call to api",err);
+		// 	res.status(500).json({
+		// 		message:"EMAIL-ID-NOT-FOUND", 
+		// 		error: err
+		// 	});
+		// });    
 		
 		
 		// console.log('Plivo Client = ',forgotuserotp.mobileNumber);
@@ -1671,7 +1671,7 @@ exports.user_otpverification_forgotpassword = (req,res,next)=>{
 			// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 			return res.status(200).json({
 				"message" : 'OTP-SEND-SUCCESSFULLY',
-				"otp"     : forgotuserotp.emailOTP,
+				// "otp"     : forgotuserotp.emailOTP,
 			});			
 		})
 		.catch(otpError=>{
