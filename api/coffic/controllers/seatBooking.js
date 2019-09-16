@@ -617,7 +617,7 @@ exports.validate_checkin = (req,res,next)=>{
 
 exports.checkoutUser = (req,res,next)=>{
 
-    console.log("req.body===============>",req.body);
+    // console.log("req.body===============>",req.body);
 
     // console.log("res.body===============>",res.body);
 
@@ -644,20 +644,20 @@ if(currDateISO){
         "workSpace_id"  : req.body.workspace_id,
         "date"          : currDateISO,
     };
-    console.log("Selector = ",selector);
+    console.log("Selector ==================>>>>> ",selector);
     
     SeatBooking
     .updateOne(
        selector,
         {
             $set:   {
-                        "checkOutTime"  :  new Date(),
+                        "checkoutTime"  :  new Date(),
                     }
         }
     )
     .exec()
     .then(data=>{        
-        console.log("data===============>",data);
+        // console.log("data===============>",data);
             if(data.nModified==1){
                 res.status(200).json("Checkout is Successful");
             }else{
