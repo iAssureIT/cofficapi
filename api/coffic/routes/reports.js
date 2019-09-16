@@ -18,7 +18,7 @@ router.get('/get/sales/:startDate/:endDate/:typeUser/:startLimit/:endLimit',repo
 
 // router.get('/get/subscription/:startDate/:endDate',reportController.subscription);
 
-router.get('/get/settlementReportSummary/:startDate/:endDate/:startLimit/:endLimit',reportController.settlementSummary);
+router.get('/get/settlementReportSummary/:startDate/:endDate',reportController.settlementSummary);
 
 router.get('/get/settlementReportDetail/:startDate/:endDate/:vendor_ID/:startLimit/:endLimit',reportController.settlementDetail);
 
@@ -26,9 +26,9 @@ router.get('/get/dashboard',reportController.dashboardBlock);
 
 router.get('/get/bankreport/:startDate/:endDate/:startLimit/:endLimit',reportController.bankreport);
 
-router.get('/get/dailyBeverageReport/:date/:workspace_id/:startLimit/:endLimit',reportController.dailyBeverage_Report);
+router.get('/get/dailyBeverageReport/:workspace_ID/:date/:startLimit/:endLimit',reportController.dailyBeverage_Report);
 
-router.get('/get/dailyOrderReport/:date/:workspace_id/:startLimit/:endLimit',reportController.dailyOrder_Report);
+router.get('/get/dailyOrderReport/:workspace_ID/:date/:startLimit/:endLimit',reportController.dailyOrder_Report);
 
 
 

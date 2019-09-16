@@ -14,7 +14,7 @@ exports.dailyBeverage_Report=(req,res,next)=>{
 	MenuOrder.aggregate([
 							{
 								$match : {
-										"workSpace_id" 		: req.params.workspace_id,
+										"workSpace_id" 		: req.params.workspace_ID,
 										"date"				: new Date(req.params.date)
 								}
 							},
@@ -37,24 +37,98 @@ exports.dailyBeverage_Report=(req,res,next)=>{
 			.limit(parseInt(req.params.endLimit))
 			.exec()
 			.then(data=>{
+				console.log("data",data);
 			 	res.status(200).json(data);
 			 })
 			 .catch(err=>{
 			 	res.status(200).json({error:err});
 			 });
 }
+
+exports.vendor_dailycheckins = (req,res,next)=>{
+	SeatBooking .aggregate(
+							[
+								{
+									$match : {
+										"workSpace_id"  : req.params.workspace_ID,
+										"date"			: req.params.date
+
+									}
+								},
+								
+								{
+									$project : {
+													"workSpace_id"	: "$_id.workSpace_id",
+													"checkInTime"	: "$checkInTime",
+													"checkOutTime"	: "$checkOutTime",
+													"user_id"		: "$user_id"
+												}				
+								}
+							]
+				)
+				.sort({ "createdAt": -1 })
+				.skip(parseInt(req.params.startLimit))
+				.limit(parseInt(req.params.endLimit))
+				.exec()
+				.then(seatBooking=>{
+					console.log("seatbooking",seatBooking);
+					getData();
+					async function getData(){
+						var returnData = [];
+						for(i = 0 ; i < seatBooking.length;i++){
+							var userdata = await getuserDetails(seatBooking[i].user_id);
+							console.log("userdata..............",userdata);
+							returnData.push({
+								"workSpace_id" 		: seatBooking[i].workSpace_id,
+								"checkInTime"		: seatBooking[i].checkInTime,
+								"checkOutTime"		: seatBooking[i].checkOutTime,
+								"userName"          : userdata.profile.fullName,
+							});
+						}
+						console.log("returndata",returnData);
+						if( i >= seatBooking.length){
+							res.status(200).json(returnData);		
+				     	}
+
+					}
+					// res.status(200).json(seatBooking);
+				})
+				.catch(err=>{
+					res.status(200).json({error:err});
+				});
+}
+
 exports.dailyOrder_Report=(req,res,next)=>{
-	console.log("inside....");
-	var Da = req.params.date;
-	var todayDate = new Date(Da);
-	console.log("todayDate",todayDate);
-	MenuOrder.find({
-		            "workSpace_id" : req.params.workspace_id,
-	                "date":{$eq : new Date()}})
-			 // .select("user_id,item,orderedAt,isDelivered")
+	// console.log("inside....");
+	// var Da = req.params.date;
+	// var todayDate = new Date(Da);
+	// console.log("todayDate",todayDate);
+	MenuOrder.aggregate(
+		                (
+							[
+								{
+									$match : {
+										"workSpace_id"  : req.params.workspace_ID,
+										"date"			: req.params.date
+
+									}
+								},
+								
+								{
+									$project : {
+													"workSpace_id"	: "$_id.workSpace_id",
+													"orderedAt"   	: "$orderedAt",
+													"item"	        : "$item",
+													"user_id"		: "$user_id"
+												}				
+								}
+							]
+				)
+		               )
 			 .exec()
 			 .then(data=>{
 			 	if(data.length > 0){
+			 		console.log("data",data);
 			 		getData();
 			 		async function getData(){
 			 			var i = 0;
@@ -82,6 +156,7 @@ exports.dailyOrder_Report=(req,res,next)=>{
 			 	res.status(200).json({error:err});
 			 });
 }
+
 
 /*Bank Report*/
 exports.bankreport=(req,res,next)=>{
@@ -568,58 +643,7 @@ exports.vendor_monthly = (req,res,next)=>{
 					res.status(200).json({error:err});
 				});
 };
-exports.vendor_dailycheckins = (req,res,next)=>{
-	SeatBooking .aggregate(
-							[
-								{
-									$match : {
-										"workSpace_id"  : req.params.workspace_ID,
-										"date"			: req.params.date
 
-									}
-								},
-								
-								{
-									$project : {
-													"workSpace_id"	: "$_id.workSpace_id",
-													"checkInTime"	: "$checkInTime",
-													"checkOutTime"	: "$checkOutTime",
-													"user_id"		: "$user_id"
-												}				
-								}
-							]
-				)
-				.sort({ "createdAt": -1 })
-				.skip(parseInt(req.params.startLimit))
-				.limit(parseInt(req.params.endLimit))
-				.exec()
-				.then(seatBooking=>{
-					console.log("seatbooking",seatBooking);
-					getData();
-					async function getData(){
-						var returnData = [];
-						for(i = 0 ; i < seatBooking.length;i++){
-							var userdata = await getuserDetails(seatBooking[i].user_id);
-							console.log("userdata..............",userdata);
-							returnData.push({
-								"workSpace_id" 		: seatBooking[i].workSpace_id,
-								"checkInTime"		: seatBooking[i].checkInTime,
-								"checkOutTime"		: seatBooking[i].checkOutTime,
-								"userName"          : userdata.profile.fullName,
-							});
-						}
-						console.log("returndata",returnData);
-						if( i >= seatBooking.length){
-							res.status(200).json(returnData);		
-				     	}
-
-					}
-					// res.status(200).json(seatBooking);
-				})
-				.catch(err=>{
-					res.status(200).json({error:err});
-				});
-}
 //Subscription Details
 function countPlan(plan_ID,startDate,endDate){
 	return new Promise(function(resolve,reject){
