@@ -177,38 +177,38 @@ exports.user_signupadmin = (req,res,next)=>{
 						.then(newUser =>{
 							if(newUser){
 					
-								console.log('New USER = ',newUser);
-								request({
+								// console.log('New USER = ',newUser);
+								// request({
 									
-									"method"    : "POST",
+								// 	"method"    : "POST",
 
-									"url"       : "http://localhost:5012/send-email",
-									"body"      : 	{
-														"email"     : newUser.emailId,
-														"subject"   : 'Verify your Account',
-														"text"      : "WOW Its done",
-														// "mail"      : "Hello"+newUser.profile.firstName+','+'\n'+"Your account verifcation code is"+OTP,
-														"mail"      : 'Dear '+newUser.firstName+','+'\n'+"\n <br><br>Your account verification code is "+"<b>"+newUser.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
+								// 	"url"       : "http://localhost:5012/send-email",
+								// 	"body"      : 	{
+								// 						"email"     : newUser.emailId,
+								// 						"subject"   : 'Verify your Account',
+								// 						"text"      : "WOW Its done",
+								// 						// "mail"      : "Hello"+newUser.profile.firstName+','+'\n'+"Your account verifcation code is"+OTP,
+								// 						"mail"      : 'Dear '+newUser.firstName+','+'\n'+"\n <br><br>Your account verification code is "+"<b>"+newUser.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
 
-													},
-									"json"      : true,
-									"headers"   : {
-													"User-Agent": "Test App"
-												}
-								})
+								// 					},
+								// 	"json"      : true,
+								// 	"headers"   : {
+								// 					"User-Agent": "Test App"
+								// 				}
+								// })
 							
-								.then((sentemail)=>{
-									// console.log("call to api");
-									res.header("Access-Control-Allow-Origin","*");
+								// .then((sentemail)=>{
+								// 	// console.log("call to api");
+								// 	res.header("Access-Control-Allow-Origin","*");
 						
-									res.status(200).json({message:"Mail Sent successfully"});
-								})
-								.catch((err) =>{
-									console.log("call to api",err);
-									res.status(500).json({
-										error: err
-									});
-								});    
+								// 	res.status(200).json({message:"Mail Sent successfully"});
+								// })
+								// .catch((err) =>{
+								// 	console.log("call to api",err);
+								// 	res.status(500).json({
+								// 		error: err
+								// 	});
+								// });    
 								
 								
 								console.log('Plivo Client = ',newUser.mobileNumber);
@@ -266,7 +266,7 @@ exports.user_otpverification = (req,res,next)=>{
 	
 	var newUser = {
 					
-		emailOTP		: req.body.emailOTP,
+		// emailOTP		: req.body.emailOTP,
 		mobileOTP		: req.body.mobileOTP,
 		firstName		: req.body.firstName,
 		emailId       	: req.body.emailId,
@@ -276,36 +276,36 @@ exports.user_otpverification = (req,res,next)=>{
 	
 	if(newUser){
 					
-		console.log('New USER ============== ',newUser);
-		request({
+		// console.log('New USER ============== ',newUser);
+		// request({
 			
-			"method"    : "POST",
-			"url"       : "http://localhost:"+globalVariable.PORT+"/send-email",
-			"body"      : 	{
-								"email"     : newUser.emailId,
-								"subject"   : 'Verify your Account',
-								"text"      : "WOW Its done",
-								// "mail"      : "Hello"+newUser.profile.firstName+','+'\n'+"Your account verifcation code is"+OTP,
-								"mail"      : 'Dear '+newUser.firstName+','+'\n'+"\n <br><br>Your account verification code is "+"<b>"+newUser.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
-							},
-			"json"      : true,
-			"headers"   : {
-							"User-Agent": "Test App"
-						}
-		})
+		// 	"method"    : "POST",
+		// 	"url"       : "http://localhost:"+globalVariable.PORT+"/send-email",
+		// 	"body"      : 	{
+		// 						"email"     : newUser.emailId,
+		// 						"subject"   : 'Verify your Account',
+		// 						"text"      : "WOW Its done",
+		// 						// "mail"      : "Hello"+newUser.profile.firstName+','+'\n'+"Your account verifcation code is"+OTP,
+		// 						"mail"      : 'Dear '+newUser.firstName+','+'\n'+"\n <br><br>Your account verification code is "+"<b>"+newUser.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
+		// 					},
+		// 	"json"      : true,
+		// 	"headers"   : {
+		// 					"User-Agent": "Test App"
+		// 				}
+		// })
 	
-		.then((sentemail)=>{
-			// console.log("call to api");
-			res.header("Access-Control-Allow-Origin","*");
+		// .then((sentemail)=>{
+		// 	// console.log("call to api");
+		// 	res.header("Access-Control-Allow-Origin","*");
 
-			res.status(200).json({message:"Mail Sent successfully"});
-		})
-		.catch((err) =>{
-			console.log("call to api",err);
-			res.status(500).json({
-				error: err
-			});
-		});    
+		// 	res.status(200).json({message:"Mail Sent successfully"});
+		// })
+		// .catch((err) =>{
+		// 	console.log("call to api",err);
+		// 	res.status(500).json({
+		// 		error: err
+		// 	});
+		// });    
 		
 		
 		console.log('Plivo Client = ',newUser.mobileNumber);
@@ -513,7 +513,7 @@ exports.confirmOTP = (req,res,next)=>{
 	User.findOne({'mobileNumber':req.body.mobileNumber})
 		.exec()
 		.then((user)=>{
-	console.log("in confirm otp---->",user.profile.otp,req.body.mobileotp,req.body.emailotp);
+	// console.log("in confirm otp---->",user.profile.otp,req.body.mobileotp,req.body.emailotp);
 
 			if(user){
 				var userOtp = user.profile.otp;
@@ -554,10 +554,10 @@ exports.users_verify_mobileOTP = (req,res,next)=>{
 						User.updateOne(
 							{ _id: user[0]._id},  
 							{
-								$set:{
-									"otp" : OTP,
-									"emailOTP": emailOTP
-								}
+								// $set:{
+								// 	"otp" : OTP,
+								// 	"emailOTP": emailOTP
+								// }
 							})
 						.exec()
 						.then( data =>{
@@ -576,7 +576,7 @@ exports.users_verify_mobileOTP = (req,res,next)=>{
 		                                "message" : 'MOBILE-NUMBER-EXISTS',
 		                                "user_id" : user[0]._id,
 		                                "otp"     : OTP,
-		                                "emailOTP" :emailOTP,
+		                                // "emailOTP" :emailOTP,
 		                                "count"   : user.length,
 		                            });			
 		                        })
@@ -635,7 +635,7 @@ exports.users_verify_mobileOTP = (req,res,next)=>{
 												// countryCode   : req.body.countryCode,
 												status		  : req.body.status,
 												otp 		  : OTP,
-												emailOTP      : emailOTP,
+												// emailOTP      : emailOTP,
 									},
 									roles 		   : [req.body.roles],
 		                    status  : req.body.status,
