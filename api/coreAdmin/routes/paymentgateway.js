@@ -9,6 +9,8 @@ router.get('/success');
 
 router.post('/configure',QuickWalletMastersController.configure_insert);
 
+// router.patch('/patch/configure',QuickWalletMastersController.configure_insert);
+
 
 // router.post('/exampurchase/:studentId/:competitionId/:compfees',QuickWalletMastersController.paymentGatewayforCompetition);
 
