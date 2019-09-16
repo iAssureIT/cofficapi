@@ -44,37 +44,16 @@ exports.dailyBeverage_Report=(req,res,next)=>{
 			 });
 }
 exports.dailyOrder_Report=(req,res,next)=>{
-	var year  = moment(req.params.date).format("YYYY");
-	var month = moment(req.params.date).format("MM"); 
-	var dd  = moment(req.params.date).format("DD");
-	console.log("year ",year, " month ",month, " date ",dd); 
-	// "workSpace_id" : req.params.workspace_id,
-	MenuOrder.aggregate([
-						{
-							$match : { "workSpace_id" : req.params.workspace_id }
-						},
-						{
-							$project : {
-								"item" 			: 1,
-								"orderedAt"		: 1,
-								"isDelivered"	: 1,
-								// "date"			: 1,
-								"month"			: {$month: '$date'},
-								"year"			: {$year: '$date'},
-								"day"			: { $dayOfMonth: "$date" },
-							}
-						},
-						{
-							$match: {
-								month: month,
-								year : year,
-								day  : dd
-							}
-						}
-		           ])
+	console.log("inside....");
+	var Da = req.params.date;
+	var todayDate = new Date(Da);
+	console.log("todayDate",todayDate);
+	MenuOrder.find({
+		            "workSpace_id" : req.params.workspace_id,
+	                "date": todayDate})
+			 // .select("user_id,item,orderedAt,isDelivered")
 			 .exec()
 			 .then(data=>{
-			 	console.log("data ",data);
 			 	if(data.length > 0){
 			 		getData();
 			 		async function getData(){
@@ -83,12 +62,8 @@ exports.dailyOrder_Report=(req,res,next)=>{
 			 			for(i = 0 ; i < data.length ; i++){
 			 				var userInfo = await getuserDetails(data[i].user_id);
 			 				console.log("userInfo",userInfo);
-			 				var name = "-";
-			 				if(userInfo && userInfo.profile && userInfo.profile.fullName){
-			 					name = userInfo.profile.fullName;
-			 				}
 			 				returnData.push({
-			 					"UserName" 		: name,
+			 					"UserName" 		: userInfo.profile.fullName,
 			 					"Item"	   		: data[i].item,
 			 					"OrderedAt"		: data[i].orderedAt,
 			 					"isDelivered"	: data[i].isDelivered,
@@ -900,7 +875,6 @@ exports.cafewiseSeatBooking=(req,res,next)=>{
 	     var seatdata =await availableSeats(workspacedata[i]._id);
 		console.log("seatdata",seatdata);
 		  returnData.push({
-			    "_id"		       : workspacedata[i]._id,
 			    "branch"		   : workspacedata[i].address,
 				"cafeName"         : workspacedata[i].nameOfCafe,
 				"city"             : workspacedata[i].city,
