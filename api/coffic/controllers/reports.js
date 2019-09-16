@@ -50,7 +50,7 @@ exports.dailyOrder_Report=(req,res,next)=>{
 	console.log("todayDate",todayDate);
 	MenuOrder.find({
 		            "workSpace_id" : req.params.workspace_id,
-	                })
+	                "date":{$eq:todayDate}})
 			 // .select("user_id,item,orderedAt,isDelivered")
 			 .exec()
 			 .then(data=>{
