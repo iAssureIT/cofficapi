@@ -858,6 +858,7 @@ exports.cafewiseSeatBooking=(req,res,next)=>{
 		getData();
 		async function getData(){
 		var returnData=[];
+		var i =0;
 		for(i=0;i<workspacedata.length;i++){
 	     	var seatdata =await availableSeats(workspacedata[i]._id);
 		// console.log("seatdata",seatdata);
