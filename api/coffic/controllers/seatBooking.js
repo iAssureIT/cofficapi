@@ -651,7 +651,7 @@ if(currDateISO){
        selector,
         {
             $set:   {
-                        "checkoutTime"  :  new Date(),
+                        "checkOutTime"  :  new Date(),
                     }
         }
     )
