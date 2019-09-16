@@ -644,8 +644,9 @@ if(currDateISO){
         "workSpace_id"  : req.body.workspace_id,
         "date"          : currDateISO,
     };
+
     console.log("Selector ==================>>>>> ",selector);
-    
+
     SeatBooking
     .updateOne(
        selector,
