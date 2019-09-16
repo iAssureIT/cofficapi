@@ -706,37 +706,20 @@ function getSettingDetails(user_ID,startDate,endDate){
 exports.salesTransaction = (req,res,next)=>{
 	var query = {};
 	//need to work on type of user
-	if(req.params.plan_ID != "all"){
-		if(req.params.typeUser == "Active"){
-			query = {
-					"date" 			: {$gte : req.params.startDate, $lte : req.params.endDate},
-					"plan_id"		: req.params.plan_ID,
-					"status" 		: "paid"
-				};	
-		}else{
-			query = {
-						"date" 			: {$gte : req.params.startDate, $lte : req.params.endDate},
-						"plan_id"		: req.params.plan_ID,
-						"status" 		: "inactive"
-					};
-		}
+	if(req.params.typeUser == "Active"){
+		query = {
+				"date" 			: {$gte : new Date(req.params.startDate), $lte : new Date(req.params.endDate)},
+				"status" 		: "paid"
+			};	
 	}else{
-		if(req.params.typeUser == "Active"){
-			query = {
-					"date" 			: {$gte : req.params.startDate, $lte : req.params.endDate},
-					"status" 		: "paid"
-				};	
-		}else{
-			query = {
-						"date" 			: {$gte : req.params.startDate, $lte : req.params.endDate},
-						"status" 		: "inactive"
-					};
-		}
-
+		query = {
+					"date" 			: {$gte : new Date(req.params.startDate), $lte : new Date(req.params.endDate)},
+					"status" 		: "inactive"
+				};
 	}
 	if(query){
 		SubscriptionOrder 	
-		.find()
+		.find(query)
 		.sort({ "createdAt": -1 })
 				.skip(parseInt(req.params.startLimit))
 				.limit(parseInt(req.params.endLimit))
@@ -875,6 +858,7 @@ exports.cafewiseSeatBooking=(req,res,next)=>{
 		getData();
 		async function getData(){
 		var returnData=[];
+		var i =0;
 		for(i=0;i<workspacedata.length;i++){
 	     	var seatdata =await availableSeats(workspacedata[i]._id);
 		// console.log("seatdata",seatdata);
