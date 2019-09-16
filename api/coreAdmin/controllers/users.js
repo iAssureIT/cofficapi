@@ -13,95 +13,6 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-
-// exports.user_signupadmin = (req,res,next)=>{
-
-// 	console.log('req',req)
-// 	User.find()
-// 		.exec()
-// 		.then(user =>{				
-// 				bcrypt.hash(req.body.pwd,10,(err,hash)=>{
-// 					if(err){
-// 						return res.status(500).json({
-// 							error:err
-// 						});
-// 					}else{
-// 						const OTP = getRandomInt(1000,9999);
-// 						const user = new User({
-// 							_id: new mongoose.Types.ObjectId(),
-// 							createdAt		: new Date,
-// 							services		: {
-// 								password	:{
-// 											bcrypt:hash
-// 											},
-// 							},
-// 							mobileNumber  	: req.body.mobileNumber,
-// 							emails			: [
-// 									{
-// 										address  : req.body.emailId,
-// 										verified : true 
-// 									}
-// 							],
-// 							profile		:{
-// 										firstName     : req.body.firstName,
-// 										lastName      : req.body.lastName,
-// 										fullName      : req.body.firstName+' '+req.body.lastName,
-// 										emailId       : req.body.emailId,
-// 										mobileNumber  : req.body.mobileNumber,
-// 										status		  : req.body.status
-// 							},
-// 							roles 		   : (req.body.roles),
-							
-// 			            });	
-// 						user.save()
-// 						.then(newUser =>{
-// 							if(newUser){
-// 								console.log('New USER = ',newUser);
-// 								// console.log('Plivo Client = ',mobileNumber);
-// 								const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
-// 								const sourceMobile = "+919923393733";
-// 								var text = "Dear User, "+'\n'+"To verify your account on Coffic, Enter this verification code : \n"+OTP; 
-				
-// 								client.messages.create(
-// 									src=sourceMobile,
-// 									dst=req.body.mobileNumber,
-// 									text=text
-// 								).then((result)=> {
-// 									console.log("src = ",src," | DST = ", dst, " | result = ", result);
-// 									// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
-// 									return res.status(200).json({
-// 										"message" : 'NEW-USER-CREATED',
-// 										"user_id" : newUser._id,
-// 										"otp"     : OTP,
-// 									});			
-// 								})
-// 								.catch(otpError=>{
-// 									return res.status(501).json({
-// 										message: "Some Error Occurred in OTP Send Function",
-// 										error: otpError
-// 									});        
-// 								});       
-// 							}
-							
-// 						})	
-// 							.catch(err =>{
-// 								console.log(err);
-// 								res.status(500).json({
-// 									error: err
-// 								});
-// 							});
-// 					}			
-// 				});
-			
-// 		})
-// 		.catch(err =>{
-// 			console.log(err);
-// 			res.status(500).json({
-// 				error: err
-// 			});
-// 		});
-// };
-
 exports.user_checkUser = (req,res,next)=>{
 	var emailData = req.body.emailId;
 	
@@ -227,7 +138,7 @@ exports.user_signupadmin = (req,res,next)=>{
 									// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 									return res.status(200).json({
 										"message" : 'OTP-SEND-SUCCESSFULLY',
-										"otp"     : newUser.emailOTP,
+										// "otp"     : newUser.emailOTP,
 									});			
 								})
 								.catch(otpError=>{
@@ -324,7 +235,7 @@ exports.user_otpverification = (req,res,next)=>{
 			// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 			return res.status(200).json({
 				"message" : 'OTP-SEND-SUCCESSFULLY',
-				"otp"     : newUser.emailOTP,
+				// "otp"     : newUser.emailOTP,
 			});			
 		})
 		.catch(otpError=>{
@@ -532,6 +443,168 @@ exports.confirmOTP = (req,res,next)=>{
 };
 
 
+// exports.users_verify_mobileOTP = (req,res,next)=>{
+// 	console.log("req.body.mobile-Number",req.body.mobileNumber);
+	
+// 	User.find({'mobileNumber':req.body.mobileNumber})
+// 		.limit(1)
+// 		.exec()
+// 		.then(user =>{
+		
+// 			if(user.length > 0){
+
+// 				bcrypt.hash(req.body.pwd,10,(err,hash)=>{
+// 					if(err){
+// 						return res.status(500).json({
+// 							error:err
+// 						});
+// 					}else{
+
+// 						const OTP = getRandomInt(1000,9999);
+// 						const emailOTP = getRandomInt(100000,999999);
+// 						User.updateOne(
+// 							{ _id: user[0]._id},  
+// 							{
+// 								// $set:{
+// 								// 	"otp" : OTP,
+// 								// 	"emailOTP": emailOTP
+// 								// }
+// 							})
+// 						.exec()
+// 						.then( data =>{
+// 							if(data){
+// 								console.log('USER AFTER OTP GENERATED = ',data);
+// 		                        const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+// 		                        const sourceMobile = "+919923393733";
+// 		                        var text = "Dear User, "+'\n'+"To verify your account on Coffic, Enter this verification code : \n"+"Mobile OTP : " +OTP+ "Email OTP: " +emailOTP; 
+// 		                        client.messages.create(
+// 									src=sourceMobile,
+// 									dst=req.body.mobileNumber,
+// 									text=text
+// 								).then((result)=> {
+// 									console.log("src = ",src," | DST = ", dst, " | result = ", result);
+// 		                            return res.status(200).json({
+// 		                                "message" : 'MOBILE-NUMBER-EXISTS',
+// 		                                "user_id" : user[0]._id,
+// 		                                "otp"     : OTP,
+// 		                                // "emailOTP" :emailOTP,
+// 		                                "count"   : user.length,
+// 		                            });			
+// 		                        })
+		                        
+// 								.catch(otpError=>{
+// 									return res.status(500).json({
+// 		                                messge: "Some issue happened in OTP Send Function",
+// 										error: otpError
+// 									});        
+// 								});       
+// 							}
+// 						})
+// 						.catch(err =>{
+// 							console.log(err);
+// 							res.status(500).json({
+// 		                        message : "Some problem occured in User Update for OTP",
+// 								error: err
+// 							});
+// 						});		
+
+// 				}});
+
+
+
+// 			}else{
+// 				bcrypt.hash(req.body.pwd,10,(err,hash)=>{
+// 					if(err){
+// 						return res.status(500).json({
+// 							error:err
+// 						});
+// 					}else{
+// 		                const OTP = getRandomInt(1000,9999);
+// 		                const emailOTP = getRandomInt(100000,999999);
+// 		                const user = new User({
+// 		                    _id: new mongoose.Types.ObjectId(),
+// 									createdAt		: new Date,
+// 									services		: {
+// 										password	:{
+// 													bcrypt:hash
+// 													},
+// 									},
+// 									// countryCode 	: req.body.countryCode,
+// 									mobileNumber  	: req.body.mobileNumber,
+// 									emails			: [
+// 											{
+// 												address  : req.body.emailId,
+// 												verified : true 
+// 											}
+// 									],
+// 									profile		:{
+// 												firstName     : req.body.firstName,
+// 												lastName      : req.body.lastName,
+// 												fullName      : req.body.firstName+' '+req.body.lastName,
+// 												emailId       : req.body.emailId,
+// 												mobileNumber  : req.body.mobileNumber,
+// 												// countryCode   : req.body.countryCode,
+// 												status		  : req.body.status,
+// 												otp 		  : OTP,
+// 												// emailOTP      : emailOTP,
+// 									},
+// 									roles 		   : [req.body.roles],
+// 		                    status  : req.body.status,
+// 		                });
+// 		                user.save()
+// 		                .then(newUser =>{
+// 		                    if(newUser){
+// 		                        console.log('New USER ======> ',newUser);
+// 		                        // console.log('Plivo Client = ',mobileNumber);
+// 		                        const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+// 		                        const sourceMobile = "+919923393733";
+// 		                        var text = "Dear User, "+'\n'+"To verify your account on Coffic, Enter this verification code : \n"+OTP; 
+		        
+// 		                        client.messages.create(
+// 		                            src=sourceMobile,
+// 		                            dst=req.body.mobileNumber,
+// 		                            text=text
+// 		                        ).then((result)=> {
+// 		                            console.log("src = ",src," | DST = ", dst, " | result = ", result);
+// 		                            // return res.status(200).json("OTP "+OTP+" Sent Successfully ");
+// 		                            return res.status(200).json({
+// 		                                "message" : 'NEW-USER-CREATED',
+// 		                                "user_id" : newUser._id,
+// 		                                "otp"     : OTP,
+// 		                                "emailOTP" : emailOTP, 
+// 		                            });			
+// 		                        })
+// 		                        .catch(otpError=>{
+// 		                            return res.status(501).json({
+// 		                                message: "Some Error Occurred in OTP Send Function",
+// 		                                error: otpError
+// 		                            });        
+// 		                        });       
+// 		                    }
+		                    
+// 		                })	
+						
+
+// 				}});
+
+
+// 			}
+
+
+
+
+
+
+// 		})
+// 		.catch(err =>{
+// 			console.log(err);
+// 			res.status(200).json({
+// 				message:"MOBILE-NUMBER-NOT-FOUND", 
+// 				error: err,
+// 			});
+// 		});
+// };
+
 exports.users_verify_mobileOTP = (req,res,next)=>{
 	console.log("req.body.mobile-Number",req.body.mobileNumber);
 	
@@ -548,68 +621,8 @@ exports.users_verify_mobileOTP = (req,res,next)=>{
 							error:err
 						});
 					}else{
-
-						const OTP = getRandomInt(1000,9999);
-						const emailOTP = getRandomInt(100000,999999);
-						User.updateOne(
-							{ _id: user[0]._id},  
-							{
-								// $set:{
-								// 	"otp" : OTP,
-								// 	"emailOTP": emailOTP
-								// }
-							})
-						.exec()
-						.then( data =>{
-							if(data){
-								console.log('USER AFTER OTP GENERATED = ',data);
-		                        const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
-		                        const sourceMobile = "+919923393733";
-		                        var text = "Dear User, "+'\n'+"To verify your account on Coffic, Enter this verification code : \n"+"Mobile OTP : " +OTP+ "Email OTP: " +emailOTP; 
-		                        client.messages.create(
-									src=sourceMobile,
-									dst=req.body.mobileNumber,
-									text=text
-								).then((result)=> {
-									console.log("src = ",src," | DST = ", dst, " | result = ", result);
-		                            return res.status(200).json({
-		                                "message" : 'MOBILE-NUMBER-EXISTS',
-		                                "user_id" : user[0]._id,
-		                                "otp"     : OTP,
-		                                // "emailOTP" :emailOTP,
-		                                "count"   : user.length,
-		                            });			
-		                        })
-		                        
-								.catch(otpError=>{
-									return res.status(500).json({
-		                                messge: "Some issue happened in OTP Send Function",
-										error: otpError
-									});        
-								});       
-							}
-						})
-						.catch(err =>{
-							console.log(err);
-							res.status(500).json({
-		                        message : "Some problem occured in User Update for OTP",
-								error: err
-							});
-						});		
-
-				}});
-
-
-
-			}else{
-				bcrypt.hash(req.body.pwd,10,(err,hash)=>{
-					if(err){
-						return res.status(500).json({
-							error:err
-						});
-					}else{
 		                const OTP = getRandomInt(1000,9999);
-		                const emailOTP = getRandomInt(100000,999999);
+		                // const emailOTP = getRandomInt(100000,999999);
 		                const user = new User({
 		                    _id: new mongoose.Types.ObjectId(),
 									createdAt		: new Date,
@@ -660,7 +673,7 @@ exports.users_verify_mobileOTP = (req,res,next)=>{
 		                                "message" : 'NEW-USER-CREATED',
 		                                "user_id" : newUser._id,
 		                                "otp"     : OTP,
-		                                "emailOTP" : emailOTP, 
+		                                // "emailOTP" : emailOTP, 
 		                            });			
 		                        })
 		                        .catch(otpError=>{
@@ -693,8 +706,6 @@ exports.users_verify_mobileOTP = (req,res,next)=>{
 			});
 		});
 };
-
-
 
 
 exports.update_user_resetpassword = (req,res,next)=>{
