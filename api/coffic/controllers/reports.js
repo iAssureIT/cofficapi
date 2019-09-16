@@ -295,6 +295,9 @@ function getMenuDetails(vendor_ID,startDate,endDate){
 /*Settlement Summary Report*/
 exports.settlementSummary = (req,res,next)=>{
 	WorkspaceDetails.find()
+					.sort({ "createdAt": -1 })
+					.skip(parseInt(req.params.startLimit))
+					.limit(parseInt(req.params.endLimit))
 					.exec()
 					.then(vendor=>{
 						if(vendor.length > 0){
@@ -868,20 +871,22 @@ exports.cafewiseSeatBooking=(req,res,next)=>{
 	.exec()
 	.then(workspacedata=>{
 		console.log("workspacedata",workspacedata);
+		console.log("workspacedata.length",workspacedata.length);
 		getData();
 		async function getData(){
 		var returnData=[];
 		for(i=0;i<workspacedata.length;i++){
 	     var seatdata =await availableSeats(workspacedata[i]._id);
-		console.log("seatdata",seatdata);
+		// console.log("seatdata",seatdata);
 		  returnData.push({
+			    "_id"		       : workspacedata[i]._id?workspacedata[i]._id:"-",
 			    "branch"		   : workspacedata[i].address,
 				"cafeName"         : workspacedata[i].nameOfCafe,
 				"city"             : workspacedata[i].city,
 				"totalSeats"       : workspacedata[i].numberOfSeats,
 				"occupiedSeats"    : seatdata.bookedSeats,
 				"availableSeats"   : seatdata.availableSeats,
-
+			    "length"		   : workspacedata.length,
 				});
 
 		       }
