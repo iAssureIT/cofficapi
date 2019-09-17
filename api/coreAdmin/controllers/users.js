@@ -88,6 +88,7 @@ exports.user_signupadmin = (req,res,next)=>{
 						.then(newUser =>{
 							if(newUser){
 					
+
 								// console.log('New USER = ',newUser);
 								// request({
 									
@@ -138,7 +139,7 @@ exports.user_signupadmin = (req,res,next)=>{
 									// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 									return res.status(200).json({
 										"message" : 'OTP-SEND-SUCCESSFULLY',
-										// "otp"     : newUser.emailOTP,
+
 									});			
 								})
 								.catch(otpError=>{

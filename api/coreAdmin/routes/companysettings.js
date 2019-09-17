@@ -9,16 +9,11 @@ router.get('/list',CompanySettingController.list_companysettings);
 
 router.get('/:companysettingsID', CompanySettingController.detail_companysettings);
 
-// router.patch('/:info/:action', CompanySettingController.update_companysettings);
-
-
 router.patch('/companyLocationsInfo', CompanySettingController.update_companysettings_companyLocationsInfo);
 
 router.patch('/taxSettings', CompanySettingController.update_companysettings_taxSettings);
 
-
 router.patch('/information', CompanySettingController.update_companysettinginfo);
-
 
 router.delete('/:companysettingsID',CompanySettingController.delete_companysettings);
 
