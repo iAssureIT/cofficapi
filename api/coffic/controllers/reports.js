@@ -100,10 +100,6 @@ exports.vendor_dailycheckins = (req,res,next)=>{
 
 exports.dailyOrder_Report=(req,res,next)=>{
 
-	// console.log("inside....");
-	// var Da = req.params.date;
-	// var todayDate = new Date(Da);
-	// console.log("todayDate",todayDate);
 	MenuOrder.aggregate(
 		                (
 							[
@@ -137,9 +133,13 @@ exports.dailyOrder_Report=(req,res,next)=>{
 			 			var returnData = [];
 			 			for(i = 0 ; i < data.length ; i++){
 			 				var userInfo = await getuserDetails(data[i].user_id);
+			 				var name = "User Not Found";
+			 				if(userInfo && userInfo.profile && userInfo.profile.fullName){
+			 					name = userInfo.profile.fullName;
+			 				}
 			 				console.log("userInfo",userInfo);
 			 				returnData.push({
-			 					"UserName" 		: userInfo.profile.fullName,
+			 					"UserName" 		: name,
 			 					"Item"	   		: data[i].item,
 			 					"OrderedAt"		: data[i].orderedAt,
 			 					"isDelivered"	: data[i].isDelivered,
