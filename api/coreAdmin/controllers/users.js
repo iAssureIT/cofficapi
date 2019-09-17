@@ -1682,7 +1682,7 @@ exports.user_otpverification_forgotpassword = (req,res,next)=>{
 		}); 
 			}else{
 				res.status(200).json({
-					message:"MOBILE-NUMBER-OR-EMAILID-NOT-FOUND", 
+					message:"MOBILE-NUMBER-FOUND", 
 					error: err,
 				});
 			}
@@ -1690,7 +1690,7 @@ exports.user_otpverification_forgotpassword = (req,res,next)=>{
 		.catch(err =>{
 			console.log(err);
 			res.status(200).json({
-				message:"MOBILE-NUMBER-OR-EMAILID-NOT-FOUND", 
+				message:"MOBILE-NUMBER-FOUND", 
 				error: err,
 			});
 		});
