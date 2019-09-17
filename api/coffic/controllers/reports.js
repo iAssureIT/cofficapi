@@ -186,15 +186,17 @@ exports.bankreport=(req,res,next)=>{
 								});
 							}
 							if(i >= data.length){
-								returnData.push({
-									"partyName"		: "Total",
-									"accountNumber"	: "Num of Transactions",
-									"bankName"		: ":"+(i+1),
-									"IFSCCode"		: " ",
-									"branch"		: " ",
-									"amountToPay"	: amountToPay,
-								});	
-								res.status(200).json(returnData);
+									var total ={
+										"partyName"		: "Total",
+										"accountNumber"	: "Num of Transactions",
+										"bankName"		: ":"+(i+1),
+										"IFSCCode"		: " ",
+										"branch"		: " ",
+										"amountToPay"	: amountToPay,
+									};
+								if(total.partyName === "Total"){
+									res.status(200).json({returnData,total});
+								}
 							}
 						}
 					})
@@ -401,7 +403,7 @@ exports.settlementSummary = (req,res,next)=>{
 									});
 								}	
 								if(i >= vendor.length){
-									returnData.push({
+									var total = {
 										"vendorId" 			: " ",
 										"vendorName"		: "Total",
 										"numTransaction"	: numTransaction,
@@ -410,8 +412,10 @@ exports.settlementSummary = (req,res,next)=>{
 										"payableAmount"		: payableAmount,
 										"status"			: "UnPaid",
 										"action"			: ""
-									});
-									res.status(200).json(returnData);
+									};
+									if(total.vendorName === "Total"){
+										res.status(200).json({returnData,total});
+									}
 								}
 							}
 						}else{
@@ -455,7 +459,7 @@ exports.settlementDetail = (req,res,next)=>{
 			 				});
 			 			}
 			 			if(i >= menu.length){
-			 				returnData.push({
+							  var total = {
 			 					"dateTime"		: "Total",
 			 					"userName"		: "Transaction",
 			 					"menuItem"		: "",
@@ -463,8 +467,10 @@ exports.settlementDetail = (req,res,next)=>{
 			 					"itemAmount" 	: itemAmount,
 			 					"gst"			: gst,
 			 					"totalAmount"	: totalAmount
-			 				});
-			 				res.status(200).json(returnData);
+			 				  };
+							if(total.dateTime === "Total"){
+			 					res.status(200).json({returnData,total});
+			 				}
 			 			}
 			 		}
 			 	}else{
@@ -728,21 +734,24 @@ function getSettingDetails(user_ID,startDate,endDate){
 }
 exports.salesTransaction = (req,res,next)=>{
 	var query = {};
-	//need to work on type of user
 	if(req.params.typeUser == "Active"){
 		query = {
-				"date" 			: {$gte : new Date(req.params.startDate), $lte : new Date(req.params.endDate)},
-				"status" 		: "paid"
-			};	
+					$match:{
+							"date" 			: {$gte : new Date(req.params.startDate), $lte : new Date(req.params.endDate)},
+							"status" 		: "paid"
+						}	
+				};	
 	}else{
 		query = {
-					"date" 			: {$gte : new Date(req.params.startDate), $lte : new Date(req.params.endDate)},
-					"status" 		: "inactive"
+					$match:{
+							"date" 			: {$gte : new Date(req.params.startDate), $lte : new Date(req.params.endDate)},
+							"status" 		: "inactive"
+						}
 				};
 	}
 	if(query){
 		SubscriptionOrder 	
-		.find(query)
+		.aggregate([query])
 		.sort({ "createdAt": -1 })
 				.skip(parseInt(req.params.startLimit))
 				.limit(parseInt(req.params.endLimit))
