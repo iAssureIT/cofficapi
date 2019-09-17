@@ -750,7 +750,7 @@ exports.salesTransaction = (req,res,next)=>{
 				};
 	}
 	if(query){
-	console.log("query = ",query);
+	// console.log("query = ",query);
 		SubscriptionOrder 	
 		.aggregate([query])
 		.sort({ "createdAt": -1 })

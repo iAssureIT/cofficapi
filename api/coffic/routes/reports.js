@@ -18,7 +18,7 @@ router.get('/get/sales/:startDate/:endDate/:typeUser/:startLimit/:endLimit',repo
 
 // router.get('/get/subscription/:startDate/:endDate',reportController.subscription);
 
-router.get('/get/settlementReportSummary/:startDate/:endDate',reportController.settlementSummary);
+router.get('/get/settlementReportSummary/:startDate/:endDate/:startLimit/:endLimit',reportController.settlementSummary);
 
 router.get('/get/settlementReportDetail/:startDate/:endDate/:vendor_ID/:startLimit/:endLimit',reportController.settlementDetail);
 
