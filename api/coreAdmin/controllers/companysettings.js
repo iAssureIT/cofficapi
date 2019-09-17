@@ -118,17 +118,11 @@ exports.update_companysettings_taxSettings = (req,res,next)=>{
 exports.update_companysettinginfo = (req,res,next)=>{
     // var roleData = req.body.role;
     Companysettings.updateOne(
-<<<<<<< Updated upstream
+
         { companyId : req.body.companyId},    
             {
                 $set:{
 
-=======
-        {  companyId : req.body.companyId},
-        {
-            $push:{
-                
->>>>>>> Stashed changes
                     "companyName"            : req.body.companyName,
                     "companyContactNumber"   : req.body.companyContactNumber,
                     "companyMobileNumber"    : req.body.companyMobileNumber,
