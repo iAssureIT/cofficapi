@@ -733,6 +733,7 @@ function getSettingDetails(user_ID,startDate,endDate){
 	});
 }
 exports.salesTransaction = (req,res,next)=>{
+	console.log("param = ",req.params);
 	var query = {};
 	if(req.params.typeUser == "Active"){
 		query = {
