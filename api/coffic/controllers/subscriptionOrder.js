@@ -97,6 +97,26 @@ exports.single_activesub = (req,res,next)=>{
             });
  }
 
+ exports.user_allsub = (req,res,next)=>{
+
+    SubscriptionOrder.find({ "user_id" : req.params.user_id })
+        .exec()
+        .then(data=>{
+            console.log("data",data);
+            if(data){
+                res.status(200).json(data);
+            }else{
+                res.status(404).json('Not found');
+            }
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+ }
+
 
 exports.detail_subscriptionOrder = (req,res,next)=>{
     SubscriptionOrder.findOne({"_id":req.params.suborderID})

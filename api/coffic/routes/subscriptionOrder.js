@@ -11,7 +11,9 @@ router.get('/get/one/:suborderID', subscriptionOrderController.detail_subscripti
 
 router.get('/get/list', subscriptionOrderController.list_subscriptionOrder);
 
-router.get('/get/activesub/:user_id', subscriptionOrderController.single_activesub); 
+router.get('/get/activesub/:user_id', subscriptionOrderController.single_activesub);
+
+router.get('/get/allsub/:user_id', subscriptionOrderController.user_allsub); 
 
 router.get('/quickwallet-redirecturl', subscriptionOrderController.paymentResponse);
 
