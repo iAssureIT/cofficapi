@@ -737,14 +737,14 @@ exports.salesTransaction = (req,res,next)=>{
 	if(req.params.typeUser == "Active"){
 		query = {
 					$match:{
-							"date" 			: {$gte : new Date(req.params.startDate), $lte : new Date(req.params.endDate)},
+							"startDate" 	: {$gte : new Date(req.params.startDate), $lte : new Date(req.params.endDate)},
 							"status" 		: "paid"
 						}	
 				};	
 	}else{
 		query = {
 					$match:{
-							"date" 			: {$gte : new Date(req.params.startDate), $lte : new Date(req.params.endDate)},
+							"startDate" 	: {$gte : new Date(req.params.startDate), $lte : new Date(req.params.endDate)},
 							"status" 		: "inactive"
 						}
 				};
