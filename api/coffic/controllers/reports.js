@@ -99,6 +99,7 @@ exports.vendor_dailycheckins = (req,res,next)=>{
 }
 
 exports.dailyOrder_Report=(req,res,next)=>{
+
 	// console.log("inside....");
 	// var Da = req.params.date;
 	// var todayDate = new Date(Da);
@@ -125,6 +126,7 @@ exports.dailyOrder_Report=(req,res,next)=>{
 							]
 				)
 		               )
+
 			 .exec()
 			 .then(data=>{
 			 	if(data.length > 0){
@@ -370,9 +372,6 @@ function getMenuDetails(vendor_ID,startDate,endDate){
 /*Settlement Summary Report*/
 exports.settlementSummary = (req,res,next)=>{
 	WorkspaceDetails.find()
-					.sort({ "createdAt": -1 })
-					.skip(parseInt(req.params.startLimit))
-					.limit(parseInt(req.params.endLimit))
 					.exec()
 					.then(vendor=>{
 						if(vendor.length > 0){
@@ -878,24 +877,21 @@ exports.cafewiseSeatBooking=(req,res,next)=>{
 	.exec()
 	.then(workspacedata=>{
 		console.log("workspacedata",workspacedata);
-		console.log("workspacedata.length",workspacedata.length);
 		getData();
 		async function getData(){
 		var returnData=[];
 		var i =0;
 		for(i=0;i<workspacedata.length;i++){
-	     	var seatdata =await availableSeats(workspacedata[i]._id);
-		// console.log("seatdata",seatdata);
-		    returnData.push({
-			    "_id"		       : workspacedata[i]._id ? workspacedata[i]._id : "-",
+	     var seatdata =await availableSeats(workspacedata[i]._id);
+		console.log("seatdata",seatdata);
+		  returnData.push({
 			    "branch"		   : workspacedata[i].address,
 				"cafeName"         : workspacedata[i].nameOfCafe,
 				"city"             : workspacedata[i].city,
 				"totalSeats"       : workspacedata[i].numberOfSeats,
 				"occupiedSeats"    : seatdata.bookedSeats,
 				"availableSeats"   : seatdata.availableSeats,
-			    "length"		   : workspacedata.length,
-			    "i"		   		   : i, 
+
 				});
 
 		       }
