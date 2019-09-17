@@ -733,7 +733,6 @@ function getSettingDetails(user_ID,startDate,endDate){
 	});
 }
 exports.salesTransaction = (req,res,next)=>{
-	console.log("param = ",req.params);
 	var query = {};
 	if(req.params.typeUser == "Active"){
 		query = {
@@ -751,6 +750,7 @@ exports.salesTransaction = (req,res,next)=>{
 				};
 	}
 	if(query){
+	console.log("query = ",query);
 		SubscriptionOrder 	
 		.aggregate([query])
 		.sort({ "createdAt": -1 })
