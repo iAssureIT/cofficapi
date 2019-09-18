@@ -918,6 +918,7 @@ exports.cafewiseSeatBooking=(req,res,next)=>{
 	     var seatdata =await availableSeats(workspacedata[i]._id);
 		console.log("seatdata",seatdata);
 		  returnData.push({
+			    "_id"		   	   : workspacedata[i]._id,
 			    "branch"		   : workspacedata[i].address,
 				"cafeName"         : workspacedata[i].nameOfCafe,
 				"city"             : workspacedata[i].city,
