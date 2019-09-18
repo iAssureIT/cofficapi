@@ -405,6 +405,7 @@ exports.settlementSummary = (req,res,next)=>{
 									deduction 			+= menuDetails.totalAmount >= 3000 ? "-10%" : 0;
 									payableAmount 		+= menuDetails.totalAmount >= 3000 ? (menuDetails.totalAmount - (menuDetails.totalAmount * 0.1)) : menuDetails.totalAmount;  
 									returnData.push({
+										"_id"				: vendor[i]._id,
 										"vendorId" 			: i+1,
 										"vendorName"		: vendor[i].nameOfCafe,
 										"numTransaction"	: menuDetails.numTransaction,
