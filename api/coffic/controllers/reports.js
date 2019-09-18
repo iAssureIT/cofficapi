@@ -46,56 +46,69 @@ exports.dailyBeverage_Report=(req,res,next)=>{
 }
 
 exports.vendor_dailycheckins = (req,res,next)=>{
-	SeatBooking .aggregate(
-							[
-								{
-									$match : {
-										"workSpace_id"  : req.params.workspace_ID,
-										"date"			: req.params.date
-
-									}
-								},
-								
-								{
-									$project : {
-													"workSpace_id"	: "$_id.workSpace_id",
-													"checkInTime"	: "$checkInTime",
-													"checkOutTime"	: "$checkOutTime",
-													"user_id"		: "$user_id"
-												}				
-								}
-							]
-				)
-				.sort({ "createdAt": -1 })
-				.skip(parseInt(req.params.startLimit))
-				.limit(parseInt(req.params.endLimit))
-				.exec()
-				.then(seatBooking=>{
-					console.log("seatbooking",seatBooking);
-					getData();
-					async function getData(){
-						var returnData = [];
-						for(i = 0 ; i < seatBooking.length;i++){
-							var userdata = await getuserDetails(seatBooking[i].user_id);
-							console.log("userdata..............",userdata);
-							returnData.push({
-								"workSpace_id" 		: seatBooking[i].workSpace_id,
-								"checkInTime"		: seatBooking[i].checkInTime,
-								"checkOutTime"		: seatBooking[i].checkOutTime,
-								"userName"          : userdata.profile.fullName,
-							});
-						}
-						console.log("returndata",returnData);
-						if( i >= seatBooking.length){
-							res.status(200).json(returnData);		
-				     	}
+	var query = {};
+	if(req.params.workspace_ID != "all"){
+		query = {
+					$match : {
+						"workSpace_id"  : req.params.workspace_ID,
+						"date"			: req.params.date
 
 					}
-					// res.status(200).json(seatBooking);
-				})
-				.catch(err=>{
-					res.status(200).json({error:err});
-				});
+				};
+	}else{
+		query = {
+					$match : {
+						"date"			: req.params.date
+
+					}
+				};
+	}
+	if(query){
+		SeatBooking .aggregate(
+								[
+									query,
+									
+									{
+										$project : {
+														"workSpace_id"	: "$_id.workSpace_id",
+														"checkInTime"	: "$checkInTime",
+														"checkOutTime"	: "$checkOutTime",
+														"user_id"		: "$user_id"
+													}				
+									}
+								]
+					)
+					.sort({ "createdAt": -1 })
+					.skip(parseInt(req.params.startLimit))
+					.limit(parseInt(req.params.endLimit))
+					.exec()
+					.then(seatBooking=>{
+						console.log("seatbooking",seatBooking);
+						getData();
+						async function getData(){
+							var returnData = [];
+							for(i = 0 ; i < seatBooking.length;i++){
+								var userdata = await getuserDetails(seatBooking[i].user_id);
+								console.log("userdata..............",userdata);
+								returnData.push({
+									"workSpace_id" 		: seatBooking[i].workSpace_id,
+									"checkInTime"		: seatBooking[i].checkInTime,
+									"checkOutTime"		: seatBooking[i].checkOutTime,
+									"userName"          : userdata.profile.fullName,
+								});
+							}
+							console.log("returndata",returnData);
+							if( i >= seatBooking.length){
+								res.status(200).json(returnData);		
+					     	}
+
+						}
+						// res.status(200).json(seatBooking);
+					})
+					.catch(err=>{
+						res.status(200).json({error:err});
+					});
+		}
 }
 
 exports.dailyOrder_Report=(req,res,next)=>{
@@ -448,9 +461,13 @@ exports.settlementDetail = (req,res,next)=>{
 			 				gst 		+= 2.00;
 			 				totalAmount += menu[i].price+2.00;
 			 				var userInfor = await getuserDetails(menu[i].user_id);
+			 				var usrName = "User Not Found";
+			 				if(userInfor && userInfor.profile && userInfor.profile.fullName){
+			 					usrName = userInfor.profile.fullName;
+			 				}
 			 				returnData.push({
 			 					"dateTime"		: menu[i].orderedAt,
-			 					"userName"		: userInfor.profile.fullName,
+			 					"userName"		: usrName,
 			 					"menuItem"		: menu[i].item,
 			 					"quantity"		: 1,
 			 					"itemAmount" 	: menu[i].price,
