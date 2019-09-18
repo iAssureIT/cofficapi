@@ -917,7 +917,7 @@ exports.user_loginwithadmin = (req,res,next)=>{
                             }); 
                         }
                         console.log({message:"Neither err nor result"});
-                        return res.status(401).json({
+                        return res.status(200).json({
                             message: 'Error and Result Auth failed'
                         });
                     })

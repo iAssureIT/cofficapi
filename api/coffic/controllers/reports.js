@@ -302,11 +302,9 @@ exports.dashboardBlock = (req,res,next)=>{
 		var yearStartDate   = new Date(year+"-01-01");
 		var monthStartDate   = new Date(year+"-"+month+"-01");
 		var userInfo 		= await getUserCount("user");
-		console.log("userInfo ",userInfo);
 		var vendorInfo		= await getUserCount("vendor");
 		var activeVendor 	= await getActiveVendor();
 		var subUser 		= await getSubUser();
-		console.log("subUser ",subUser);
 		var earningYTD		= await getEarning(yearStartDate,new Date());
 		var earningMTD		= await getEarning(monthStartDate,new Date());
 		var twelveMonthGrossEarning = [];
@@ -677,13 +675,13 @@ exports.vendor_monthly = (req,res,next)=>{
 //Subscription Details
 function countPlan(plan_ID,startDate,endDate){
 	return new Promise(function(resolve,reject){
-		SubscriptionOrder.countDocuments({
+		SubscriptionOrder.find({
 									"plan_ID"   : String(plan_ID),
 									"createdAt"		: {$gte : startDate, $lte : endDate}
 						})
 						 .exec()
 						 .then(data=>{
-						 	resolve(data);
+						 	resolve(data.length);
 						 })
 						 .catch(err=>{
 						 	reject(err);
