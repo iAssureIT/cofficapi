@@ -445,7 +445,7 @@ exports.settlementDetail = (req,res,next)=>{
 							{
 								$match : {
 									"workSpace_id" : req.params.vendor_ID,
-									"date" 		   : {$gte : req.params.startDate, $lte : req.params.endDate}
+									"date" 		   : {$gte : new Date(req.params.startDate), $lte : new Date(req.params.endDate)}
 								}
 							}
 		])
