@@ -441,7 +441,14 @@ exports.settlementSummary = (req,res,next)=>{
 					});
 };
 exports.settlementDetail = (req,res,next)=>{
-	MenuOrder.find()
+	MenuOrder.aggregate([
+							{
+								$match : {
+									"workSpace_id" : req.params.vendor_ID,
+									"date" 		   : {$gte : req.params.startDate, $lte : req.params.endDate}
+								}
+							}
+		])
 			.sort({ "createdAt": -1 })
 			.skip(parseInt(req.params.startLimit))
 			.limit(parseInt(req.params.endLimit))
