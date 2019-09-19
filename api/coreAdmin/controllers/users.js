@@ -1434,7 +1434,7 @@ exports.users_count = (req,res,next)=>{
 // =====================  Forgot Password ==============
 
 exports.user_otpverification_forgotpassword = (req,res,next)=>{
-	User.findOne({'mobileNumber':req.body.mobileNumber,'profile.mobileNumber':req.body.emailId})
+	User.findOne({'profile.mobileNumber':req.body.mobileNumber,'profile.emailId':req.body.emailId})
 		.limit(1)
 		.exec()
 		.then(user =>{
@@ -1474,7 +1474,6 @@ exports.user_otpverification_forgotpassword = (req,res,next)=>{
 		// 	});
 		// });    
 		const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
-		// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw'); 
 		const sourceMobile = "+919923393733";
 		var text = "Dear User,"+'\n'+"Your account verification code is "+forgotuserotp.mobileOTP+"\nRegards,\nTeam Coffic"
 		client.messages.create(
