@@ -109,7 +109,8 @@ exports.user_signupadmin = (req,res,next)=>{
 								// 	res.status(500).json({
 								// 		error: err
 								// 	});
-								// });;
+								// });    
+															
 								const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz'); // iAssureIT
 								// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
 								const sourceMobile = "+919923393733";
@@ -217,7 +218,7 @@ exports.user_otpverification = (req,res,next)=>{
 	
 };
 exports.user_signupmobile = (req,res,next)=>{
-	var emailIddata = req.body.emailId;  
+	var emailIddata = req.body.emailId;
 	User.findOne({'email.address':emailIddata})
 	.exec()
 	.then(user =>{		
@@ -641,6 +642,7 @@ exports.update_user_resetpassword = (req,res,next)=>{
     //         });
 	// 	});
 	// });
+
 	User.findOne({"profile.emailId" : req.body.emailId })
 		.exec()
 		.then(user=>{
@@ -1432,7 +1434,7 @@ exports.users_count = (req,res,next)=>{
 // =====================  Forgot Password ==============
 
 exports.user_otpverification_forgotpassword = (req,res,next)=>{
-	User.findOne({'mobileNumber':req.body.mobileNumber,'profile.emailId': req.body.emailId})
+	User.findOne({'mobileNumber':req.body.mobileNumber})
 		.limit(1)
 		.exec()
 		.then(user =>{
@@ -1482,6 +1484,7 @@ exports.user_otpverification_forgotpassword = (req,res,next)=>{
 		).then((result)=> {
 			return res.status(200).json({
 				"message" : 'OTP-SEND-SUCCESSFULLY',
+				"user_id" : user._id
 				// "otp"     : forgotuserotp.emailOTP,
 			});			
 		})
