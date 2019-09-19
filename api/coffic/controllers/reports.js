@@ -202,7 +202,7 @@ exports.dailyOrder_Report=(req,res,next)=>{
 								{
 									$match : {
 										"workSpace_id"  : req.params.workspace_ID,
-										"date"			: req.params.date,
+										"date"			: {$eq : new Date(req.params.date)},
 
 									}
 								},
