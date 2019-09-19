@@ -37,6 +37,7 @@ exports.dailyBeverage_Report=(req,res,next)=>{
 			.limit(parseInt(req.params.endLimit))
 			.exec()
 			.then(data=>{
+				console.log("data=>>>",data);
 			 	res.status(200).json(data);
 			 })
 			 .catch(err=>{
@@ -98,32 +99,30 @@ exports.vendor_dailycheckins = (req,res,next)=>{
 exports.dailyOrder_Report=(req,res,next)=>{
 
 	MenuOrder.aggregate(
-		                (
 							[
 								{
 									$match : {
 										"workSpace_id"  : req.params.workspace_ID,
-										"date"			: {$eq : new Date(req.params.date)},
+										"date"			: req.params.date,
 
 									}
 								},
-								
-								{
-									$project : {
-													"workSpace_id"	: "$_id.workSpace_id",
-													"orderedAt"   	: "$orderedAt",
-													"item"	        : "$item",
-													"user_id"		: "$user_id"
-												}				
-								}
+								// {
+								// 	$project : {
+								// 					"workSpace_id"	: "$_id",
+								// 					"orderedAt"   	: "$orderedAt",
+								// 					"item"	        : "$item",
+								// 					"user_id"		: "$user_id"
+								// 				}				
+								// }
 							]
-				)
 		               )
-              .sort({ "createdAt": -1 })
+             .sort({ "createdAt": -1 })
 			 .skip(parseInt(req.params.startLimit))
 			 .limit(parseInt(req.params.endLimit))
 			 .exec()
 			 .then(data=>{
+			 	console.log("dailydata",data);
 			 	if(data.length > 0){
 			 		getData();
 			 		async function getData(){
@@ -140,6 +139,7 @@ exports.dailyOrder_Report=(req,res,next)=>{
 			 					"Item"	   		: data[i].item,
 			 					"OrderedAt"		: data[i].orderedAt,
 			 					"isDelivered"	: data[i].isDelivered,
+			 					// "data"			: data[i]
 			 				});
 			 			}
 			 			if(i >= data.length){

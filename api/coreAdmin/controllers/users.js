@@ -937,20 +937,6 @@ exports.users_list = (req, res, next) => {
 		});
 
 }
-exports.id_cafeAdmin = (req, res, next) => {
-	WorkspaceDetails.findOne({ "cafeAdmin": req.params.user_id })
-		.exec()
-		.then(users => {
-			res.status(200).json(users);
-		})
-		.catch(err => {
-			console.log(err);
-			res.status(500).json({
-				error: err
-			});
-		});
-
-}
 exports.users_directlist = (req, res, next) => {
 	User.find({ roles: { $ne: "admin" } })
 		.select("_id username roles createdAt profile.firstName profile.lastName profile.mobNumber profile.fullname profile.emailId profile.status")
