@@ -7,6 +7,7 @@ const subscriptionPlanSchema = mongoose.Schema({
 	maxCheckIns	            :  Number,
 	price 			        :  Number,
 	validityDays            :  String,
+	discount 				:  Number,
 	createdBy 	            :  String,
 	createAt 		        :  Date,
 	updatedBy 	            :  String,

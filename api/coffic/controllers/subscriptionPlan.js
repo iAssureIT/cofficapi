@@ -10,6 +10,7 @@ exports.create_subscriptionPlan = (req,res,next)=>{
                 maxCheckIns            :  req.body.maxCheckIns,
                 price                  :  req.body.price,
                 validityDays           :  req.body.validityDays,
+                discount               :  req.body.discount,
                 createdBy              :  req.body.createdBy,
                 createAt               :  new Date(),
         });
@@ -19,31 +20,27 @@ exports.create_subscriptionPlan = (req,res,next)=>{
         .exec()
         .then(data=>{
             if(data.length > 0){
-                console.log('data', data);
                 res.status(200).json("Subscription Plan Already exists");
             }else{               
                 subscriptionplan.save()
-                                .then(data=>{
-                                    console.log('data', data);
-                                    res.status(200).json("Subscription Plan Details Submitted Successfully");
-                                })
-                                .catch(err =>{
-                                    console.log(err);
-                                    res.status(500).json({
-                                        error: err
-                                    });
-                                });              
+                .then(data=>{
+                    res.status(200).json("Subscription Plan Details Submitted Successfully");
+                })
+                .catch(err =>{
+                    console.log(err);
+                    res.status(500).json({
+                        error: err
+                    });
+                });              
             }
         })
 };
 
 exports.list_subscriptionPlan = (req,res,next)=>{
-    console.log('list');
     SubscriptionPlan.find()
     .sort({"createdAt":-1})
         .exec()
         .then(data=>{
-            console.log("data//////",data)
             if(data){
                 res.status(200).json(data);
             }else{
@@ -61,18 +58,17 @@ exports.list_subscriptionPlan = (req,res,next)=>{
 
 
 exports.single_subscriptionPlan = (req,res,next)=>{
-        SubscriptionPlan
-        .findOne({"_id" :req.params.subscriptionPlansID})
-                        .then(data=>{               
-                         console.log("data",data);            
-                            res.status(200).json(data);
-                        })
-                        .catch(err =>{
-                            console.log(err);
-                            res.status(500).json({
-                                error: err
-                            });
-                        });
+ SubscriptionPlan
+    .findOne({"_id" :req.params.subscriptionPlansID})
+    .then(data=>{               
+            res.status(200).json(data);
+        })
+    .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
 };
 
 
@@ -91,6 +87,7 @@ exports.update_subscriptionPlan = (req,res,next)=>{
                                                             price                   :  req.body.price,
                                                             validityDays            :  req.body.validityDays,
                                                             description             :  req.body.description,
+                                                            discount                :  req.body.discount,
                                                             updatedBy               :  req.body.createdBy,
                                                             lastUpdateAt            :  new Date(),
                                                         }

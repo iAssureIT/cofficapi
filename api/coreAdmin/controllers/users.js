@@ -36,19 +36,15 @@ exports.user_checkUser = (req,res,next)=>{
 		});
 	})
 }
-
 exports.user_signupadmin = (req,res,next)=>{
-	console.log('req',req)
 	User
 	.findOne({'emails.address': req.body.emailId})
 	.exec()
 	.then(user=>{
-		console.log("user",user)
 		if(user){
 			return res.status(200).json({
 				"message" : 'USER_ALREADY_EXIST',
 				
-			
 			});	
 		}else{
 			bcrypt.hash(req.body.pwd,10,(err,hash)=>{
@@ -87,9 +83,6 @@ exports.user_signupadmin = (req,res,next)=>{
 						user.save()
 						.then(newUser =>{
 							if(newUser){
-					
-
-								// console.log('New USER = ',newUser);
 								// request({
 									
 								// 	"method"    : "POST",
@@ -107,35 +100,25 @@ exports.user_signupadmin = (req,res,next)=>{
 								// 	"headers"   : {
 								// 					"User-Agent": "Test App"
 								// 				}
-								// })
-							
+								// })							
 								// .then((sentemail)=>{
-								// 	// console.log("call to api");
 								// 	res.header("Access-Control-Allow-Origin","*");
-						
 								// 	res.status(200).json({message:"Mail Sent successfully"});
 								// })
 								// .catch((err) =>{
-								// 	console.log("call to api",err);
 								// 	res.status(500).json({
 								// 		error: err
 								// 	});
-								// });    
-								
-								
-								console.log('Plivo Client = ',newUser.mobileNumber);
-
+								// });;
 								const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz'); // iAssureIT
 								// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
 								const sourceMobile = "+919923393733";
 								var text = 'Dear Vendor ,'+"\nYour account has been created successfully on Coffic. Your Login details are as follows:\nEmail ID  :"+newUser.profile.emailId+"Default Password:test123"+'\n'+'\n'+'\nRegards,\nTeam Coffic';
-								
 								client.messages.create(
 									src=sourceMobile,
 									dst=req.body.mobileNumber,
 									text=text
 								).then((result)=> {
-									// console.log("src = ",src," | DST = ", dst, " | result = ", result);
 									// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 									return res.status(200).json({
 										"message" : 'OTP-SEND-SUCCESSFULLY',
@@ -172,10 +155,7 @@ exports.user_signupadmin = (req,res,next)=>{
 		});
 };
 
-exports.user_otpverification = (req,res,next)=>{
-
-	// console.log('req',req)
-	
+exports.user_otpverification = (req,res,next)=>{	
 	var newUser = {
 					
 		// emailOTP		: req.body.emailOTP,
@@ -187,8 +167,6 @@ exports.user_otpverification = (req,res,next)=>{
 	};	
 	
 	if(newUser){
-					
-		// console.log('New USER ============== ',newUser);
 		// request({
 			
 		// 	"method"    : "POST",
@@ -205,34 +183,24 @@ exports.user_otpverification = (req,res,next)=>{
 		// 					"User-Agent": "Test App"
 		// 				}
 		// })
-	
 		// .then((sentemail)=>{
-		// 	// console.log("call to api");
 		// 	res.header("Access-Control-Allow-Origin","*");
-
 		// 	res.status(200).json({message:"Mail Sent successfully"});
 		// })
 		// .catch((err) =>{
-		// 	console.log("call to api",err);
 		// 	res.status(500).json({
 		// 		error: err
 		// 	});
 		// });    
-		
-		
-		console.log('Plivo Client = ',newUser.mobileNumber);
 		const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
 		// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
-
 		const sourceMobile = "+919923393733";
 		var text = "Dear "+newUser.firstName+','+'\n'+"Your account verification code is "+newUser.mobileOTP+"\nRegards,\nTeam Coffic"
-		
 		client.messages.create(
 			src=sourceMobile,
 			dst=req.body.mobileNumber,
 			text=text
 		).then((result)=> {
-			// console.log("src = ",src," | DST = ", dst, " | result = ", result);
 			// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 			return res.status(200).json({
 				"message" : 'OTP-SEND-SUCCESSFULLY',
@@ -245,15 +213,11 @@ exports.user_otpverification = (req,res,next)=>{
 				error: otpError
 			});        
 		}); 
-	}
+	 }
 	
-	};
-
-
+};
 exports.user_signupmobile = (req,res,next)=>{
-	var emailIddata = req.body.emailId;
-    
-    console.log('emailIddata ',req.body.emailId);
+	var emailIddata = req.body.emailId;  
 	User.findOne({'email.address':emailIddata})
 	.exec()
 	.then(user =>{		
@@ -268,7 +232,6 @@ exports.user_signupmobile = (req,res,next)=>{
 						error:err
 					});
 				}else{
-					// const OTP = getRandomInt(1000,9999);
 					const user = new User({
 						_id: new mongoose.Types.ObjectId(),
 						createdAt		: new Date,
@@ -368,23 +331,17 @@ exports.user_createVendor = (req,res,next)=>{
 							
 			            });	
 						user.save()
-
 						.then(newUser =>{
 							if(newUser){
-								console.log('New USER = ',newUser);
-								// console.log('Plivo Client = ',mobileNumber);
 								const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
 								// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
-
 								const sourceMobile = "+919923393733";
 								var text = 'Dear Vendor ,'+"\nYour account has been created successfully on Coffic. Your Login details are as follows:\nEmail ID  :"+newUser.profile.emailId+"\nDefault Password:test123"+'\n'+'\n'+'\nRegards,\nTeam Coffic';
-				
 								client.messages.create(
 									src=sourceMobile,
 									dst=req.body.mobileNumber,
 									text=text
 								).then((result)=> {
-									console.log("src = ",src," | DST = ", dst, " | result = ", result);
 									// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 									return res.status(200).json({
 										"message" : 'NEW-USER-CREATED',
@@ -419,14 +376,10 @@ exports.user_createVendor = (req,res,next)=>{
 			});
 		});
 };
-
-
 exports.confirmOTP = (req,res,next)=>{
 	User.findOne({'mobileNumber':req.body.mobileNumber})
 		.exec()
 		.then((user)=>{
-	// console.log("in confirm otp---->",user.profile.otp,req.body.mobileotp,req.body.emailotp);
-
 			if(user){
 				var userOtp = user.profile.otp;
 				var emailOTP = user.profile.emailOTP;
@@ -442,25 +395,18 @@ exports.confirmOTP = (req,res,next)=>{
 		.catch()
 
 };
-
-
-// exports.users_verify_mobileOTP = (req,res,next)=>{
-// 	console.log("req.body.mobile-Number",req.body.mobileNumber);
-	
+// exports.users_verify_mobileOTP = (req,res,next)=>{	
 // 	User.find({'mobileNumber':req.body.mobileNumber})
 // 		.limit(1)
 // 		.exec()
-// 		.then(user =>{
-		
+// 		.then(user =>{		
 // 			if(user.length > 0){
-
 // 				bcrypt.hash(req.body.pwd,10,(err,hash)=>{
 // 					if(err){
 // 						return res.status(500).json({
 // 							error:err
 // 						});
 // 					}else{
-
 // 						const OTP = getRandomInt(1000,9999);
 // 						const emailOTP = getRandomInt(100000,999999);
 // 						User.updateOne(
@@ -474,7 +420,6 @@ exports.confirmOTP = (req,res,next)=>{
 // 						.exec()
 // 						.then( data =>{
 // 							if(data){
-// 								console.log('USER AFTER OTP GENERATED = ',data);
 // 		                        const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
 // 		                        const sourceMobile = "+919923393733";
 // 		                        var text = "Dear User, "+'\n'+"To verify your account on Coffic, Enter this verification code : \n"+"Mobile OTP : " +OTP+ "Email OTP: " +emailOTP; 
@@ -483,7 +428,6 @@ exports.confirmOTP = (req,res,next)=>{
 // 									dst=req.body.mobileNumber,
 // 									text=text
 // 								).then((result)=> {
-// 									console.log("src = ",src," | DST = ", dst, " | result = ", result);
 // 		                            return res.status(200).json({
 // 		                                "message" : 'MOBILE-NUMBER-EXISTS',
 // 		                                "user_id" : user[0]._id,
@@ -491,8 +435,7 @@ exports.confirmOTP = (req,res,next)=>{
 // 		                                // "emailOTP" :emailOTP,
 // 		                                "count"   : user.length,
 // 		                            });			
-// 		                        })
-		                        
+// 		                        })      
 // 								.catch(otpError=>{
 // 									return res.status(500).json({
 // 		                                messge: "Some issue happened in OTP Send Function",
@@ -508,11 +451,7 @@ exports.confirmOTP = (req,res,next)=>{
 // 								error: err
 // 							});
 // 						});		
-
 // 				}});
-
-
-
 // 			}else{
 // 				bcrypt.hash(req.body.pwd,10,(err,hash)=>{
 // 					if(err){
@@ -555,18 +494,14 @@ exports.confirmOTP = (req,res,next)=>{
 // 		                user.save()
 // 		                .then(newUser =>{
 // 		                    if(newUser){
-// 		                        console.log('New USER ======> ',newUser);
-// 		                        // console.log('Plivo Client = ',mobileNumber);
 // 		                        const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
 // 		                        const sourceMobile = "+919923393733";
-// 		                        var text = "Dear User, "+'\n'+"To verify your account on Coffic, Enter this verification code : \n"+OTP; 
-		        
+// 		                        var text = "Dear User, "+'\n'+"To verify your account on Coffic, Enter this verification code : \n"+OTP; 		        
 // 		                        client.messages.create(
 // 		                            src=sourceMobile,
 // 		                            dst=req.body.mobileNumber,
 // 		                            text=text
 // 		                        ).then((result)=> {
-// 		                            console.log("src = ",src," | DST = ", dst, " | result = ", result);
 // 		                            // return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 // 		                            return res.status(200).json({
 // 		                                "message" : 'NEW-USER-CREATED',
@@ -581,21 +516,10 @@ exports.confirmOTP = (req,res,next)=>{
 // 		                                error: otpError
 // 		                            });        
 // 		                        });       
-// 		                    }
-		                    
+// 		                    }		                    
 // 		                })	
-						
-
 // 				}});
-
-
 // 			}
-
-
-
-
-
-
 // 		})
 // 		.catch(err =>{
 // 			console.log(err);
@@ -605,17 +529,12 @@ exports.confirmOTP = (req,res,next)=>{
 // 			});
 // 		});
 // };
-
 exports.users_verify_mobileOTP = (req,res,next)=>{
-	console.log("req.body.mobile-Number",req.body.mobileNumber);
-	
 	User.find({'mobileNumber':req.body.mobileNumber})
 		.limit(1)
 		.exec()
 		.then(user =>{
-		
 			if(user.length > 0){
-
 				bcrypt.hash(req.body.pwd,10,(err,hash)=>{
 					if(err){
 						return res.status(500).json({
@@ -657,8 +576,6 @@ exports.users_verify_mobileOTP = (req,res,next)=>{
 		                user.save()
 		                .then(newUser =>{
 		                    if(newUser){
-		                        console.log('New USER ======> ',newUser);
-		                        // console.log('Plivo Client = ',mobileNumber);
 		                        const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
 		                        const sourceMobile = "+919923393733";
 		                        var text = "Dear User, "+'\n'+"To verify your account on Coffic, Enter this verification code : \n"+OTP; 
@@ -668,7 +585,6 @@ exports.users_verify_mobileOTP = (req,res,next)=>{
 		                            dst=req.body.mobileNumber,
 		                            text=text
 		                        ).then((result)=> {
-		                            console.log("src = ",src," | DST = ", dst, " | result = ", result);
 		                            // return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 		                            return res.status(200).json({
 		                                "message" : 'NEW-USER-CREATED',
@@ -684,20 +600,9 @@ exports.users_verify_mobileOTP = (req,res,next)=>{
 		                            });        
 		                        });       
 		                    }
-		                    
 		                })	
-						
-
 				}});
-
-
 			}
-
-
-
-
-
-
 		})
 		.catch(err =>{
 			console.log(err);
@@ -707,31 +612,23 @@ exports.users_verify_mobileOTP = (req,res,next)=>{
 			});
 		});
 };
-
-
 exports.update_user_resetpassword = (req,res,next)=>{
 	// bcrypt.hash(req.body.pwd,10,(err,hash)=>{
     // User.updateOne(
     //         { _id:req.body.userID},  
     //         {
     //             $set:{
-				
 	// 				services		: {
 	// 									password:{
 	// 											bcrypt:hash
 	// 											},
 	// 				},
-
-					
 	// 				}			
-				
     //         }
     //     )
     //     .exec()
     //     .then(data=>{
-    //         console.log('data ',data);
     //         if(data.nModified == 1){
-	// 			// console.log('data =========>>>',data);
     //             res.status(200).json("Password  Updated");
     //         }else{
     //             res.status(401).json("Password  Not Found");
@@ -744,17 +641,10 @@ exports.update_user_resetpassword = (req,res,next)=>{
     //         });
 	// 	});
 	// });
-
-	console.log('req.body=====> ',req.body);
-
 	User.findOne({"profile.emailId" : req.body.emailId })
 		.exec()
-		
 		.then(user=>{
-				console.log('user ',user);
-
 		if(user){
-
 				bcrypt.hash(req.body.pwd,10,(err,hash)=>{
 					User.updateOne(
 						{_id:user._id}, 
@@ -770,7 +660,6 @@ exports.update_user_resetpassword = (req,res,next)=>{
 					)
 			.exec()
 			.then(data=>{
-				console.log('data ',data);
 				if(data.nModified == 1){
 					res.status(200).json("Password Updated");
 				}else{
@@ -789,26 +678,20 @@ exports.update_user_resetpassword = (req,res,next)=>{
 		}
 	})
 	.catch(err=>{
-	// console.log('update user status error ',err);
 	res.status(500).json({
 	error:err
 	});
-});
+  });
 
 }
 
 // exports.users_password = (req,res,next)=>{
-// 	console.log("req.body.mobNumber",req.body.mobNumber);
 // 	User.findOne({mobileNumber:req.body.mobNumber}).count()
 // 	// User.find({mobileNumber:req.body.mobNumber}).count()
 
 // 		.exec()
 // 		.then(count =>{
 // 			if(count > 0){
-
-			
-
-
 // 				res.status(409).json({
 // 					message: 'MOBILE-NUMBER-EXISTS'
 // 				});
@@ -816,8 +699,7 @@ exports.update_user_resetpassword = (req,res,next)=>{
 // 				res.status(505).json({
 // 					error: "MOBILE-NUMBER-NOT-FOUND"
 // 				});
-// 			}
-		
+// 			}	
 // 		})
 // 		.catch(err =>{
 // 			console.log(err);
@@ -827,21 +709,14 @@ exports.update_user_resetpassword = (req,res,next)=>{
 // 			});
 // 		});
 // };
-
-
-
-
 // exports.user_login = (req,res,next)=>{
 // 	User.findOne({emails:{$elemMatch:{address:req.body.email}}})
 // 		.exec()
 // 		.then(user => {
-			
 // 			if(user){
-// 				console.log("PWD===>",user);
 // 			var pwd = user.services.password.bcrypt;
 // 			}
 // 			if(pwd){
-// 				console.log("PWD===>");
 // 				bcrypt.compare(req.body.pwd,pwd,(err,result)=>{
 // 					if(err){
 // 						return res.status(401).json({
@@ -878,23 +753,19 @@ exports.update_user_resetpassword = (req,res,next)=>{
 // 		});
 // };
 exports.user_loginwithadmin = (req,res,next)=>{
-    console.log('login',req.body);
     User.findOne({emails:{$elemMatch:{address:req.body.email}},roles: "Admin"})
         .exec()
         .then(user => {
             if(user){
                 var pwd = user.services.password.bcrypt;
                 if(pwd){
-					console.log('PWD');
                     bcrypt.compare(req.body.password,pwd,(err,result)=>{
                         if(err){
-                            console.log('password err ',err);
                             return res.status(401).json({
                                 message: 'Bcrypt Auth failed'
                             });     
                         }
                         if(result){
-                            console.log('result ',result);
                             const token = jwt.sign({
                                 email   : req.body.email,
                                 // userId   : mongoose.Types.ObjectId(user._id) ,
@@ -904,7 +775,6 @@ exports.user_loginwithadmin = (req,res,next)=>{
                                 expiresIn: "1h"
                             }
                             );
-                            console.log('login faild');
                             res.header("Access-Control-Allow-Origin","*");
                             return res.status(200).json({
                                 message             : 'Auth successful',
@@ -916,8 +786,7 @@ exports.user_loginwithadmin = (req,res,next)=>{
                                 // userProfileImg      : user.profile.userProfile,
                             }); 
                         }
-                        console.log({message:"Neither err nor result"});
-                        return res.status(200).json({
+                        return res.status(401).json({
                             message: 'Error and Result Auth failed'
                         });
                     })
@@ -939,23 +808,19 @@ exports.user_loginwithadmin = (req,res,next)=>{
 };
 
 exports.user_loginwithvendor = (req,res,next)=>{
-    console.log('login',req.body);
     User.findOne({emails:{$elemMatch:{address:req.body.email}},roles: "vendor",emailId:req.body.emailId})
         .exec()
         .then(user => {
             if(user){
                 var pwd = user.services.password.bcrypt;
                 if(pwd){
-					console.log('PWD');
                     bcrypt.compare(req.body.password,pwd,(err,result)=>{
                         if(err){
-                            console.log('password err ',err);
                             return res.status(401).json({
                                 message: 'Bcrypt Auth failed'
                             });     
                         }
                         if(result){
-                            console.log('result ',result);
                             const token = jwt.sign({
                                 email   : req.body.email,
                                 // userId   : mongoose.Types.ObjectId(user._id) ,
@@ -965,7 +830,6 @@ exports.user_loginwithvendor = (req,res,next)=>{
                                 expiresIn: "1h"
                             }
                             );
-                            console.log('login faild');
                             res.header("Access-Control-Allow-Origin","*");
                             return res.status(200).json({
                                 message             : 'Auth successful',
@@ -977,7 +841,6 @@ exports.user_loginwithvendor = (req,res,next)=>{
                                 // userProfileImg      : user.profile.userProfile,
                             }); 
                         }
-                        console.log({message:"Neither err nor result"});
                         return res.status(401).json({
                             message: 'Error and Result Auth failed'
                         });
@@ -1000,7 +863,6 @@ exports.user_loginwithvendor = (req,res,next)=>{
 };
 
 exports.user_loginwithuser = (req,res,next)=>{
-    console.log('login',req.body);
     User.findOne({emails:{$elemMatch:{address:req.body.email}},roles: "user",emailId:req.body.emailId})
         .exec()
         .then(user => {
@@ -1009,17 +871,14 @@ exports.user_loginwithuser = (req,res,next)=>{
 				
                 var pwd = user.services.password.bcrypt;
                 if(pwd){
-					console.log('PWD');
                     bcrypt.compare(req.body.password,pwd,(err,result)=>{
                         if(err){
-                            console.log('password err ',err);
                             return res.status(401).json({
                                 message: 'Bcrypt Auth failed'
                             });     
                         }
                         
                         if(result){
-                            console.log('result ',result);
                             const token = jwt.sign({
                                 email   : req.body.email,
                                 // userId   : mongoose.Types.ObjectId(user._id) ,
@@ -1029,7 +888,6 @@ exports.user_loginwithuser = (req,res,next)=>{
                                 expiresIn: "1h"
                             }
                             );
-                            console.log('login faild');
                             res.header("Access-Control-Allow-Origin","*");
                             return res.status(200).json({
                                 message             : 'Auth successful',
@@ -1041,7 +899,6 @@ exports.user_loginwithuser = (req,res,next)=>{
                                 // userProfileImg      : user.profile.userProfile,
                             }); 
                         }
-                        console.log({message:"Neither err nor result"});
                         return res.status(401).json({
                             message: 'Error and Result Auth failed'
                         });
@@ -1067,7 +924,6 @@ exports.users_list = (req,res,next)=>{
 	User.find({roles : {$ne : "admin"} })
 		.exec()
 		.then(users =>{
-			console.log('users ',users);
 			res.status(200).json(users);
 		})
 		.catch(err =>{
@@ -1082,7 +938,6 @@ exports.id_cafeAdmin = (req,res,next)=>{
 	WorkspaceDetails.findOne({"cafeAdmin":req.params.user_id })
 		.exec()
 		.then(users =>{
-			console.log('users ',users);
 			res.status(200).json(users);
 		})
 		.catch(err =>{
@@ -1099,12 +954,8 @@ exports.users_directlist = (req,res,next)=>{
 		
 	   .exec()
 	   .then(users =>{
-			console.log("List of Users", users);
 		   var userdataarr = [];
 		   users.map((data, index)=>{
-			// console.log('data =======================>>>>>>>>>>>>',data);
-
-			// console.log("data_id", data._id);
 			   	userdataarr.push({
 				   id            : data._id,
 				   createdAt	 : data.createdAt,
@@ -1120,7 +971,6 @@ exports.users_directlist = (req,res,next)=>{
 			   
 				});	
 		   })
-		//    console.log('userdataarr ',userdataarrs);
 		   if(userdataarr.length == users.length){
 			res.status(200).json(userdataarr);
 		   }
@@ -1140,7 +990,6 @@ exports.users_fetch = (req,res,next)=>{
 		.select("_id username createdAt profile roles officeLocation")
 		.exec()
 		.then(users =>{			
-			console.log("fetch users = ",users);
 			var userdataarr = []
 			users.map((data, index)=>{
 				userdataarr.push({
@@ -1157,7 +1006,6 @@ exports.users_fetch = (req,res,next)=>{
 					officeLocation 	: data.officeLocation,
 				});	
 			})
-			console.log('userdataarr = ',userdataarr);
 			res.status(200).json(userdataarr);
 		})
 		.catch(err =>{
@@ -1175,7 +1023,6 @@ exports.user_details = (req, res, next)=>{
 		// .select("profile")
 		.exec()
 		.then(users =>{
-			console.log(users.profile.fullName);
 			res.status(200).json(users);
 		})
 		.catch(err =>{
@@ -1232,7 +1079,6 @@ exports.deleteall_user = function (req, res,next) {
 // 							res.status(200).json("User Deleted");
 // 						})
 // 						.catch(err =>{
-// 							console.log('user error ',err);
 // 							res.status(500).json({
 // 								error: err
 // 							});
@@ -1258,7 +1104,6 @@ exports.deleteall_user = function (req, res,next) {
 // 		.exec()
 // 		.then(user=>{
 // 			if(user){
-// 				console.log('user ======+>',user);
 // 				User.updateOne(
 // 					{_id:req.body.userID},
 // 					{
@@ -1297,9 +1142,6 @@ exports.deleteall_user = function (req, res,next) {
 
 exports.update_user = (req,res,next)=>{
 	// var roleData = req.body.role;
-	// console.log("req.params.userID",req.params.userID);
-	// console.log("req.BODY+++=======+>",req.body);
-
     User.updateOne(
             { _id:req.params.userID},  
             {
@@ -1323,9 +1165,7 @@ exports.update_user = (req,res,next)=>{
         )
         .exec()
         .then(data=>{
-            console.log('data ',data);
             if(data.nModified == 1){
-				// console.log('data =========>>>',data);
                 res.status(200).json("User Updated");
             }else{
                 res.status(401).json("User Not Found");
@@ -1425,7 +1265,6 @@ exports.account_status= (req,res,next)=>{
 		});
 	});
 }
-
 exports.account_role_add= (req,res,next)=>{
 	
 	User.findOne({roles: req.body.roles})
@@ -1468,10 +1307,7 @@ exports.account_role_add= (req,res,next)=>{
 		});
 	});
 }
-
-
 exports.account_role_remove= (req,res,next)=>{
-
 	User.updateOne(
 		{'_id': req.body.userID },
 		{
@@ -1501,11 +1337,7 @@ exports.account_role_remove= (req,res,next)=>{
 		});
 	});
 }
-
-
 exports.user_search = (req,res,next)=>{
-	// console.log("req.body.searchText",req.body.searchText);
-
 	User.find(
 		{$or:[
 			{"profile.fullName"		:	{ "$regex": req.body.searchText, $options: "i"}},
@@ -1521,7 +1353,6 @@ exports.user_search = (req,res,next)=>{
 	)
 	.exec()
 	.then( data =>{
-		console.log('data ',data);
 		if(data.length > 0){
 			return res.status(200).json({
 				"message" : 'Search-Successfull',
@@ -1543,8 +1374,6 @@ exports.user_search = (req,res,next)=>{
 }
 
 exports.search_user_office = (req,res,next)=>{
-	// console.log("req.body.searchText",req.body.searchText);
-
 	User.find(
 		{$or:[
 			{"officeLocation"		:	{ "$regex": req.body.searchText, $options: "i"}},
@@ -1554,7 +1383,6 @@ exports.search_user_office = (req,res,next)=>{
 	)
 	.exec()
 	.then( data =>{
-		console.log('data ',data);
 		if(data.length > 0){
 			return res.status(200).json({
 				"message" : 'Search-Successfull',
@@ -1574,14 +1402,11 @@ exports.search_user_office = (req,res,next)=>{
 		});
 	});
 }
-
-
 exports.users_count = (req,res,next)=>{
 	User.find().count()
 	// .countDocuments()
 	.exec()
 	.then( data =>{
-		console.log('data ',data);
 		if(data){
 			return res.status(200).json({
 				"message" : 'Count',
@@ -1621,12 +1446,7 @@ exports.user_otpverification_forgotpassword = (req,res,next)=>{
 				mobileNumber  	: req.body.mobileNumber,
 				
 			};	
-	
-	
-					
-		// console.log('New USER = ',forgotuserotp);
-		// request({
-			
+		// request({		
 		// 	"method"    : "POST",
 		// 	"url"       : "http://localhost:"+globalVariable.PORT+"/send-email",
 		// 	"body"      : 	{
@@ -1641,35 +1461,25 @@ exports.user_otpverification_forgotpassword = (req,res,next)=>{
 		// 					"forgotuserotp-Agent": "Test App"
 		// 				}
 		// })
-	
 		// .then((sentemail)=>{
-		// 	// console.log("call to api");
 		// 	res.header("Access-Control-Allow-Origin","*");
-
 		// 	res.status(200).json({message:"Mail Sent successfully"});
 		// })
 		// .catch((err) =>{
-		// 	console.log("call to api",err);
 		// 	res.status(500).json({
 		// 		message:"EMAIL-ID-NOT-FOUND", 
 		// 		error: err
 		// 	});
 		// });    
-		
-		
-		// console.log('Plivo Client = ',forgotuserotp.mobileNumber);
 		const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
 		// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw'); 
 		const sourceMobile = "+919923393733";
 		var text = "Dear User,"+'\n'+"Your account verification code is "+forgotuserotp.mobileOTP+"\nRegards,\nTeam Coffic"
-		
 		client.messages.create(
 			src=sourceMobile,
 			dst=req.body.mobileNumber,
 			text=text
 		).then((result)=> {
-			// console.log("src = ",src," | DST = ", dst, " | result = ", result);
-			// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 			return res.status(200).json({
 				"message" : 'OTP-SEND-SUCCESSFULLY',
 				// "otp"     : forgotuserotp.emailOTP,
@@ -1699,7 +1509,6 @@ exports.user_otpverification_forgotpassword = (req,res,next)=>{
 
 
 exports.forgot_pwd = (req,res,next)=>{
-
 	User.findOne({emails:{$elemMatch:{address:req.body.emailId}}})
         .exec()
         .then(user => {
@@ -1720,9 +1529,7 @@ exports.forgot_pwd = (req,res,next)=>{
 				        )
 				        .exec()
 				        .then(data=>{
-				            // console.log('data ',data);
 				            if(data.nModified == 1){
-								// console.log('data =========>>>',data);
 				                res.status(200).json("Password  Updated");
 				            }else{
 				                res.status(401).json("Password  Not Found");

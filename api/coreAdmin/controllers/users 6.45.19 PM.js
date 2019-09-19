@@ -9,8 +9,6 @@ exports.user_signup = (req,res,next)=>{
 	// User.find({username:req.body.email})
 		.exec()
 		.then(user =>{
-		
-				console.log('No emailId exits');
 				bcrypt.hash(req.body.pwd,10,(err,hash)=>{
 					if(err){
 						return res.status(500).json({
@@ -188,7 +186,6 @@ exports.users_directlist = (req,res,next)=>{
 	   .then(users =>{
 		   var userdataarr = [];
 		   users.map((data, index)=>{
-			   console.log("data_id", data._id);
 			   userdataarr.push({
 				   id           : data._id,
 				   createdAt	: data.createdAt,
@@ -203,7 +200,6 @@ exports.users_directlist = (req,res,next)=>{
 				   roles 		 : data.roles
 			   });	
 		   })
-		   console.log('userdataarr ',userdataarr);
 		   if(userdataarr.length == users.length){
 			res.status(200).json(userdataarr);
 		   }
@@ -224,11 +220,8 @@ exports.users_fetch = (req,res,next)=>{
 	.select("_id username createdAt profile")
 		.exec()
 		.then(users =>{
-			console.log('users=====>>>> ',users);
 			var userdataarr = []
 			users.map((data, index)=>{
-				console.log("data_id", data._id);
-				console.log('data=====>>>> ',data);
 				userdataarr.push({
 					_id 		: data._id,
 					createdAt	: data.createdAt,
@@ -242,7 +235,6 @@ exports.users_fetch = (req,res,next)=>{
 					roles 	    : [(req.body.role)]
 				});	
 			})
-			console.log('userdataarr ',userdataarr);
 			res.status(200).json(userdataarr);
 		})
 		.catch(err =>{
@@ -297,7 +289,6 @@ exports.delete_user = function (req, res,next) {
 // 							res.status(200).json("User Deleted");
 // 						})
 // 						.catch(err =>{
-// 							console.log('user error ',err);
 // 							res.status(500).json({
 // 								error: err
 // 							});
@@ -323,7 +314,6 @@ exports.delete_user = function (req, res,next) {
 // 		.exec()
 // 		.then(user=>{
 // 			if(user){
-// 				console.log('user ======+>',user);
 // 				User.updateOne(
 // 					{_id:req.body.userID},
 // 					{
@@ -377,9 +367,7 @@ exports.update_user = (req,res,next)=>{
         )
         .exec()
         .then(data=>{
-            console.log('data ',data);
             if(data){
-				console.log('data =========>>>',data);
                 res.status(200).json("User Updated");
             }else{
                 res.status(401).json("User Not Found");

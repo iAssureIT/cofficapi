@@ -37,7 +37,6 @@ exports.dailyBeverage_Report=(req,res,next)=>{
 			.limit(parseInt(req.params.endLimit))
 			.exec()
 			.then(data=>{
-				console.log("data",data);
 			 	res.status(200).json(data);
 			 })
 			 .catch(err=>{
@@ -46,19 +45,103 @@ exports.dailyBeverage_Report=(req,res,next)=>{
 }
 
 exports.vendor_dailycheckins = (req,res,next)=>{
-	var query = {};
+
+	SeatBooking .aggregate(
+							[
+								{
+									$match : {
+										"workSpace_id"  : req.params.workspace_ID,
+										"date"			: req.params.date
+
+									}
+								},
+								
+								{
+									$project : {
+													"workSpace_id"	: "$_id.workSpace_id",
+													"checkInTime"	: "$checkInTime",
+													"checkOutTime"	: "$checkOutTime",
+													"user_id"		: "$user_id"
+												}				
+								}
+							]
+				)
+				.sort({ "createdAt": -1 })
+				.skip(parseInt(req.params.startLimit))
+				.limit(parseInt(req.params.endLimit))
+				.exec()
+				.then(seatBooking=>{
+					getData();
+					async function getData(){
+						var returnData = [];
+						for(i = 0 ; i < seatBooking.length;i++){
+							var userdata = await getuserDetails(seatBooking[i].user_id);
+							returnData.push({
+								"workSpace_id" 		: seatBooking[i].workSpace_id,
+								"checkInTime"		: seatBooking[i].checkInTime,
+								"checkOutTime"		: seatBooking[i].checkOutTime,
+								"userName"          : userdata.profile.fullName,
+							});
+						}
+						if( i >= seatBooking.length){
+							res.status(200).json(returnData);		
+				     	}
+
+					}
+					// res.status(200).json(seatBooking);
+				})
+				.catch(err=>{
+					res.status(200).json({error:err});
+				});
+	/*var query = {};
 	if(req.params.workspace_ID != "all"){
 		query = {
 					$match : {
 						"workSpace_id"  : req.params.workspace_ID,
 						"date"			: req.params.date
 
+<<<<<<< Updated upstream
 					}
 				};
 	}else{
 		query = {
 					$match : {
 						"date"			: req.params.date
+=======
+									}
+								},
+								
+								{
+									$project : {
+													"workSpace_id"	: "$_id.workSpace_id",
+													"checkInTime"	: "$checkInTime",
+													"checkOutTime"	: "$checkOutTime",
+													"user_id"		: "$user_id"
+												}				
+								}
+							]
+				)
+				.sort({ "createdAt": -1 })
+				.skip(parseInt(req.params.startLimit))
+				.limit(parseInt(req.params.endLimit))
+				.exec()
+				.then(seatBooking=>{
+					getData();
+					async function getData(){
+						var returnData = [];
+						for(i = 0 ; i < seatBooking.length;i++){
+							var userdata = await getuserDetails(seatBooking[i].user_id);
+							returnData.push({
+								"workSpace_id" 		: seatBooking[i].workSpace_id,
+								"checkInTime"		: seatBooking[i].checkInTime,
+								"checkOutTime"		: seatBooking[i].checkOutTime,
+								"userName"          : userdata.profile.fullName,
+							});
+						}
+						if( i >= seatBooking.length){
+							res.status(200).json(returnData);		
+				     	}
+>>>>>>> Stashed changes
 
 					}
 				};
@@ -108,7 +191,7 @@ exports.vendor_dailycheckins = (req,res,next)=>{
 					.catch(err=>{
 						res.status(200).json({error:err});
 					});
-		}
+		}*/
 }
 
 exports.dailyOrder_Report=(req,res,next)=>{
@@ -139,7 +222,6 @@ exports.dailyOrder_Report=(req,res,next)=>{
 			 .exec()
 			 .then(data=>{
 			 	if(data.length > 0){
-			 		console.log("data",data);
 			 		getData();
 			 		async function getData(){
 			 			var i = 0;
@@ -150,7 +232,6 @@ exports.dailyOrder_Report=(req,res,next)=>{
 			 				if(userInfo && userInfo.profile && userInfo.profile.fullName){
 			 					name = userInfo.profile.fullName;
 			 				}
-			 				console.log("userInfo",userInfo);
 			 				returnData.push({
 			 					"UserName" 		: name,
 			 					"Item"	   		: data[i].item,
@@ -218,14 +299,11 @@ exports.bankreport=(req,res,next)=>{
 					});
 };
 function getUserCount(role){
-	// console.log("role ",role);
 	return new Promise(function(resolve,reject){
 		var query = { "roles" : {$in:[role]}};
-		console.log("query ",query);
 		User.find({ "roles" : {$in:[role]}})
 			.exec()
 			.then(data=>{
-				console.log("count ",data.length);
 				resolve(data.length);
 			})
 			.catch(err=>{
@@ -250,7 +328,6 @@ function getSubUser(){
 		SubscriptionOrder.countDocuments({"status" : "paid"})
 			.exec()
 			.then(data=>{
-				// console.log("data ",data);
 				resolve(data);
 			})
 			.catch(err=>{
@@ -345,7 +422,6 @@ exports.dashboardBlock = (req,res,next)=>{
 	};
 };
 function getMenuDetails(vendor_ID,startDate,endDate){
-	console.log('vendor_ID',vendor_ID);
 	return new Promise(function(resolve,reject){
 		MenuOrder.aggregate([
 								{
@@ -530,12 +606,10 @@ function getworkSpaceDetails(workSpace_id){
     });
 }
 function getMenuOrder1(workSpace_id){
-	console.log("workSpace_id",workSpace_id);
     return new Promise(function(resolve,reject){
         MenuOrder.find({"workSpace_id": new ObjectID(workSpace_id)})
                         .exec()
                         .then(data=>{
-                        	console.log("data ....",data);
                             resolve(data);
                         })
                         .catch(err=>{
@@ -595,7 +669,6 @@ function getMenuOrder(data){
             });
 }
 exports.vendor_monthly = (req,res,next)=>{
-	// SeatBooking .find({"workSpace_id": req.params.workspace_ID}
 	SeatBooking .aggregate(
 							[
 								{
@@ -628,7 +701,6 @@ exports.vendor_monthly = (req,res,next)=>{
 												"_id"		: {
 																"workSpace_id"	: "$workSpace_id",
 																"date"			: "$date",
-																// "check-Ins"		: "$check-Ins",
 															  },
 												"check-Ins"	: { "$sum" : "$checkIn"}
 									}
@@ -648,7 +720,6 @@ exports.vendor_monthly = (req,res,next)=>{
 				.limit(parseInt(req.params.endLimit))
 				.exec()
 				.then(seatBooking=>{
-					console.log('seatBooking ',seatBooking);
 					getData();
 					async function getData(){
 						var returnData = [];
@@ -870,14 +941,12 @@ exports.checkInOut=(req,res,next)=>{
 				.limit(parseInt(req.params.endLimit))
 				.exec()
 				.then(seatBooking=>{
-					console.log("seatBooking......>",seatBooking);
 					getData();
 					async function getData(){
 						var returnData=[];
 						for(var i=0;i<seatBooking.length;i++){
 							var reportdata=await getuserDetails(seatBooking[i].user_id);
 							var menucount=await getMenuOrder1(seatBooking[i].workSpace_id);
-							console.log("menucount",menucount);
 							returnData.push({
 								"workSpace_id" 		: seatBooking[i].workSpace_id,
  								"checkInTime"		: seatBooking[i].checkInTime,
@@ -916,7 +985,6 @@ exports.cafewiseSeatBooking=(req,res,next)=>{
 		var i =0;
 		for(i=0;i<workspacedata.length;i++){
 	     var seatdata =await availableSeats(workspacedata[i]._id);
-		console.log("seatdata",seatdata);
 		  returnData.push({
 			    "_id"		   	   : workspacedata[i]._id,
 			    "branch"		   : workspacedata[i].address,
@@ -942,101 +1010,3 @@ exports.cafewiseSeatBooking=(req,res,next)=>{
 
  
 
-/*
-cafewise_old
-
-SeatBooking .aggregate(
-							[
-								{
-									$match : {
-										
-										"date" 			: {$gte : req.params.startDate, $lte : req.params.endDate},
-
-									}
-								},
-								
-								{
-									$project : {
-													"workSpace_id"	: "$workSpace_id",
-												}				
-								}
-							]
-				)
-				.exec()
-				.then(seatBooking=>{
-					console.log("seatBooking......>",seatBooking);
-					getData();
-					async function getData(){
-						var returnData=[];
-						for(var i=0;i<seatBooking.length;i++){
-							var workspacedata =await getworkSpaceDetails(seatBooking[i].workSpace_id);
-							var seatdata      =await availableSeats(seatBooking[i].workSpace_id);
-							console.log("seatdata",seatdata);
-							returnData.push({
-								"workSpace_id" 		: seatBooking[i].workSpace_id,
-								"branch"			: workspacedata.address,
- 								"Cafe Name"         : workspacedata.nameOfCafe,
- 								"City"              : workspacedata.city,
- 								"Total Seats"       : workspacedata.numberOfSeats,
- 								"Occupied Seats"    : seatdata.bookedSeats,
- 								"Available Seats"   : seatdata.availableSeats,
-
-							});
-						}
-						if( i >= seatBooking.length){
-							res.status(200).json(returnData);
-					  }
-					}
-
-				})
-				.catch(err=>{
-					res.status(200).json({error:err});
-				})
- 
-
-
-*/
-
-
-
-// exports.checkInOut = (req,res,next)=>{
-// 	var  = {};
-// 	if(workSpace_id != "all"){
-// 		SeatBooking.aggregate  {
-// 					"workSpace_id" : req.params.workSpace_id,
-// 					"date" 			: {$gte : req.params.startDate, $lte : req.params.endDate}
-// 				};
-// 	}else{
-// 		 SeatBooking {
-		
-// 							"date" 			: {$gte : req.params.startDate, $lte : req.params.endDate}
-// 		};
-// 	}
-// 	SeatBooking.find()
-// 			   .exec()
-// 			   .then(data=>{
-// 			   	console.log("data......",data);
-// 			   		if(data.length > 0){
-// 			   			getData();
-// 			   			async function getData(){
-// 			   				var returnData = [];
-// 			   				for(i = 0 ; i < data.length ; i++){
-// 			   					var reportsdata = await getuserDetails(seatBooking[i].user_id);
-// 			   					returnData.push({
-// 				   					"workSpace_id" 		: seatBooking[i].workSpace_id,
-// 									"checkInTime"		: seatBooking[i].checkInTime,
-// 									"checkOutTime"		: seatBooking[i].checkOutTime,
-// 									"userName"          : userdata.profile.fullName,
-
-// 			   					})
-			   	
-
-// 			   				}
-// 			   			}
-// 			   		}else{
-// 			   			res.status(200).json({message: "DAta not found"})
-// 			   		}
-// 			   })
-// 			   .catch()
-
-// }

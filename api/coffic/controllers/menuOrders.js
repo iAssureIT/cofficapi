@@ -42,7 +42,6 @@ function getworkSpaceDetails(workspaceId){
 
 
 exports.detail_userorders = (req,res,next)=>{
-    console.log("user_id",String(req.params.user_id));
     Menuorders.find({"user_id":String(req.params.user_id)})
         .exec()
          .then(data=>{
@@ -79,7 +78,6 @@ exports.detail_userorders = (req,res,next)=>{
 }
 
 exports.list_orders = (req,res,next)=>{
-    console.log('list');
     Menuorders.find({})
         .exec()
         .then(data=>{

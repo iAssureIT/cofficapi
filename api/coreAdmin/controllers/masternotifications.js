@@ -7,7 +7,6 @@ const plivo 		= require('plivo');
 
 
 exports.create_template = (req, res, next) => {
-    console.log('req=>',req)
     const masterNotifications = new Masternotifications({
         _id             : mongoose.Types.ObjectId(),      
         templateType    : req.body.templateType,
@@ -95,9 +94,7 @@ exports.update_notifications = (req,res,next)=>{
         )
         .exec()
         .then(data=>{
-            console.log('data ',data);
             if(data.nModified == 1){
-				console.log('data =========>>>',data);
                 res.status(200).json("Master notifications Updated");
             }else{
                 res.status(401).json("Master notifications Not Found");
@@ -138,7 +135,6 @@ exports.update_notifications = (req,res,next)=>{
 
 //send Mail Notification -Rushikesh Salunkhe
 exports.send_notifications = (req,res,next)=>{
-    // console.log('req',req.body);
     const senderEmail = 'appstore@coffic.com';
     const senderEmailPwd = 'Coffic@123';
 
@@ -159,32 +155,21 @@ exports.send_notifications = (req,res,next)=>{
             // getProfileByUserId();
             userProfile = await getProfileByUserId(req.body.toUserId);
             if(userProfile && userProfile!== null & userProfile!==""){
-                // console.log("userProfile=====>",userProfile);
                 toEmail = userProfile.emails[0].address;
                 toMobile = userProfile.profile.mobileNumber;
-                console.log("toEmail=====>",toEmail);
-                console.log("toMobile=====>",toMobile);
-
             }
         }
-        // console.log("after mail=====>");
         // getTemplateDetails();
         const templateDetailsEmail  = await getTemplateDetailsEmail(req.body.templateName, req.body.variables);
         const templateDetailsSMS    = await getTemplateDetailsSMS(req.body.templateName, req.body.variables);
-        // console.log("toEmail=====>",toEmail);
-        // console.log("templateDetails = ",templateDetails);
-
         var mailOptions = {                
             from        : '"Coffic Admin" <'+senderEmail+'>', // sender address
             to          : toEmail , // list of receiver
             subject     : templateDetailsEmail.subject, // Subject line
             html        : templateDetailsEmail.content, // html body
         };
-        console.log("mailOptions=====>",mailOptions);
-
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {                    
-                console.log("send mail error",error);
                 res.status(500).json({              
                     message: "Send Email Failed",
                 });
@@ -196,10 +181,6 @@ exports.send_notifications = (req,res,next)=>{
             }
             res.render('index');
         });
-
-
-
-        console.log('Plivo Client =======+> ',toMobile);
 		const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
 		// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
 
@@ -211,7 +192,6 @@ exports.send_notifications = (req,res,next)=>{
 			dst=toMobile,
 			text=text
 		).then((result)=> {
-			// console.log("src = ",src," | DST = ", dst, " | result = ", result);
 			// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 			return res.status(200).json({
 				"message" : 'SMS-SEND-SUCCESSFULLY',
@@ -233,12 +213,10 @@ exports.send_notifications = (req,res,next)=>{
 //get getEmailByUserId - Rushikesh Salunkhe
 function getProfileByUserId(toUserId){
     return new Promise(function(resolve,reject){
-        // console.log("getProfileByUserId",toUserId);
     User
     .findOne({"_id":toUserId})
     .exec()
         .then(data=>{
-            // console.log('data',data);
             resolve(data);          
         })
         .catch(err =>{
@@ -252,16 +230,11 @@ function getProfileByUserId(toUserId){
 }
 
 function getTemplateDetailsEmail(templateName,variables){
-    console.log("Inside getTemplateDetails templateName = ",templateName);
-    console.log("Inside getTemplateDetails variables = ",variables);
     return new Promise(function(resolve,reject){
-        console.log("2. Inside promise = ",templateName);
-
         Masternotifications
         .findOne({"templateName":templateName, "templateType":'Email'})
         .exec()
         .then(NotificationData=>{
-                    console.log('serverside NotificationData: ', NotificationData);
                     if(NotificationData){
                         var content = NotificationData.content;
                         var wordsplit = [];
@@ -286,7 +259,6 @@ function getTemplateDetailsEmail(templateName,variables){
                         }
                         content = content.split("[").join("'");
                         content = content.split("]").join("'");
-                        console.log("content = ",content);
                         var tData={
                             content:content,
                             subject:NotificationData.subject
@@ -304,16 +276,11 @@ function getTemplateDetailsEmail(templateName,variables){
         }); 
     }
     function getTemplateDetailsSMS(templateName,variables){
-        console.log("Inside getTemplateDetails SMS templateName = ",templateName);
-        console.log("Inside getTemplateDetails  SMS variables = ",variables);
         return new Promise(function(resolve,reject){
-            console.log("2. Inside promise = ",templateName);
-    
             Masternotifications
             .findOne({"templateName":templateName, "templateType":'SMS'})
             .exec()
             .then(NotificationData=>{
-                        console.log('serverside NotificationData: ', NotificationData);
                         if(NotificationData){
                             var content = NotificationData.content;
                             var wordsplit = [];
@@ -338,7 +305,6 @@ function getTemplateDetailsEmail(templateName,variables){
                             }
                             content = content.split("[").join("'");
                             content = content.split("]").join("'");
-                            console.log("content = ",content);
                             var tData={
                                 content:content,
                                 subject:NotificationData.subject

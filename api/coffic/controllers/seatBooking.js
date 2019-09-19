@@ -7,7 +7,6 @@ const User          = require('../../coreAdmin/models/users');
 var moment                          = require('moment');
 
 exports.chekinUser = (req,res,next)=>{
-    // console.log("into seatbooking.....");
     var currDate = new Date();
     var day = currDate.getDate();
     var month = currDate.getMonth() + 1;
@@ -18,13 +17,10 @@ exports.chekinUser = (req,res,next)=>{
     if(day<10 || day.length<2){day = '0' + day;}
     if(month<10 || month.length<2){month = '0' + month;}
     currDateISO = year+"-"+month+"-"+day;
-    // console.log('currDateISO', currDateISO, typeof currDateISO)
     var selector={ 
                 "user_id" : req.body.user_id,
                 "endDate" : {$gte : new Date()},
                 "status" : "paid" , };
-
-    console.log("selector",selector);
     SubscriptionOrder
         .find({ 
                 "user_id" : req.body.user_id,
@@ -33,7 +29,6 @@ exports.chekinUser = (req,res,next)=>{
              })
         .then(activeSubOrder=>{
             if(activeSubOrder.length>0){
-                console.log("activeSubOrder = ",activeSubOrder.length);
                 SeatBooking
                     .find({
                         user_id : req.body.user_id, 
@@ -41,8 +36,6 @@ exports.chekinUser = (req,res,next)=>{
                     })
                     .estimatedDocumentCount()
                     .then(totCheckIns => {
-                        console.log("totCheckIns = ",totCheckIns);
-                        console.log("activeSubOrder[0].maxCheckIns = ",activeSubOrder[0].maxCheckIns);
                         if(totCheckIns <= activeSubOrder[0].maxCheckIns) {
                             const seatBookingObj = new SeatBooking({
                                 _id                 :  new mongoose.Types.ObjectId(),
@@ -165,7 +158,6 @@ exports.dailyCheckins_Report=(req,res,next)=>{
         .findOne({_id : req.params.workspace_id})
         .exec()
         .then(workspace => {
-            // console.log('workspace',workspace)
             SeatBooking
                 .find({
                     workSpace_id : req.params.workspace_id,
@@ -174,7 +166,6 @@ exports.dailyCheckins_Report=(req,res,next)=>{
                 // .estimatedDocumentCount()
                 .exec()
                 .then(seatdata =>{
-                    // console.log("seatdata",seatdata); 
                         var returnData = {
                             reportdata        : [],
                         };
@@ -182,7 +173,6 @@ exports.dailyCheckins_Report=(req,res,next)=>{
                         async function getData(){ 
                             for(i = 0 ; i < seatdata.length ; i++){
                                var userData = await getuserDetails(seatdata[i].user_id);
-                                // console.log("userDta",userData);
                                 returnData.reportdata.push({
                                  "user_id"           : userData._id,
                                  "workspace_id"      : seatdata[i].workSpace_id,
@@ -190,7 +180,6 @@ exports.dailyCheckins_Report=(req,res,next)=>{
                                  "checkOutTime"      : seatdata[i].checkOutTime,
                                  "userName"          : userData.profile.fullName,
                                 });
-                                // console.log("returnData ",returnData);
                              }
                              if(i >= seatdata.length){
                                 res.status(200).json(returnData);
@@ -233,10 +222,7 @@ exports.dailyCheckins_Report=(req,res,next)=>{
         .findOne({_id : req.params.workspace_id})
         .exec()
         .then(workspace => {
-             // console.log('workspace',workspace)
              cafedata= workspace.cafeMenu[0];
-            // console.log("cafeeeeee",cafedata);   
-           
             SeatBooking
                 .find({
                     workSpace_id : req.params.workspace_id,
@@ -245,18 +231,13 @@ exports.dailyCheckins_Report=(req,res,next)=>{
                 // .estimatedDocumentCount()
                 .exec()
                 .then(seatdata =>{
-                    
-                    // console.log("seatdata",seatdata); 
                         var returnData = {
-
-                            
                             reportdata        : [],
                         };
                         getData();
                         async function getData(){ 
                             for(i = 0 ; i < seatdata.length ; i++){
                                var userData = await getuserDetails(seatdata[i].user_id);
-                                console.log("userDta",userData);
                                 returnData.reportdata.push({
                                  "user_id"           : userData._id,
                                  // "workspace_id"      : seatdata[i].workSpace_id,
@@ -266,7 +247,6 @@ exports.dailyCheckins_Report=(req,res,next)=>{
                                  "price"             : cafedata.cost,
                                  
                                 });
-                                console.log("returnData ",returnData);
                              }
                              if(i >= seatdata.length){
                                 res.status(200).json(returnData);
@@ -291,10 +271,7 @@ exports.dailyCheckins_Report=(req,res,next)=>{
  
 };
     
-exports.monthly_Report=(req,res,next)=>{
-
-
-}
+exports.monthly_Report=(req,res,next)=>{}
  exports.dailyBeverage_Report=(req,res,next)=>{
 
     WorkspaceDetails
@@ -304,17 +281,11 @@ exports.monthly_Report=(req,res,next)=>{
              if(data){
                 for(i=0; i<data.cafeMenu.length;i++){
                  cafedata=data.cafeMenu[i];
-                 
-                 console.log("cafedata",cafedata);
-                }
-                console.log("cafedata",cafedata);
-                
-               
+                }               
                 res.status(200).json(data);
             }else{
                 res.status(404).json(' Not found');
             }
-            console.log("data",data);
         })
         .catch(err=>{
             console.log(err);
@@ -344,19 +315,14 @@ exports.availableSeats = (req,res,next)=>{
         .findOne({_id : req.params.workspace_id})
         .exec()
         .then(workspace => {
-            console.log("Inside workspace",workspace);
-
             if(workspace.status === "occupied"){
-                console.log("occupied = ",workspace.numberOfSeats);
                 var returnData = {
                     maxSeats        : workspace.numberOfSeats,
                     bookedSeats     : workspace.numberOfSeats,
                     availableSeats  : 0,
                     userList        : [],
                 };
-
                 res.status(200).json(returnData);
-
             }else{
                 SeatBooking
                     .find({
@@ -369,7 +335,6 @@ exports.availableSeats = (req,res,next)=>{
                     .then(bookedSeats =>{
                             console.log("Inside bookedSeats",bookedSeats);
                         if(bookedSeats.length>0){
-                            console.log("available = "+workspace.numberOfSeats+" - "+bookedSeats.length);
                             var returnData = {
                                 
                                 maxSeats        : workspace.numberOfSeats,
@@ -388,14 +353,12 @@ exports.availableSeats = (req,res,next)=>{
                                      "checkOutTime"      : bookedSeats[i].checkOutTime,
                                      "userName"          : userData.profile.fullName,
                                     });
-                                    // console.log("returnData ",returnData);
                                  }
                                  if(i >= bookedSeats.length){
                                     res.status(200).json(returnData);
                                  }
                             }
                         }else{
-                            console.log("bookedSeats length ",bookedSeats.length);
                             res.status(200).json({
                                 
                                 maxSeats        : workspace.numberOfSeats,
@@ -514,14 +477,11 @@ function getworkSpaceDetails(workspaceId){
     });
 }
 exports.list_userSeatBooking=(req,res,next)=>{
-    // console.log("user_id",String(req.params.user_id));
     var selector = { "$match" : {"user_id":String(req.params.user_id)}};
-    // console.log("selector",selector);
     SeatBooking
         .find({"user_id":String(req.params.user_id)})
         .exec()
         .then(data=>{
-            // console.log("data",data);
             if(data.length > 0){
              getData();
                 async function getData(){
@@ -616,17 +576,10 @@ exports.validate_checkin = (req,res,next)=>{
 
 
 exports.checkoutUser = (req,res,next)=>{
-
-    // console.log("req.body===============>",req.body);
-
-    // console.log("res.body===============>",res.body);
-
     var currDate = new Date();
     var day = currDate.getDate();
     var month = currDate.getMonth() + 1;
     var year = currDate.getYear();
-    // console.log("currDate===============>",currDate);
-
     if (year < 1900){
         year = year + 1900;
     }
@@ -634,19 +587,12 @@ exports.checkoutUser = (req,res,next)=>{
     if(month<10 || month.length<2){month = '0' + month;}
 
     var currDateISO = year+"-"+month+"-"+day;
-    // console.log("currDateISO===============>",currDateISO);
-
-if(currDateISO){
-    // console.log("currDateISO===>",currDateISO);
-    // console.log("currDate======>",currDate);
+   if(currDateISO){
     var selector =         {
         "user_id"       : req.body.user_id, 
         "workSpace_id"  : req.body.workspace_id,
         "date"          : currDateISO,
     };
-
-    console.log("Selector ==================>>>>> ",selector);
-
     SeatBooking
     .updateOne(
        selector,
@@ -658,7 +604,6 @@ if(currDateISO){
     )
     .exec()
     .then(data=>{        
-        // console.log("data===============>",data);
             if(data.nModified==1){
                 res.status(200).json("Checkout is Successful");
             }else{
@@ -675,6 +620,6 @@ if(currDateISO){
             error: err
         });
     });
-}
+  }
 };
 

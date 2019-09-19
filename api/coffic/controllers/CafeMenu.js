@@ -107,7 +107,6 @@ exports.updateItemSingle = (req,res,next)=>{
 exports.deleteItemSingle = (req,res,next)=>{
         CafeMenu.deleteOne({"_id":req.params.id})
                         .then(data=>{  
-                            console.log("data delete---->",data);
                             if(data.deletedCount==1){
                                 res.status(200).json('Deleted Successfully');
                             }                         

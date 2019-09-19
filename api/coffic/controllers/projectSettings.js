@@ -3,9 +3,8 @@ const ProjectSettings = require('../models/projectSettings');
 const mongoose        = require("mongoose");
 
 exports.create_projectSettings = (req, res, next) => {
-        var projectSettingsData = req.body.type;
-        console.log('projectSettingsData ',req.body.type);
-        ProjectSettings.findOne({type:projectSettingsData})
+ var projectSettingsData = req.body.type;
+  ProjectSettings.findOne({type:projectSettingsData})
             .exec()
             .then(data =>{
                 if(data){
@@ -49,11 +48,9 @@ exports.create_projectSettings = (req, res, next) => {
 
 exports.fetch_projectsettings = (req, res, next)=>{
     const type = req.params.type;
-    console.log("type = |"+type+"|");
         ProjectSettings.findOne({"type": req.params.type})
             .exec()
             .then(data=>{
-                console.log("data ",data);
                 res.status(200).json(data);
             })
             .catch(err =>{
@@ -76,21 +73,7 @@ exports.list_project = (req, res, next)=>{
                 });
             });            
 };
-// exports.list_projectsettings = (req, res, next)=>{
-//     // const type = req.params.type;
-//         ProjectSettings.find()
-//             .exec()
-//             .then(data=>{
-//                 console.log("data ",data);
-//                 // res.status(200).json(data);
-//             })
-//             .catch(err =>{
-//                 console.log(err);
-//                 res.status(500).json({
-//                     error: err
-//                 });
-//             });            
-// }
+
 
 
 

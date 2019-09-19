@@ -53,7 +53,6 @@ exports.fetch_details = (req,res,next)=>{
 //         )
 //         .exec()
 //         .then(data=>{
-//             console.log('data ',data);
 //             if(data.nModified == 1){
 //                 res.status(200).json("Payment details Updated ");
 //             }else{

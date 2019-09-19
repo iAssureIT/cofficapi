@@ -81,7 +81,6 @@ exports.single_activesub = (req,res,next)=>{
               })
             .exec()
             .then(data=>{
-                console.log("data",data);
                 if(data){
 
                     res.status(200).json(data);
@@ -141,7 +140,6 @@ exports.list_subscriptionOrder = (req,res,next)=>{
         .exec()
         .then(data=>{
             if(data){
-                console.log("data = ",data);
                 res.status(200).json(data);
             }else{
                 res.status(404).json('Not found');
@@ -157,7 +155,6 @@ exports.list_subscriptionOrder = (req,res,next)=>{
 
 
 exports.paymentResponse = (req,res,next)=>{
-    console.log("QW Response = ", req.query);
     //res.writeHead(301, { "Location": "http://" + req.headers['host'] + '/page-b.html' });
     res.writeHead(301, { "Location": "/payment-success/"+req.query.status+"/"+req.query.id+"/"+req.query.billnumbers });
     return res.end();

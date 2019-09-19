@@ -8,7 +8,6 @@ var   request               =require ('request-promise');
 const globaleVaiable        = require('../../../nodemon.js');
 
 exports.create_workspace = (req,res,next)=>{
- console.log("create_workspace>",req.body);
     const workspaceDetails = new WorkspaceDetails({
                 _id                    : new mongoose.Types.ObjectId(),
                 nameOfCafe             : req.body.nameOfCafe,
@@ -81,7 +80,6 @@ function availableSeats(workSpace_id){
 }
 
 exports.list_workspace = (req,res,next)=>{
- console.log('list_workspace WorkspaceDetails');
     WorkspaceDetails
     .find()
     .sort({"createdAt":-1})
@@ -137,19 +135,16 @@ exports.list_workspace = (req,res,next)=>{
     });
 }
 exports.listcity_workspace = (req,res,next)=>{
-    console.log('list_workspace WorkspaceDetails');
     WorkspaceDetails.find()
     .sort({"createdAt":-1})
         .exec()
         .then(data=>{
-            console.log("data",data);
             if(data){
                var info = data.map((city,index)=>{
                     return city.city
 
                }) 
                info = [...new Set(info)];
-                console.log('info',info)
                 res.status(200).json(info);
             }else{
                 res.status(200).json('Not found');
@@ -164,12 +159,10 @@ exports.listcity_workspace = (req,res,next)=>{
 }
 
 exports.single_workspace = (req,res,next)=>{
-   console.log('list_workspace-');
    CafeMenu.find({'workspaceID':req.params.workspaceID})
      .sort({"createdAt":-1})
         .exec()
         .then(data=>{
-            console.log(data);
             // res.status(200).json(data);
             WorkspaceDetails.findOneAndUpdate({"_id":req.params.workspaceID},
                 {$set:{
@@ -180,7 +173,6 @@ exports.single_workspace = (req,res,next)=>{
             )
             .exec()
             .then(workspace=>{
-                console.log('updated',workspace)
                 if(workspace){
                   res.status(200).json(workspace)
                 }else{
@@ -329,7 +321,6 @@ exports.dailyCheckins_Report=(req,res,next)=>{
         .findOne({_id : req.params.workspace_id})
         .exec()
         .then(workspace => {
-            console.log('workspace',workspace)
             SeatBooking
                 .find({
                     workSpace_id : req.params.workspace_id,
@@ -339,7 +330,6 @@ exports.dailyCheckins_Report=(req,res,next)=>{
                 .exec()
                 .then(seatdata =>{
                     if(seatdata.length>0){
-                    console.log("seatdata",seatdata); 
                 }
                        
                         getData();
@@ -347,7 +337,6 @@ exports.dailyCheckins_Report=(req,res,next)=>{
                         var returnData=[];
                         for(i = 0 ; i < seatdata.length ; i++){
                            var userData = await getuserDetails(seatdata[i]);
-                            console.log("userDta",userData);
                             returnData.push({
                              "user_id"           : userData._id,
                              "workspace_id"      : seatdata[i].workSpace_id,
@@ -355,7 +344,6 @@ exports.dailyCheckins_Report=(req,res,next)=>{
                              "checkOutTime"      : seatdata[i].checkOutTime,
                              "userName"          : userData.profile.fullName,
                             });
-                                console.log("returnData ",returnData);
                           }
                              if(i >= seatdata.length){
                                 res.status(200).json(returnData);
@@ -398,10 +386,7 @@ exports.dailyCheckins_Report=(req,res,next)=>{
         .findOne({_id : req.params.workspace_id})
         .exec()
         .then(workspace => {
-             console.log('workspace',workspace)
-             cafedata= workspace.cafeMenu[0];
-            // console.log("cafeeeeee",cafedata);   
-           
+             cafedata= workspace.cafeMenu[0];   
             SeatBooking
                 .find({
                     workSpace_id : req.params.workspace_id,
@@ -411,8 +396,6 @@ exports.dailyCheckins_Report=(req,res,next)=>{
                 .exec()
                 .then(seatdata =>{
                     const checkIn=seatdata.length;
-                    
-                    console.log("seatdata",seatdata); 
                         var returnData = {
                             reportdata        : [],
                         };
@@ -420,7 +403,6 @@ exports.dailyCheckins_Report=(req,res,next)=>{
                         async function getData(){ 
                             for(i = 0 ; i < seatdata.length ; i++){
                                var userData = await getuserDetails(seatdata[i].user_id);
-                                console.log("userDta",userData);
                                 returnData.reportdata.push({
                                  "user_id"           : userData._id,
                                  "checkInTime"       : seatdata[i].checkInTime,
@@ -430,7 +412,6 @@ exports.dailyCheckins_Report=(req,res,next)=>{
                                  "checkIn"           : checkIn,
                                  
                                 });
-                                console.log("returnData ",returnData);
                              }
                              if(i >= seatdata.length){
                                 res.status(200).json(returnData);
@@ -458,7 +439,6 @@ exports.dailyCheckins_Report=(req,res,next)=>{
 
 
 exports.dailyBeverage_Report=(req,res,next)=>{
-    console.log("Inside",req.params.workspace_id)
     WorkspaceDetails
           .aggregate([
             {
@@ -490,7 +470,6 @@ exports.dailyBeverage_Report=(req,res,next)=>{
 
         .exec()
         .then(data=>{
-            console.log("data",data);
             res.status(200).json(data);
         })
         .catch(err=>{
@@ -503,8 +482,6 @@ exports.dailyBeverage_Report=(req,res,next)=>{
     };
 
     exports.cafe_search = (req,res,next)=>{
-        console.log("req.body.searchText",req.body.searchText);
-    
         WorkspaceDetails.find(
             {$or:[
                 {"area"         :   { "$regex": req.body.searchText, $options: "i"}},
@@ -515,7 +492,6 @@ exports.dailyBeverage_Report=(req,res,next)=>{
         )
         .exec()
         .then( data =>{
-            console.log('data ',data);
             if(data.length > 0 ){
                 getData();
                 async function getData(){

@@ -12,7 +12,6 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 exports.user_signup = (req,res,next)=>{
-    console.log("Request = ",req.body);
         User.updateOne(
             { _id:req.body.userID},  
             {
@@ -28,7 +27,6 @@ exports.user_signup = (req,res,next)=>{
             }
         )
         .then(user =>{
-            console.log('user ',user);
             if(user.nModified == 1){
                 return res.status(200).json({
                     "message" : 'USER-UPDATED',
@@ -51,14 +49,10 @@ exports.user_signup = (req,res,next)=>{
 
 
 exports.users_verify_mobile = (req,res,next)=>{
-	console.log("req.body.mobile-Number",req.body.mobileNumber);
-	console.log("req.body.countryCode",req.body.countryCode);
 	User.find({'mobileNumber':req.body.mobileNumber, 'countryCode' : req.body.countryCode})
 		.limit(1)
 		.exec()
 		.then(user =>{
-			console.log('1. USER = ',user);
-			console.log('2. USER length = ',user.length);
 			if(user.length > 0){
 				const OTP = getRandomInt(1000,9999);
 				User.updateOne(
@@ -71,7 +65,6 @@ exports.users_verify_mobile = (req,res,next)=>{
 				.exec()
 				.then( data =>{
 					if(data){
-						console.log('USER AFTER OTP GENERATED = ',data);
                         // const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
                         const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
 
@@ -82,7 +75,6 @@ exports.users_verify_mobile = (req,res,next)=>{
 							dst=req.body.countryCode+''+req.body.mobileNumber,
 							text=text
 						).then((result)=> {
-							console.log("src = ",src," | DST = ", dst, " | result = ", result);
                             // return res.status(200).json("OTP "+OTP+" Sent Successfully ")
                             return res.status(200).json({
                                 "message" : 'MOBILE-NUMBER-EXISTS',
@@ -125,8 +117,6 @@ exports.users_verify_mobile = (req,res,next)=>{
                 user.save()
                 .then(newUser =>{
                     if(newUser){
-                        console.log('New USER = ',newUser);
-                        // console.log('Plivo Client = ',mobileNumber);
                         const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
                         const sourceMobile = "+919923393733";
                         var text = "Dear User, "+'\n'+"To verify your account on TGK, Enter this verification code : \n"+OTP; 
@@ -136,7 +126,6 @@ exports.users_verify_mobile = (req,res,next)=>{
                             dst=req.body.countryCode+''+req.body.mobileNumber,
                             text=text
                         ).then((result)=> {
-                            console.log("src = ",src," | DST = ", dst, " | result = ", result);
                             // return res.status(200).json("OTP "+OTP+" Sent Successfully ");
                             return res.status(200).json({
                                 "message" : 'NEW-USER-CREATED',
@@ -177,12 +166,7 @@ exports.users_verify_mobile = (req,res,next)=>{
 // 	let client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
 // 	let sourceMobile = "+919923393733";
 // 	let OTP = getRandomInt(1000,9999);
-	
-// 	console.log("OTP Generated = ",OTP);
-
 //     var text = "Hello "+','+'\n'+"To verify your account on TGK, Enter this verification code : "+OTP; 
-
-
 // 	// var roleData = req.body.role;
 // 	User.updateOne(
 //             { _id:req.body.user_id},  
@@ -194,20 +178,12 @@ exports.users_verify_mobile = (req,res,next)=>{
 //         )
 //         .exec()
 //         .then( data =>{
-//             console.log('data ',data);
 //             if(data){
-//                 console.log('data =========>>>',data);
-
 //                 client.messages.create(
 //                     src=sourceMobile,
 //                     dst=req.body.countrycode + req.body.mobile,
-//                     text=text
-                    
+//                     text=text  
 //                 ).then((result)=> {
-//                     // console.log("src+++++>>>>>",src);
-//                     // console.log("dst+++++>>>>>",dst);
-//                     // console.log("RESULT+++++>>>>>",result);
-//                     // console.log("RESULT+++++>>>>>",result);
 //                     return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 //                 })
 //                 .catch(otpError=>{
@@ -232,7 +208,6 @@ exports.users_verify_mobile = (req,res,next)=>{
 //     )
 //     .exec()
 //     .then( data =>{
-//         console.log('data ',data);
 //         if(data.otp == req.body.otp){
 //             res.status(200).json({
 //                 message: 'OTP-VERIFIED'

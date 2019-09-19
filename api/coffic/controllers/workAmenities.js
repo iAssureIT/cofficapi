@@ -16,7 +16,6 @@ exports.submit_amenity = (req,res,next)=>{
     //                                     });
     //                     workAmenities.save()
     //                             .then(data=>{
-    //                                 console.log("data--->",data);
     //                                 res.status(200).json("Successful");
     //                             })
     //                             .catch(err =>{
@@ -38,7 +37,6 @@ exports.submit_amenity = (req,res,next)=>{
                                         });
                         workAmenities.save()
                                 .then(data=>{
-                                    console.log("data--->",data);
                                     res.status(200).json("Successful");
                                 })
                                 .catch(err =>{
@@ -112,7 +110,6 @@ exports.updateamenitySingle = (req,res,next)=>{
 exports.deleteamenitySingle = (req,res,next)=>{
         WorkAmenities.deleteOne({"_id":req.params.id})
                         .then(data=>{  
-                            console.log("data delete---->",data);
                             if(data.deletedCount==1){
                                 res.status(200).json('Deleted Successfully');
                             }                         
