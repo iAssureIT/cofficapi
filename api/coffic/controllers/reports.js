@@ -218,11 +218,10 @@ exports.dailyOrder_Report=(req,res,next)=>{
 							]
 				)
 		               )
-
-			 .exec()
-			 .sort({ "createdAt": -1 })
+              .sort({ "createdAt": -1 })
 			 .skip(parseInt(req.params.startLimit))
 			 .limit(parseInt(req.params.endLimit))
+			 .exec()
 			 .then(data=>{
 			 	if(data.length > 0){
 			 		getData();
