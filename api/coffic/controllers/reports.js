@@ -202,7 +202,7 @@ exports.dailyOrder_Report=(req,res,next)=>{
 								{
 									$match : {
 										"workSpace_id"  : req.params.workspace_ID,
-										"date"			: new Date(req.params.date),
+										"date"			: req.params.date,
 
 									}
 								},
@@ -220,6 +220,9 @@ exports.dailyOrder_Report=(req,res,next)=>{
 		               )
 
 			 .exec()
+			 .sort({ "createdAt": -1 })
+			 .skip(parseInt(req.params.startLimit))
+			 .limit(parseInt(req.params.endLimit))
 			 .then(data=>{
 			 	if(data.length > 0){
 			 		getData();
