@@ -1434,7 +1434,7 @@ exports.users_count = (req,res,next)=>{
 // =====================  Forgot Password ==============
 
 exports.user_otpverification_forgotpassword = (req,res,next)=>{
-	User.findOne({'mobileNumber':req.body.mobileNumber})
+	User.findOne({'mobileNumber':req.body.mobileNumber,'profile.mobileNumber':req.body.emailId})
 		.limit(1)
 		.exec()
 		.then(user =>{
