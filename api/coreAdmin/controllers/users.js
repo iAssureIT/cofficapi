@@ -1434,7 +1434,7 @@ exports.users_count = (req,res,next)=>{
 // =====================  Forgot Password ==============
 
 exports.user_otpverification_forgotpassword = (req,res,next)=>{
-	User.findOne({'profile.mobileNumber':req.body.mobileNumber,'profile.emailId':req.body.emailId})
+	User.findOne({'profile.mobileNumber':req.body.mobileNumber})
 		.limit(1)
 		.exec()
 		.then(user =>{
@@ -1511,7 +1511,7 @@ exports.user_otpverification_forgotpassword = (req,res,next)=>{
 
 
 exports.forgot_pwd = (req,res,next)=>{
-	User.findOne({emails:{$elemMatch:{address:req.body.emailId}}})
+	User.findOne({})
         .exec()
         .then(user => {
             if(user){
