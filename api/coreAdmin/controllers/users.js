@@ -1434,7 +1434,7 @@ exports.users_count = (req,res,next)=>{
 // =====================  Forgot Password ==============
 
 exports.user_otpverification_forgotpassword = (req,res,next)=>{
-	User.findOne({'profile.mobileNumber':req.body.mobileNumber})
+	User.findOne({'mobileNumber':req.body.mobileNumber,'profile.mobileNumber':req.body.emailId})
 		.limit(1)
 		.exec()
 		.then(user =>{
@@ -1511,7 +1511,7 @@ exports.user_otpverification_forgotpassword = (req,res,next)=>{
 
 
 exports.forgot_pwd = (req,res,next)=>{
-	User.findOne({})
+	User.findOne({emails:{$elemMatch:{address:req.body.emailId}}})
         .exec()
         .then(user => {
             if(user){
@@ -1532,9 +1532,17 @@ exports.forgot_pwd = (req,res,next)=>{
 				        .exec()
 				        .then(data=>{
 				            if(data.nModified == 1){
-				                res.status(200).json("Password  Updated");
+								// res.status(200).json("Password  Updated");
+								res.status(200).json({
+									message:"Password  Updated", 
+									error: err,
+								});
 				            }else{
-				                res.status(401).json("Password  Not Found");
+								// res.status(401).json("Password  Not Found");
+								res.status(401).json({
+									message:"Password Not Found", 
+									error: err,
+								});
 				            }
 				        })
 				        .catch(err =>{
