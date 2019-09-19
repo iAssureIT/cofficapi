@@ -1535,7 +1535,7 @@ exports.forgot_pwd = (req,res,next)=>{
 								// res.status(200).json("Password  Updated");
 								res.status(200).json({
 									message:"Password  Updated", 
-									error: err,
+									
 								});
 				            }else{
 								// res.status(401).json("Password  Not Found");
