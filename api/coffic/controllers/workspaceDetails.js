@@ -78,7 +78,20 @@ function availableSeats(workSpace_id){
         })
     });
 }
+exports.id_cafeAdmin = (req, res, next) => {
+    WorkspaceDetails.findOne({ "cafeAdmin": req.params.user_id })
+        .exec()
+        .then(users => {
+            res.status(200).json(users);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
 
+}
 exports.list_workspace = (req,res,next)=>{
     WorkspaceDetails
     .find()
