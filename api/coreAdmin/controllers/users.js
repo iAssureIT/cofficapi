@@ -1136,13 +1136,13 @@ exports.update_user = (req, res, next) => {
 		{
 			$set: {
 
-				"profile.firstName"		: req.body.firstName,
-				"profile.lastName"		: req.body.lastName,
-				"profile.fullName"		: req.body.firstName + ' ' + req.body.lastName,
-				"profile.emailId"		: req.body.emailId,
-				"profile.mobileNumber"	: req.body.mobileNumber,
-				"mobileNumber"			: req.body.mobileNumber,
-				"emails[0].address"		: req.body.emailId,
+				"profile.firstName": req.body.firstName,
+				"profile.lastName": req.body.lastName,
+				"profile.fullName": req.body.firstName + ' ' + req.body.lastName,
+				"profile.emailId": req.body.emailId,
+				"profile.mobileNumber": req.body.mobileNumber,
+				"mobileNumber": req.body.mobileNumber,
+				"emails[0].address": req.body.emailId,
 
 			}
 		}
@@ -1594,7 +1594,7 @@ exports.user_otpverification_forgotpassword = (req, res, next) => {
 					// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 					return res.status(200).json({
 						"message": 'OTP-SEND-SUCCESSFULLY',
-						"user_id" : user._id
+						"user_id": user._id
 					});
 				})
 					.catch(otpError => {
@@ -1642,9 +1642,9 @@ exports.forgot_pwd = (req, res, next) => {
 					)
 						.exec()
 						.then(data => {
-							console.log('data ',data);
+							console.log('data ', data);
 							if (data.nModified == 1) {
-								console.log('data =========>>>',data);
+								console.log('data =========>>>', data);
 								res.status(200).json("Password  Updated");
 							} else {
 								res.status(401).json("Password  Not Found");
