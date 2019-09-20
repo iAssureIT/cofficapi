@@ -20,7 +20,9 @@ exports.chekinUser = (req,res,next)=>{
     var selector={ 
                 "user_id" : req.body.user_id,
                 "endDate" : {$gte : new Date()},
-                "status" : "paid" , };
+                "status" : "paid" , 
+                };
+    console.log('selector',selector)
     SubscriptionOrder
         .find({ 
                 "user_id" : req.body.user_id,
@@ -28,6 +30,7 @@ exports.chekinUser = (req,res,next)=>{
                 "status" : "paid" ,
              })
         .then(activeSubOrder=>{
+            console.log('activeSubOrder',activeSubOrder)
             if(activeSubOrder.length>0){
                 SeatBooking
                     .find({
@@ -36,6 +39,7 @@ exports.chekinUser = (req,res,next)=>{
                     })
                     .estimatedDocumentCount()
                     .then(totCheckIns => {
+                        console.log('totCheckIns',totCheckIns)
                         if(totCheckIns <= activeSubOrder[0].maxCheckIns) {
                             const seatBookingObj = new SeatBooking({
                                 _id                 :  new mongoose.Types.ObjectId(),
@@ -562,7 +566,7 @@ exports.validate_checkin = (req,res,next)=>{
                     });
                 
             }else{
-                res.status(200).json({ data :"No Active Plan Found"});
+                res.status(200).json("No Active Plan Found");
             }
         })
         .catch(err =>{
