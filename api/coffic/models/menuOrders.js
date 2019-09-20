@@ -8,7 +8,7 @@ const menuOrdersSchema = mongoose.Schema({
 	item                    : String,
 	price                   : Number,
 	isDelivered             : Boolean,
-	orderedAt               : Date,					
+	orderedAt               : String,					
 });
 
 module.exports = mongoose.model('menuOrders',menuOrdersSchema);

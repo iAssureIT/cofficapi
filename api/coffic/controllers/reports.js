@@ -1,21 +1,22 @@
-const mongoose			= require("mongoose");
-const ObjectID  		= require("mongodb").ObjectID;
-var   request           =require ('request-promise');
-var   moment            = require('moment');
-const WorkspaceDetails  = require('../models/workspaceDetails');
-const SeatBooking 		= require("../models/seatBooking");
-const MenuOrder			= require("../models/menuOrders");
-const User              = require('../../coreAdmin/models/users');
-const globaleVaiable    = require('../../../nodemon.js');
-const SubscriptionOrder	= require("../models/subscriptionOrder.js");
-const SubscriptionPlan  = require("../models//subscriptionPlan.js");
+const mongoose			 = require("mongoose");
+const ObjectID  		 = require("mongodb").ObjectID;
+var   request            =require ('request-promise');
+var   moment             = require('moment');
+const WorkspaceDetails   = require('../models/workspaceDetails');
+const SeatBooking 		 = require("../models/seatBooking");
+const MenuOrder			 = require("../models/menuOrders");
+const User               = require('../../coreAdmin/models/users');
+const globaleVaiable     = require('../../../nodemon.js');
+const SubscriptionOrder	 = require("../models/subscriptionOrder.js");
+const SubscriptionPlan   = require("../models//subscriptionPlan.js");
 
 exports.dailyBeverage_Report=(req,res,next)=>{
 	MenuOrder.aggregate([
 							{
 								$match : {
 										"workSpace_id" 		: req.params.workspace_ID,
-										"date"				: {$eq : new Date(req.params.date)},
+										// "date"			    : req.params.date
+
 								}
 							},
 							{
@@ -46,26 +47,25 @@ exports.dailyBeverage_Report=(req,res,next)=>{
 }
 
 exports.vendor_dailycheckins = (req,res,next)=>{
-
 	SeatBooking .aggregate(
-							[
-								{
-									$match : {
-										"workSpace_id"  : req.params.workspace_ID,
-										"date"			: req.params.date
+						[
+							{
+								$match : {
+									"workSpace_id"  : req.params.workspace_ID,
+									"date"			: req.params.date
 
-									}
-								},
-								
-								{
-									$project : {
-													"workSpace_id"	: "$_id.workSpace_id",
-													"checkInTime"	: "$checkInTime",
-													"checkOutTime"	: "$checkOutTime",
-													"user_id"		: "$user_id"
-												}				
 								}
-							]
+							},
+							
+							{
+								$project : {
+												"workSpace_id"	: "$_id.workSpace_id",
+												"checkInTime"	: "$checkInTime",
+												"checkOutTime"	: "$checkOutTime",
+												"user_id"		: "$user_id"
+											}				
+							}
+						]
 				)
 				.sort({ "createdAt": -1 })
 				.skip(parseInt(req.params.startLimit))
@@ -103,7 +103,7 @@ exports.dailyOrder_Report=(req,res,next)=>{
 								{
 									$match : {
 										"workSpace_id"  : req.params.workspace_ID,
-										"date"			: req.params.date,
+										"date"			: {$eq : new Date(req.params.date)},
 
 									}
 								},
@@ -117,9 +117,9 @@ exports.dailyOrder_Report=(req,res,next)=>{
 								// }
 							]
 		               )
-             .sort({ "createdAt": -1 })
-			 .skip(parseInt(req.params.startLimit))
-			 .limit(parseInt(req.params.endLimit))
+    //          .sort({ "createdAt": -1 })
+			 // .skip(parseInt(req.params.startLimit))
+			 // .limit(parseInt(req.params.endLimit))
 			 .exec()
 			 .then(data=>{
 			 	console.log("dailydata",data);
@@ -139,7 +139,7 @@ exports.dailyOrder_Report=(req,res,next)=>{
 			 					"Item"	   		: data[i].item,
 			 					"OrderedAt"		: data[i].orderedAt,
 			 					"isDelivered"	: data[i].isDelivered,
-			 					// "data"			: data[i]
+			 					"data"			: data[i]
 			 				});
 			 			}
 			 			if(i >= data.length){
