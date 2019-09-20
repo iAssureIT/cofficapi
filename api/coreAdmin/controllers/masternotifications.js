@@ -253,6 +253,7 @@ function getTemplateDetailsEmail(templateName, variables) {
                             n++;
                         }
                     }
+                    // 
                     var numOfVar = Object.keys(variables).length;
 
                     for (i = 0; i < numOfVar; i++) {
