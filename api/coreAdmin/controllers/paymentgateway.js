@@ -5,21 +5,6 @@ const QuickWalletMasters        = require('../models/paymentgateway');
 var http = require("http");
 var request = require('request-promise');
 
-// exports.fetch_details = (req,res,next)=>{
-//     QuickWalletMasters.find({})
-//                     .exec()
-//                     .then(data =>{
-//                         res.status(200).json(data);
-//                     })
-//                     .catch(err =>{
-//                         console.log(err);
-//                         res.status(500).json({
-//                             error: err
-//                         });
-//                     });
-   
-// }
-
 exports.fetch_details = (req,res,next)=>{
     QuickWalletMasters.find({status: "active"})
                     .exec()

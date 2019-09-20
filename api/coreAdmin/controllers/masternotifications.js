@@ -185,8 +185,10 @@ exports.send_notifications = (req,res,next)=>{
 		// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
 
 		const sourceMobile = "+919923393733";
-		var text = templateDetailsSMS.content;
-		
+		var text = templateDetailsSMS.content.replace(/<[^>]+>/g, '');
+		// htmlString.replace(/<[^>]+>/g, '');
+
+
 		client.messages.create(
 			src=sourceMobile,
 			dst=toMobile,

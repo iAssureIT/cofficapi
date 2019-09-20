@@ -1136,18 +1136,13 @@ exports.update_user = (req, res, next) => {
 		{
 			$set: {
 
-				"profile.firstName": req.body.firstName,
-				"profile.lastName": req.body.lastName,
-				"profile.fullName": req.body.firstName + ' ' + req.body.lastName,
-				"profile.emailId": req.body.emailId,
-				"profile.mobileNumber": req.body.mobileNumber,
-				"mobileNumber": req.body.mobileNumber,
-
-				"emails[0].address  ": req.body.emailId,
-				// "roles" 				: (req.body.roles),
-
-				// "officeLocation" 		: req.body.officeLocation,
-
+				"profile.firstName"		: req.body.firstName,
+				"profile.lastName"		: req.body.lastName,
+				"profile.fullName"		: req.body.firstName + ' ' + req.body.lastName,
+				"profile.emailId"		: req.body.emailId,
+				"profile.mobileNumber"	: req.body.mobileNumber,
+				"mobileNumber"			: req.body.mobileNumber,
+				"emails[0].address"		: req.body.emailId,
 
 			}
 		}
