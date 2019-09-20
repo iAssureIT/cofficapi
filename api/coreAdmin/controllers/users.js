@@ -1599,7 +1599,7 @@ exports.user_otpverification_forgotpassword = (req, res, next) => {
 					// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 					return res.status(200).json({
 						"message": 'OTP-SEND-SUCCESSFULLY',
-						"otp": forgotuserotp.emailOTP,
+						"user_id" : user._id
 					});
 				})
 					.catch(otpError => {

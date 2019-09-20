@@ -7,7 +7,7 @@ const subscriptionOrderSchema = mongoose.Schema({
 	maxCheckIns	 :  Number,
 	startDate	 :  Date,
 	endDate		 :  Date,
-	pgTransId 	 :  String,
+	paymentId 	 :  String,
 	status 		 :  String,
 	id           :  String,
 	billnumbers  :  String,
