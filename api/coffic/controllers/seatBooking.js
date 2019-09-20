@@ -37,7 +37,7 @@ exports.chekinUser = (req,res,next)=>{
                         user_id : req.body.user_id, 
                         plan_id : activeSubOrder[0].plan_id
                     })
-                    .estimatedDocumentCount()
+                    .count()
                     .then(totCheckIns => {
                         console.log('totCheckIns',totCheckIns)
                         if(totCheckIns <= activeSubOrder[0].maxCheckIns) {
