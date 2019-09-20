@@ -595,7 +595,7 @@ exports.vendor_monthly = (req,res,next)=>{
 										"workSpace_id"	: "$_id.workSpace_id",
 										"date"			: "$_id.date",
 										"user_id"		: "$_id.user_id",
-										"checkIn"		: "$count",
+										"checkIns"		: "$count",
 										"_id"			: 0
 									}
 								},
@@ -605,14 +605,14 @@ exports.vendor_monthly = (req,res,next)=>{
 																"workSpace_id"	: "$workSpace_id",
 																"date"			: "$date",
 															  },
-												"check-Ins"	: { "$sum" : "$checkIn"}
+												"checkIns"	: { "$sum" : "$checkIns"}
 									}
 								},
 								{
 									$project : {
 													"workSpace_id"	: "$_id.workSpace_id",
 													"date"			: "$_id.date",
-													"check_Ins"		: "$check-Ins",
+													"checkIns"		: "$checkIns",
 													"_id"			: 0,
 												}				
 								}
@@ -623,6 +623,7 @@ exports.vendor_monthly = (req,res,next)=>{
 				.limit(parseInt(req.params.endLimit))
 				.exec()
 				.then(seatBooking=>{
+					console.log("seatdddata",seatBooking);
 					getData();
 					async function getData(){
 						var returnData = [];
@@ -631,12 +632,13 @@ exports.vendor_monthly = (req,res,next)=>{
 							returnData.push({
 								"workSpace_id" 		: seatBooking[j].workSpace_id,
 								"date"				: seatBooking[j].date,
-								"check-Ins"			: seatBooking[j].check_Ins,
+								"checkIns"			: seatBooking[j].checkIns,
 								"amount"			: amount,
 							});
 						}
 						if( j >= seatBooking.length){
-							res.status(200).json(returnData);		
+							console.log("returnData",returnData);	
+							res.status(200).json(returnData);	
 						}
 					}
 					// res.status(200).json(seatBooking);
