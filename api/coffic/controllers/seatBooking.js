@@ -562,7 +562,7 @@ exports.validate_checkin = (req,res,next)=>{
                     });
                 
             }else{
-                res.status(200).json({ data :"No Active Plan Found"});
+                res.status(200).json("No Active Plan Found");
             }
         })
         .catch(err =>{
