@@ -30,7 +30,6 @@ exports.chekinUser = (req,res,next)=>{
                 "status" : "paid" ,
              })
         .then(activeSubOrder=>{
-            console.log('activeSubOrder',activeSubOrder)
             if(activeSubOrder.length>0){
                 SeatBooking
                     .find({
@@ -39,7 +38,6 @@ exports.chekinUser = (req,res,next)=>{
                     })
                     .count()
                     .then(totCheckIns => {
-                        console.log('totCheckIns',totCheckIns)
                         if(totCheckIns <= activeSubOrder[0].maxCheckIns) {
                             const seatBookingObj = new SeatBooking({
                                 _id                 :  new mongoose.Types.ObjectId(),
