@@ -295,14 +295,14 @@ exports.user_signupmobile = (req, res, next) => {
 };
 exports.user_createVendor = (req, res, next) => {
 	var emailIddata = req.body.emailId;
-	User.findOne({ 'email.address': emailIddata })
+	User.findOne({ 'emails.address': emailIddata })
 		.exec()
 		.then(user => {
 			if (user) {
 				return res.status(200).json({
 					message: 'Email Id already exists'
 				});
-			} else {
+			}else {
 			bcrypt.hash(req.body.pwd, 10, (err, hash) => {
 				if (err) {
 					return res.status(500).json({
