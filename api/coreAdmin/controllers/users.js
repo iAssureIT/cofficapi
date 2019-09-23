@@ -294,6 +294,7 @@ exports.user_signupmobile = (req, res, next) => {
 
 };
 exports.user_createVendor = (req, res, next) => {
+	var emailIddata = req.body.emailId;
 	User.findOne({ 'email.address': emailIddata })
 		.exec()
 		.then(user => {
