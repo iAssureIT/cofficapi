@@ -306,8 +306,8 @@ function getTemplateDetailsSMS(templateName, variables) {
                         // var tokVar = tokens[i].substr(1,tokens[i].length-2);
                         content = content.replace(tokens[i], variables[tokens[i]]);
                     }
-                    content = content.split("[").join("'");
-                    content = content.split("]").join("'");
+                    content = content.split("[").join(" ");
+                    content = content.split("]").join(" ");
                     var tData = {
                         content: content,
                         subject: NotificationData.subject
