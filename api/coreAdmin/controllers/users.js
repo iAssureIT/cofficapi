@@ -302,14 +302,14 @@ exports.user_createVendor = (req, res, next) => {
 				return res.status(200).json({
 					message: 'Email Id already exists'
 				});
-			}else {
-			bcrypt.hash(req.body.pwd, 10, (err, hash) => {
+			}else{
+				bcrypt.hash(req.body.pwd, 10, (err, hash) => {
 				if (err) {
 					return res.status(500).json({
 						error: err
 					});
 				} else {
-					// const OTP = getRandomInt(1000, 9999);
+					const OTP = getRandomInt(1000, 9999);
 					const user = new User({
 						_id: new mongoose.Types.ObjectId(),
 						createdAt: new Date,
