@@ -95,6 +95,7 @@ exports.id_cafeAdmin = (req, res, next) => {
 exports.list_workspace = (req,res,next)=>{
     WorkspaceDetails
     .find()
+    .sort({"createdAt":-1})
     .exec()
     .then(data=>{
         if(data.length > 0 ){
