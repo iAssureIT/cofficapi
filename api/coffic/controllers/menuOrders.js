@@ -43,8 +43,9 @@ function getworkSpaceDetails(workspaceId){
 
 exports.detail_userorders = (req,res,next)=>{
     Menuorders.find({"user_id":String(req.params.user_id)})
+        .sort({ createdAt: -1 })
         .exec()
-         .then(data=>{
+        .then(data=>{
             
             if(data.length > 0){
                 getData();
