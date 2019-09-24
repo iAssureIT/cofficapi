@@ -155,9 +155,10 @@ exports.list_subscriptionOrder = (req,res,next)=>{
 
 
 exports.paymentResponse = (req,res,next)=>{
-    //res.writeHead(301, { "Location": "http://" + req.headers['host'] + '/page-b.html' });
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    res.write('<div style="margin-top:200px;text-align:center;width:50%;margin-left:23%; padding: 30px; border: 1px solid #aaa;"><h1 style="color:#00aa00">'+req.query.status+'/'+req.query.id+'/'+req.query.billnumbers+'</h1></div>');
+    console.log("status = ",req.query.status);
+    console.log("id = ",req.query.id);
+    console.log("billnumbers = ",req.query.billnumbers);
+
     res.writeHead(301, { "Location": "/payment-success/"+req.query.status+"/"+req.query.id+"/"+req.query.billnumbers });
     return res.end();
 }
