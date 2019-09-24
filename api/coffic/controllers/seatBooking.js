@@ -597,10 +597,10 @@ exports.checkoutUser = (req, res, next) => {
         var selector = {
             "user_id": req.body.user_id,
             "workSpace_id": req.body.workspace_id,
+            "checkOutTime": null,
             "date": currDateISO,
         };
-        SeatBooking
-            .updateOne(
+        SeatBooking.updateOne(
                 selector,
                 {
                     $set: {
@@ -610,6 +610,7 @@ exports.checkoutUser = (req, res, next) => {
             )
             .exec()
             .then(data => {
+                console.log('data',data)
                 if (data.nModified == 1) {
                     res.status(200).json("Checkout is Successful");
                 } else {
