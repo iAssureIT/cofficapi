@@ -3,10 +3,11 @@ const mongoose	= require("mongoose");
 const SubscriptionPlan = require('../models/subscriptionPlan');
 
 exports.create_subscriptionPlan = (req,res,next)=>{
+    var descriptions = req.body.description.replace(/&nbsnbsp;/g, '');
     const subscriptionplan = new SubscriptionPlan({
                 _id                    :  new mongoose.Types.ObjectId(),
                 planName               :  req.body.planName,
-                description            :  req.body.description,
+                description            :  descriptions,
                 maxCheckIns            :  req.body.maxCheckIns,
                 price                  :  req.body.price,
                 validityDays           :  req.body.validityDays,
