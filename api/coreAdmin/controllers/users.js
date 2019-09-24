@@ -36,6 +36,7 @@ exports.user_checkUser = (req, res, next) => {
 			});
 		})
 }
+
 exports.user_signupadmin = (req, res, next) => {
 	User
 		.findOne({ 'emails.address': req.body.emailId })
@@ -217,6 +218,63 @@ exports.user_otpverification = (req, res, next) => {
 	}
 
 };
+exports.user_signupgoogle = (req,res, next)=>{
+	var emailIddata = req.body.emailId;
+	User.findOne({ 'email.address': emailIddata })
+		.exec()
+		.then(user => {
+			if (user) {
+				return res.status(200).json({
+					message: 'Email Id already exists'
+				});
+			}  else {
+						const user = new User({
+							_id: new mongoose.Types.ObjectId(),
+							createdAt: new Date,
+							mobileNumber: req.body.mobileNumber,
+							emails: [
+								{
+									address: req.body.emailId,
+									verified: true
+								}
+							],
+							profile: {
+								firstName: req.body.firstName,
+								lastName: req.body.lastName,
+								fullName: req.body.firstName + ' ' + req.body.lastName,
+								emailId: req.body.emailId,
+								mobileNumber: req.body.mobileNumber,
+								status: req.body.status,
+							},
+							roles: (req.body.roles),
+						});
+
+						user.save()
+							.then(newUser => {
+								if (newUser) {
+									return res.status(200).json({
+										"message": 'NEW-USER-CREATED',
+										"user_id": newUser._id,
+										"profile": newUser.profile,
+										"emailId": newUser.profile.emailId,
+									});
+								}
+							})
+							.catch(err => {
+								console.log(err);
+								res.status(500).json({
+									error: err
+								});
+							});
+					}
+		})
+		.catch(err => {
+			console.log(err);
+			res.status(500).json({
+				error: err
+			});
+		});
+}
 exports.user_signupmobile = (req, res, next) => {
 	var emailIddata = req.body.emailId;
 	User.findOne({ 'email.address': emailIddata })
@@ -815,6 +873,35 @@ exports.user_loginwithadmin = (req, res, next) => {
 			});
 		});
 };
+
+exports.user_loginwithgoogle = (req,res,next) =>{
+	User.findOne({emails: { $elemMatch: {address:req.body.emailId } }, roles:"user" })
+		.exec()
+		.then(user=>{
+			if(user){
+				const token = jwt.sign(
+					{
+						email: req.body.email,
+						// userId   : mongoose.Types.ObjectId(user._id) ,
+						userId: user._id,
+					}, global.JWT_KEY,
+					{
+						expiresIn: "1h"
+					}
+				);
+				return res.status(200).json({
+					message: 'Auth successful',
+					token: token,
+					user_ID: user._id,
+					userFullName: user.profile.fullName,
+					useremailId: user.profile.emailId,
+				});
+			}
+		})
+		.catch(error=>{
+			res.status(500).json({error})
+		})
+}
 
 exports.user_loginwithvendor = (req, res, next) => {
 	User.findOne({ emails: { $elemMatch: { address: req.body.email } }, roles: "vendor", emailId: req.body.emailId })
