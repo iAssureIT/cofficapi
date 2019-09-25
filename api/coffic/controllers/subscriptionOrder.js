@@ -184,9 +184,6 @@ exports.list_subscriptionOrder = (req,res,next)=>{
 
 
 exports.paymentResponse = (req,res,next)=>{
-    console.log("status = ",req.query.status);
-    console.log("id = ",req.query.id);
-    console.log("billnumbers = ",req.query.billnumbers);
 
     res.writeHead(301, { "Location": "/payment-success/"+req.query.status+"/"+req.query.id+"/"+req.query.billnumbers });
     return res.end();
@@ -194,13 +191,14 @@ exports.paymentResponse = (req,res,next)=>{
 
 
 exports.paymentSuccess = (req,res,next)=>{
+
     // console.log(":status = ", req.params.status);
     // console.log(":id = ", req.params.id);
     // console.log(":billnumbers = ", req.params.billnumbers);
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    res.write('<div style="margin-top:200px;text-align:center;width:50%;margin-left:23%; padding: 30px; border: 1px solid #aaa;"><ImageBackgroundsource={require("../../images/paymentgatewayimageloader.jpg")}></div>');
-    res.status(200);
-    res.end();   
+    // res.writeHead(200, { 'Content-Type': 'text/html' });
+    // res.write('<div style="margin-top:600px;text-align:center;width:50%;margin-left:23%; padding: 30px; border: 1px solid #aaa;"><ImageBackgroundsource={require("../image/paymentgatewayimageloader.jpg")}></div>');
+    // res.status(200);
+    // res.end();   
 }
 
 
