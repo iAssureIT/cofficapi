@@ -1,6 +1,5 @@
 const mongoose	        = require("mongoose");
 var moment              = require('moment');
-const ObjectID              = require("mongodb").ObjectID;
 
 const SubscriptionOrder = require('../models/subscriptionOrder');
 const SubscriptionPlan  = require('../models/subscriptionPlan');
@@ -97,42 +96,15 @@ exports.single_activesub = (req,res,next)=>{
             });
  }
 
-function getPlanInfo(plan_id){
-    return new Promise(function(resolve,reject){
-        SubscriptionPlan.findOne({"_id": new ObjectID(plan_id)})
-            .exec()
-            .then(data=>{
-                resolve(data)
-            })
-            .catch(error=>{
-                reject(error)
-            })
-    })
-}
-
  exports.user_allsub = (req,res,next)=>{
 
     SubscriptionOrder.find({ "user_id" : req.params.user_id })
         .sort({createdAt: -1})
         .exec()
         .then(data=>{
-            // console.log("data",data);
+            console.log("data",data);
             if(data){
-                getPlan();
-                async function getPlan(){
-                    var plan = []
-                    for (i = 0; i < data.length; i++){
-                        var planInfo = await getPlanInfo(data[i].plan_id)
-                        plan.push({
-                            planName    : planInfo.planName,
-                            planPrice   : planInfo.price,
-                            order       : data[i]
-                        })
-                    }
-                    if(i >= data.length){
-                        res.status(200).json(plan);
-                    }
-                }
+                res.status(200).json(data);
             }else{
                 res.status(404).json('Not found');
             }
@@ -184,6 +156,9 @@ exports.list_subscriptionOrder = (req,res,next)=>{
 
 
 exports.paymentResponse = (req,res,next)=>{
+    console.log("status = ",req.query.status);
+    console.log("id = ",req.query.id);
+    console.log("billnumbers = ",req.query.billnumbers);
 
     res.writeHead(301, { "Location": "/payment-success/"+req.query.status+"/"+req.query.id+"/"+req.query.billnumbers });
     return res.end();
@@ -191,14 +166,13 @@ exports.paymentResponse = (req,res,next)=>{
 
 
 exports.paymentSuccess = (req,res,next)=>{
-
     // console.log(":status = ", req.params.status);
     // console.log(":id = ", req.params.id);
     // console.log(":billnumbers = ", req.params.billnumbers);
-    // res.writeHead(200, { 'Content-Type': 'text/html' });
-    // res.write('<div style="margin-top:600px;text-align:center;width:50%;margin-left:23%; padding: 30px; border: 1px solid #aaa;"><ImageBackgroundsource={require("../image/paymentgatewayimageloader.jpg")}></div>');
-    // res.status(200);
-    // res.end();   
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.write('<div style="margin-top:200px;text-align:center;width:50%;margin-left:23%; padding: 30px; border: 1px solid #aaa;"><h1 style="color:#00aa00"> Congratulations !</h1><h3> Your Payment is Successful! <br/> </h3></div>');
+    res.status(200);
+    res.end();   
 }
 
 
