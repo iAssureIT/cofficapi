@@ -485,7 +485,7 @@ exports.list_userSeatBooking = (req, res, next) => {
     var selector = { "$match": { "user_id": String(req.params.user_id) } };
     SeatBooking
         .find({ "user_id": String(req.params.user_id) })
-        .sort({ createdAt: -1 })
+        .sort({ createdAt : 1 })
         .exec()
         .then(data => {
             if (data.length > 0) {

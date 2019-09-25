@@ -99,6 +99,7 @@ exports.single_activesub = (req,res,next)=>{
  exports.user_allsub = (req,res,next)=>{
 
     SubscriptionOrder.find({ "user_id" : req.params.user_id })
+        .sort({createdAt: -1})
         .exec()
         .then(data=>{
             console.log("data",data);
@@ -165,9 +166,9 @@ exports.paymentResponse = (req,res,next)=>{
 
 
 exports.paymentSuccess = (req,res,next)=>{
-    console.log(":status = ", req.params.status);
-    console.log(":id = ", req.params.id);
-    console.log(":billnumbers = ", req.params.billnumbers);
+    // console.log(":status = ", req.params.status);
+    // console.log(":id = ", req.params.id);
+    // console.log(":billnumbers = ", req.params.billnumbers);
     // res.writeHead(200, { 'Content-Type': 'text/html' });
     // res.write('<div style="margin-top:200px;text-align:center;width:50%;margin-left:23%; padding: 30px; border: 1px solid #aaa;"><h1 style="color:#00aa00"> Congratulations !</h1><h3> Your Payment is Successful! <br/> Click below button to proceed. </h3></div>');
     // res.status(200);
