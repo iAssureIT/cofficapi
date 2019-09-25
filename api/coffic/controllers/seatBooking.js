@@ -558,6 +558,8 @@ exports.validate_checkin = (req, res, next) => {
                         console.log("maxCheckIns = ",data[0].maxCheckIns);
                         if (totCheckIns.length < data[0].maxCheckIns) {
                             res.status(200).json("User Subscription Plan is Valid for " + (data[0].maxCheckIns - totCheckIns.length) + " more times");
+                        }else{
+                            res.status(200).json("User Consumed All Allowable Checkins");
                         }
                     })
                     .catch(err => {
