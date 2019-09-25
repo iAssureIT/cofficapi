@@ -130,7 +130,7 @@ function getPlanInfo(plan_id){
                         })
                     }
                     if(i >= data.length){
-                        res.status(200).json(data);
+                        res.status(200).json(plan);
                     }
                 }
             }else{
