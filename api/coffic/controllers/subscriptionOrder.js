@@ -99,7 +99,7 @@ exports.single_activesub = (req,res,next)=>{
 
 function getPlanInfo(plan_id){
     return new Promise(function(resolve,reject){
-        SubscriptionPlan.findOne({"_id": new ObjectId(plan_id)})
+        SubscriptionPlan.findOne({"_id": new ObjectID(plan_id)})
             .exec()
             .then(data=>{
                 resolve(data)
