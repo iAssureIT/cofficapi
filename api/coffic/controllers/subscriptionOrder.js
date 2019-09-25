@@ -96,6 +96,19 @@ exports.single_activesub = (req,res,next)=>{
             });
  }
 
+function getPlanInfo(plan_id){
+    return new Promise(function(resolve,reject){
+        SubscriptionPlan.findOne({"_id": new ObjectId(plan_id)})
+            .exec()
+            .then(data=>{
+                resolve(data)
+            })
+            .catch(error=>{
+                reject(error)
+            })
+    })
+}
+
  exports.user_allsub = (req,res,next)=>{
 
     SubscriptionOrder.find({ "user_id" : req.params.user_id })
@@ -104,6 +117,14 @@ exports.single_activesub = (req,res,next)=>{
         .then(data=>{
             console.log("data",data);
             if(data){
+                getPlan();
+                async funtion getPlan(){
+                    var plan = []
+                    for (i = 0; i < data.length; i++){
+                        var planInfo = await getPlanInfo(data[i].plan_id)
+                        console.log('planInfo',planInfo)
+                    }
+                }
                 res.status(200).json(data);
             }else{
                 res.status(404).json('Not found');
