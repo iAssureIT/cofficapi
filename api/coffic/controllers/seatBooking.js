@@ -554,8 +554,10 @@ exports.validate_checkin = (req, res, next) => {
                         plan_id: data[0].plan_id,
                     })
                     .then(totCheckIns => {
+                        console.log("totCheckIns = ",totCheckIns.length);
+                        console.log("maxCheckIns = ",data[0].maxCheckIns);
                         if (totCheckIns.length < data[0].maxCheckIns) {
-                            res.status(200).json("User Subscription Plan is Valid for " + (totCheckIns.length - data[0].maxCheckIns) + " more times");
+                            res.status(200).json("User Subscription Plan is Valid for " + (data[0].maxCheckIns - totCheckIns.length) + " more times");
                         }
                     })
                     .catch(err => {
