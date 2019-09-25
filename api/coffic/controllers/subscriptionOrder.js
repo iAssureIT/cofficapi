@@ -123,12 +123,16 @@ function getPlanInfo(plan_id){
                     var plan = []
                     for (i = 0; i < data.length; i++){
                         var planInfo = await getPlanInfo(data[i].plan_id)
-                        console.log('planInfo',planInfo)
-                        data[i].plan = planInfo
-                        console.log('sub order',data)
+                        plan.push({
+                            planName    : planInfo.planName,
+                            planPrice   : planInfo.price,
+                            order       : data[i]
+                        })
+                    }
+                    if(i >= data.length){
+                        res.status(200).json(data);
                     }
                 }
-                res.status(200).json(data);
             }else{
                 res.status(404).json('Not found');
             }
