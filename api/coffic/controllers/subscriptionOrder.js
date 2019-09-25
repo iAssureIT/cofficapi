@@ -125,9 +125,9 @@ function getPlanInfo(plan_id){
                         var planInfo = await getPlanInfo(data[i].plan_id)
                         console.log('planInfo',planInfo)
                         data[i] = planInfo
+                        console.log('sub order',data)
                     }
                 }
-                console.log('sub order',data)
                 res.status(200).json(data);
             }else{
                 res.status(404).json('Not found');
