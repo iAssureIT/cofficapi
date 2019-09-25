@@ -596,6 +596,8 @@ exports.checkoutUser = (req, res, next) => {
 
     var currDateISO = year + "-" + month + "-" + day;
     if (currDateISO) {
+
+
         var selector = {
             "user_id": req.body.user_id,
             "workSpace_id": req.body.workspace_id,
@@ -614,6 +616,62 @@ exports.checkoutUser = (req, res, next) => {
             .then(data => {
                 console.log('data',data)
                 if (data.nModified == 1) {
+                    //Check if this was last available checkin. If yes, then make the plan inactive. 
+                    SubscriptionOrder
+                        .find({
+                            "user_id" : req.body.user_id,
+                            "endDate" : { $gte: new Date() },
+                            "status"  : "paid",
+                        })
+                        .then(data => {
+                            if (data.length > 0) {
+                                SeatBooking
+                                    .find({
+                                        user_id: req.body.user_id,
+                                        plan_id: data[0].plan_id,
+                                    })
+                                    .then(totCheckIns => {
+                                        console.log("2 totCheckIns = ",totCheckIns.length);
+                                        console.log("2 maxCheckIns = ",data[0].maxCheckIns);
+                                        if (totCheckIns.length == data[0].maxCheckIns) {
+                                            var selector2 = {
+                                                "user_id" : req.body.user_id,
+                                                "plan_id" : data[0].plan_id,
+                                                "status"  : "paid",
+                                            };
+                                            SubscriptionOrder.updateOne(
+                                                selector2,
+                                                {
+                                                    $set: {
+                                                        "status": "inactive",
+                                                    }
+                                                }
+                                            )
+                                            .exec()
+                                            .then()
+                                            .catch(err => {
+                                                console.log(err);
+                                                res.status(500).json({
+                                                    error: err
+                                                });
+                                            });                            
+                                        }
+                                    })
+                                    .catch(err => {
+                                        console.log(err);
+                                        res.status(500).json({
+                                            error: err
+                                        });
+                                    });
+                            }
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            res.status(500).json({
+                                error: err
+                            });
+                        });
+
                     res.status(200).json("Checkout is Successful");
                 } else {
                     res.status(200).json({
@@ -629,6 +687,8 @@ exports.checkoutUser = (req, res, next) => {
                     error: err
                 });
             });
+
+
     }
 };
 
