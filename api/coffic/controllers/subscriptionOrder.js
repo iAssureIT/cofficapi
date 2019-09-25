@@ -118,7 +118,7 @@ function getPlanInfo(plan_id){
             console.log("data",data);
             if(data){
                 getPlan();
-                async funtion getPlan(){
+                async function getPlan(){
                     var plan = []
                     for (i = 0; i < data.length; i++){
                         var planInfo = await getPlanInfo(data[i].plan_id)
