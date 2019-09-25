@@ -553,11 +553,9 @@ exports.validate_checkin = (req, res, next) => {
                         user_id: req.params.user_id,
                         plan_id: data[0].plan_id,
                     })
-
-                    .countDocuments()
                     .then(totCheckIns => {
-                        if (totCheckIns < data[0].maxCheckIns) {
-                            res.status(200).json("User Subscription Plan is Valid for " + (totCheckIns - data[0].maxCheckIns) + " more times");
+                        if (totCheckIns.length < data[0].maxCheckIns) {
+                            res.status(200).json("User Subscription Plan is Valid for " + (totCheckIns.length - data[0].maxCheckIns) + " more times");
                         }
                     })
                     .catch(err => {
