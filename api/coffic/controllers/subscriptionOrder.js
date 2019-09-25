@@ -124,7 +124,7 @@ function getPlanInfo(plan_id){
                     for (i = 0; i < data.length; i++){
                         var planInfo = await getPlanInfo(data[i].plan_id)
                         console.log('planInfo',planInfo)
-                        data[i] = planInfo
+                        data[i].plan = planInfo
                         console.log('sub order',data)
                     }
                 }
