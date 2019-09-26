@@ -20,6 +20,7 @@ exports.submit_subscriptionOrder = (req, res, next) => {
                 paymentId: req.body.paymentId,
             })
                 .then(subscriptionOrders => {
+                    console.log("subscriptionOrders => ", subscriptionOrders);
                     console.log("subscriptionOrders length = ", subscriptionOrders.length);
 
                     if (subscriptionOrders.length == 0) {
