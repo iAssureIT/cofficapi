@@ -14,10 +14,10 @@ exports.submit_subscriptionOrder = (req, res, next) => {
 
 
             SubscriptionOrder.find({
-                user_id: req.body.user_id,
-                id: req.body.id,
-                billnumbers: req.body.billnumbers,
-                paymentId: req.body.paymentId,
+                // user_id: req.body.user_id,
+                // id: req.body.id,
+                // billnumbers: req.body.billnumbers,
+                // paymentId: req.body.paymentId,
             })
                 .then(subscriptionOrders => {
                     console.log("subscriptionOrders => ", subscriptionOrders);
