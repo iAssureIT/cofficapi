@@ -539,6 +539,47 @@ exports.delete_seatBooking = (req, res, next) => {
 
 
 
+// exports.validate_checkin = (req, res, next) => {
+//     SubscriptionOrder
+//         .find({
+//             "user_id": req.params.user_id,
+//             "endDate": { $gte: new Date() },
+//             "status": "paid",
+//         })
+//         .then(data => {
+//             if (data.length > 0) {
+//                 SeatBooking
+//                     .find({
+//                         user_id: req.params.user_id,
+//                         plan_id: data[0].plan_id,
+//                     })
+//                     .then(totCheckIns => {
+//                         console.log("totCheckIns = ",totCheckIns.length);
+//                         console.log("maxCheckIns = ",data[0].maxCheckIns);
+//                         if (totCheckIns.length < data[0].maxCheckIns) {
+//                             res.status(200).json({message:"User Subscription Plan is Valid for " + (data[0].maxCheckIns - totCheckIns.length) + " more times",available:data[0].maxCheckIns - totCheckIns.length});
+//                         }else{
+//                             res.status(200).json("User Consumed All Allowable Checkins");
+//                         }
+//                     })
+//                     .catch(err => {
+//                         console.log(err);
+//                         res.status(500).json({
+//                             error: err
+//                         });
+//                     });
+
+//             } else {
+//                 res.status(200).json("No Active Plan Found");
+//             }
+//         })
+//         .catch(err => {
+//             console.log(err);
+//             res.status(500).json({
+//                 error: err
+//             });
+//         });
+// }
 exports.validate_checkin = (req, res, next) => {
     SubscriptionOrder
         .find({
@@ -547,6 +588,7 @@ exports.validate_checkin = (req, res, next) => {
             "status": "paid",
         })
         .then(data => {
+            console.log("data ",data);
             if (data.length > 0) {
                 SeatBooking
                     .find({
