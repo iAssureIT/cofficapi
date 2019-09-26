@@ -1,5 +1,6 @@
 const mongoose	        = require("mongoose");
 var moment              = require('moment');
+const ObjectID              = require("mongodb").ObjectID;
 
 const SubscriptionOrder = require('../models/subscriptionOrder');
 const SubscriptionPlan  = require('../models/subscriptionPlan');
@@ -95,6 +96,19 @@ exports.single_activesub = (req,res,next)=>{
                 });
             });
  }
+
+ function getPlanInfo(plan_id){
+    return new Promise(function(resolve,reject){
+        SubscriptionPlan.findOne({"_id": new ObjectID(plan_id)})
+            .exec()
+            .then(data=>{
+                resolve(data)
+            })
+            .catch(error=>{
+                reject(error)
+            })
+    })
+}
 
  exports.user_allsub = (req,res,next)=>{
 
