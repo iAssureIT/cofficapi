@@ -64,7 +64,7 @@ exports.chekinUser = (req, res, next) => {
                                     if (activeSubOrder[0].maxCheckIns == (totCheckIns + 1)) {
                                         SubscriptionOrder
                                             .update(
-                                                { plan_id: activeSubOrder[0].plan_id },
+                                                { subcriptionorder_id: activeSubOrder[0]._id },
                                                 { $set: { "status": "inactive" } }
                                             )
                                             .then(data => {
