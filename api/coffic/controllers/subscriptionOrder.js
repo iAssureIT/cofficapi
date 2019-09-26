@@ -18,6 +18,7 @@ exports.submit_subscriptionOrder = (req, res, next) => {
                 id         : req.body.id,
                 billnumbers: req.body.billnumbers,
                 paymentId  : req.body.paymentId,
+                status     : "paid"
             })
                 .then(subscriptionOrders => {
                     console.log("subscriptionOrders => ", subscriptionOrders);
