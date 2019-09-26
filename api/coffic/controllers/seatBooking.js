@@ -40,7 +40,8 @@ exports.chekinUser = (req, res, next) => {
                         subcriptionorder_id  : activeSubOrder[0]._id,
                     })
                     .then(totCheckIns => {
-
+                        console.log("totCheckIns====>",totCheckIns.length);
+                        console.log("activeSubOrder====>",activeSubOrder);
                         if(totCheckIns.length <= activeSubOrder[0].maxCheckIns) {
 
                             const seatBookingObj = new SeatBooking({
