@@ -1,164 +1,184 @@
-const mongoose	        = require("mongoose");
-var moment              = require('moment');
-const ObjectID              = require("mongodb").ObjectID;
+const mongoose = require("mongoose");
+var moment = require('moment');
+const ObjectID = require("mongodb").ObjectID;
 
 const SubscriptionOrder = require('../models/subscriptionOrder');
-const SubscriptionPlan  = require('../models/subscriptionPlan');
+const SubscriptionPlan = require('../models/subscriptionPlan');
 
-exports.submit_subscriptionOrder = (req,res,next)=>{     
-    console.log("Arrived at = ",new Date());
-    SubscriptionPlan.find({_id : req.body.plan_id})
+exports.submit_subscriptionOrder = (req, res, next) => {
+    console.log("Arrived at = ", new Date());
+    SubscriptionPlan.find({ _id: req.body.plan_id })
         .exec()
-        .then(plan=>{
-            const maxCheckIns = plan[0].maxCheckIns;
-            const validityDays = plan[0].validityDays;
-            var currDate = new Date();
-            var day = currDate.getDate();
-            var month = currDate.getMonth() + 1;
-            var year = currDate.getYear();
-            if (year < 1900){
-                year = year + 1900;
-            }
-            if(day<10 || day.length<2){day = '0' + day;}
-            if(month<10 || month.length<2){month = '0' + month;}
-            currDate = year+"-"+month+"-"+day;
+        .then(plan => {
 
-            var endDate = moment(currDate).add('days',parseInt(validityDays))
-            const newSubscriptionOrder = new SubscriptionOrder({
-                                _id          :  new mongoose.Types.ObjectId(),
-                                plan_id      :  req.body.plan_id,
-                                user_id      :  req.body.user_id,
-                                maxCheckIns  :  maxCheckIns,
-                                startDate    :  currDate,
-                                endDate      :  endDate,
-                                status       :  req.body.status,
-                                id           :  req.body.id,
-                                billnumbers  :  req.body.billnumbers,
-                                paymentId    : req.body.paymentId,
-                                createdAt    :  new Date(),                               
+
+            SubscriptionOrder.find({
+                user_id: req.body.user._id,
+                id: req.body.user.id,
+                billnumbers: req.body.user.billnumbers,
+                paymentId: req.body.user.paymentId,
+            })
+                .then(subscriptionOrders => {
+                    if (subscriptionOrders.length == 0) {
+                        const maxCheckIns = plan[0].maxCheckIns;
+                        const validityDays = plan[0].validityDays;
+                        var currDate = new Date();
+                        var day = currDate.getDate();
+                        var month = currDate.getMonth() + 1;
+                        var year = currDate.getYear();
+                        if (year < 1900) {
+                            year = year + 1900;
+                        }
+                        if (day < 10 || day.length < 2) { day = '0' + day; }
+                        if (month < 10 || month.length < 2) { month = '0' + month; }
+                        currDate = year + "-" + month + "-" + day;
+
+                        var endDate = moment(currDate).add('days', parseInt(validityDays))
+                        const newSubscriptionOrder = new SubscriptionOrder({
+                            _id: new mongoose.Types.ObjectId(),
+                            plan_id: req.body.plan_id,
+                            user_id: req.body.user_id,
+                            maxCheckIns: maxCheckIns,
+                            startDate: currDate,
+                            endDate: endDate,
+                            status: req.body.status,
+                            id: req.body.id,
+                            billnumbers: req.body.billnumbers,
+                            paymentId: req.body.paymentId,
+                            createdAt: new Date(),
                         });
 
-            newSubscriptionOrder
-                .save()
-                .then(data=>{
-                    if(data){
-                        res.status(200).json("New Subscription is made Successful");
-                    }else{
-                        res.status(400).json("New Subscription NOT Saved");
+                        newSubscriptionOrder
+                            .save()
+                            .then(data => {
+                                if (data) {
+                                    res.status(200).json("New Subscription is made Successful");
+                                } else {
+                                    res.status(400).json("New Subscription NOT Saved");
+                                }
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                res.status(500).json({
+                                    error: err
+                                });
+                            });
                     }
+
                 })
-                .catch(err =>{
+                .catch(err => {
                     console.log(err);
                     res.status(500).json({
                         error: err
                     });
                 });
+
         })
-        .catch(err =>{
+        .catch(err => {
             console.log(err);
             res.status(500).json({
                 error: err
             });
         });
 };
- 
 
-exports.single_activesub = (req,res,next)=>{
-  var currDate = new Date();
+
+exports.single_activesub = (req, res, next) => {
+    var currDate = new Date();
     var day = currDate.getDate();
     var month = currDate.getMonth() + 1;
     var year = currDate.getYear();
-    if (year < 1900){
+    if (year < 1900) {
         year = year + 1900;
     }
-    if(day<10 || day.length<2){day = '0' + day;}
-    if(month<10 || month.length<2){month = '0' + month;}
-    var currDateISO = year+"-"+month+"-"+day;
+    if (day < 10 || day.length < 2) { day = '0' + day; }
+    if (month < 10 || month.length < 2) { month = '0' + month; }
+    var currDateISO = year + "-" + month + "-" + day;
 
     SubscriptionOrder.findOne({
-                "user_id" : req.params.user_id,
-                "endDate" : {$gte : new Date()},
-                "status" : "paid" ,
-              })
-            .exec()
-            .then(data=>{
-                if(data){
+        "user_id": req.params.user_id,
+        "endDate": { $gte: new Date() },
+        "status": "paid",
+    })
+        .exec()
+        .then(data => {
+            if (data) {
 
-                    res.status(200).json(data);
-                }else{
-                    res.status(404).json('Not found');
-                }
-            })
-            .catch(err =>{
-                console.log(err);
-                res.status(500).json({
-                    error: err
-                });
+                res.status(200).json(data);
+            } else {
+                res.status(404).json('Not found');
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
             });
- }
+        });
+}
 
- function getPlanInfo(plan_id){
-    return new Promise(function(resolve,reject){
-        SubscriptionPlan.findOne({"_id": new ObjectID(plan_id)})
+function getPlanInfo(plan_id) {
+    return new Promise(function (resolve, reject) {
+        SubscriptionPlan.findOne({ "_id": new ObjectID(plan_id) })
             .exec()
-            .then(data=>{
-                console.log('data in plan info',data)
+            .then(data => {
+                console.log('data in plan info', data)
                 resolve(data)
             })
-            .catch(error=>{
+            .catch(error => {
                 reject(error)
             })
     })
 }
 
- exports.user_allsub = (req,res,next)=>{
+exports.user_allsub = (req, res, next) => {
 
-    SubscriptionOrder.find({ "user_id" : req.params.user_id })
-        .sort({createdAt: -1})
+    SubscriptionOrder.find({ "user_id": req.params.user_id })
+        .sort({ createdAt: -1 })
         .exec()
-        .then(data=>{
-            console.log("data",data);
-            if(data){
+        .then(data => {
+            console.log("data", data);
+            if (data) {
                 getPlan();
-                async function getPlan(){
+                async function getPlan() {
                     var plan = []
-                    for (i = 0; i < data.length; i++){
+                    for (i = 0; i < data.length; i++) {
                         var planInfo = await getPlanInfo(data[i].plan_id)
-                        console.log('plan_info',planInfo)
+                        console.log('plan_info', planInfo)
                         plan.push({
-                            planName    : planInfo.planName,
-                            planPrice   : planInfo.price,
-                            order       : data[i]
+                            planName: planInfo.planName,
+                            planPrice: planInfo.price,
+                            order: data[i]
                         })
                     }
-                    if(i >= data.length){
+                    if (i >= data.length) {
                         res.status(200).json(plan);
                     }
                 }
-            }else{
+            } else {
                 res.status(404).json('Not found');
             }
         })
-        .catch(err =>{
+        .catch(err => {
             console.log(err);
             res.status(500).json({
                 error: err
             });
         });
- }
+}
 
 
-exports.detail_subscriptionOrder = (req,res,next)=>{
-    SubscriptionOrder.findOne({"_id":req.params.suborderID})
+exports.detail_subscriptionOrder = (req, res, next) => {
+    SubscriptionOrder.findOne({ "_id": req.params.suborderID })
         .exec()
-        .then(data=>{
-            if(data){
+        .then(data => {
+            if (data) {
                 res.status(200).json(data);
-            }else{
+            } else {
                 res.status(404).json(' not found');
             }
         })
-        .catch(err =>{
+        .catch(err => {
             console.log(err);
             res.status(500).json({
                 error: err
@@ -166,17 +186,17 @@ exports.detail_subscriptionOrder = (req,res,next)=>{
         });
 }
 
-exports.list_subscriptionOrder = (req,res,next)=>{
+exports.list_subscriptionOrder = (req, res, next) => {
     SubscriptionOrder.find({})
         .exec()
-        .then(data=>{
-            if(data){
+        .then(data => {
+            if (data) {
                 res.status(200).json(data);
-            }else{
+            } else {
                 res.status(404).json('Not found');
             }
         })
-        .catch(err =>{
+        .catch(err => {
             console.log(err);
             res.status(500).json({
                 error: err
@@ -185,16 +205,16 @@ exports.list_subscriptionOrder = (req,res,next)=>{
 }
 
 
-exports.paymentResponse = (req,res,next)=>{
-    
+exports.paymentResponse = (req, res, next) => {
+
     console.log("Entered paymentResponse url at: ", new Date());
 
-    res.writeHead(301, { "Location": "/payment-success/"+req.query.status+"/"+req.query.id+"/"+req.query.billnumbers });
+    res.writeHead(301, { "Location": "/payment-success/" + req.query.status + "/" + req.query.id + "/" + req.query.billnumbers });
     return res.end();
 }
 
 
-exports.paymentSuccess = (req,res,next)=>{
+exports.paymentSuccess = (req, res, next) => {
     // console.log(":status = ", req.params.status);
     // console.log(":id = ", req.params.id);
     // console.log(":billnumbers = ", req.params.billnumbers);
