@@ -102,6 +102,7 @@ exports.single_activesub = (req,res,next)=>{
         SubscriptionPlan.findOne({"_id": new ObjectID(plan_id)})
             .exec()
             .then(data=>{
+                console.log('data in plan info',data)
                 resolve(data)
             })
             .catch(error=>{
@@ -116,7 +117,7 @@ exports.single_activesub = (req,res,next)=>{
         .sort({createdAt: -1})
         .exec()
         .then(data=>{
-            // console.log("data",data);
+            console.log("data",data);
             if(data){
                 getPlan();
                 async function getPlan(){
