@@ -6,7 +6,7 @@ const SubscriptionOrder = require('../models/subscriptionOrder');
 const SubscriptionPlan  = require('../models/subscriptionPlan');
 
 exports.submit_subscriptionOrder = (req,res,next)=>{     
-
+    console.log("Arrived at = ",new Date());
     SubscriptionPlan.find({_id : req.body.plan_id})
         .exec()
         .then(plan=>{
@@ -186,9 +186,7 @@ exports.list_subscriptionOrder = (req,res,next)=>{
 
 
 exports.paymentResponse = (req,res,next)=>{
-    console.log("status = ",req.query.status);
-    console.log("id = ",req.query.id);
-    console.log("billnumbers = ",req.query.billnumbers);
+    
     console.log("Entered paymentResponse url at: ", new Date());
 
     res.writeHead(301, { "Location": "/payment-success/"+req.query.status+"/"+req.query.id+"/"+req.query.billnumbers });
