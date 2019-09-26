@@ -13,7 +13,7 @@ exports.submit_subscriptionOrder = (req, res, next) => {
 
 
             SubscriptionOrder.find({
-                user_id: req.body.user._id,
+                user_id: req.body.user_id,
                 id: req.body.user.id,
                 billnumbers: req.body.user.billnumbers,
                 paymentId: req.body.user.paymentId,
