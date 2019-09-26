@@ -37,7 +37,7 @@ exports.chekinUser = (req, res, next) => {
                     .find({
                         user_id: req.body.user_id,
                         plan_id: activeSubOrder[0].plan_id,
-                        subcription_id  : activeSubOrder[0]._id,
+                        subcriptionorder_id  : activeSubOrder[0]._id,
                     })
                     .count()
                     .then(totCheckIns => {
@@ -45,16 +45,16 @@ exports.chekinUser = (req, res, next) => {
                         if(totCheckIns <= activeSubOrder[0].maxCheckIns) {
 
                             const seatBookingObj = new SeatBooking({
-                                _id             : new mongoose.Types.ObjectId(),
-                                plan_id         : activeSubOrder[0].plan_id,
-                                subcription_id  : activeSubOrder[0]._id,
-                                user_id         : req.body.user_id,
-                                workSpace_id    : req.body.workSpace_id,
-                                date            : currDateISO,
-                                bookAllSeats    : '',
-                                checkInTime     : new Date(),
-                                checkOutTime    : "",
-                                createAt        : new Date(),
+                                _id                    : new mongoose.Types.ObjectId(),
+                                plan_id                : activeSubOrder[0].plan_id,
+                                subcriptionorder_id    : activeSubOrder[0]._id,
+                                user_id                : req.body.user_id,
+                                workSpace_id           : req.body.workSpace_id,
+                                date                   : currDateISO,
+                                bookAllSeats           : '',
+                                checkInTime            : new Date(),
+                                checkOutTime           : "",
+                                createAt               : new Date(),
                             });
 
                             seatBookingObj
@@ -338,7 +338,6 @@ exports.availableSeats = (req, res, next) => {
                         date: currDateISO,
                         checkOutTime: null
                     })
-                    // .estimatedDocumentCount()
                     .exec()
                     .then(bookedSeats => {
                         console.log("Inside bookedSeats", bookedSeats);
@@ -349,16 +348,17 @@ exports.availableSeats = (req, res, next) => {
                                 availableSeats  : workspace.numberOfSeats - bookedSeats.length,
                                 userList        : [],
                             };
+                            console.log("returnData", returnData);
                             getData();
                             async function getData() {
                                 for (i = 0; i < bookedSeats.length; i++) {
                                     var userData = await getuserDetails(bookedSeats[i].user_id);
                                     returnData.userList.push({
-                                        "user_id": userData._id,
-                                        "workspace_id": bookedSeats[i].workSpace_id,
-                                        "checkInTime": bookedSeats[i].checkInTime,
-                                        "checkOutTime": bookedSeats[i].checkOutTime,
-                                        "userName": userData.profile.fullName,
+                                        "user_id"       : userData._id,
+                                        "workspace_id"  : bookedSeats[i].workSpace_id,
+                                        "checkInTime"   : bookedSeats[i].checkInTime,
+                                        "checkOutTime"  : bookedSeats[i].checkOutTime,
+                                        "userName"      : userData.profile.fullName,
                                     });
                                 }
                                 if (i >= bookedSeats.length) {
@@ -596,7 +596,8 @@ exports.validate_checkin = (req, res, next) => {
                 SeatBooking
                     .find({
                         user_id: req.params.user_id,
-                        plan_id: data[0].plan_id,
+                        // plan_id: data[0].plan_id,
+                        subcriptionorder_id  : data[0]._id
                     })
                     .then(totCheckIns => {
                         console.log("totCheckIns = ",totCheckIns.length);
@@ -674,7 +675,7 @@ exports.checkoutUser = (req, res, next) => {
                                     .find({
                                         user_id: req.body.user_id,
                                         plan_id: data[0].plan_id,
-                                        subcription_id  : data[0]._id,
+                                        
                                     })
                                     .then(totCheckIns => {
                                         console.log("data suborder => ",data);
