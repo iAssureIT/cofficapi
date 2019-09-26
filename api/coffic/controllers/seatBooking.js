@@ -25,6 +25,7 @@ exports.chekinUser = (req, res, next) => {
     console.log('selector', selector)
     SubscriptionOrder
         .find({ 
+                
                 "user_id" : req.body.user_id,
                 "endDate" : {$gte : new Date()},
                 "status" : "paid" ,
@@ -35,7 +36,8 @@ exports.chekinUser = (req, res, next) => {
                 SeatBooking
                     .find({
                         user_id: req.body.user_id,
-                        plan_id: activeSubOrder[0].plan_id
+                        plan_id: activeSubOrder[0].plan_id,
+                        subcription_id  : activeSubOrder[0]._id,
                     })
                     .count()
                     .then(totCheckIns => {
@@ -45,6 +47,7 @@ exports.chekinUser = (req, res, next) => {
                             const seatBookingObj = new SeatBooking({
                                 _id             : new mongoose.Types.ObjectId(),
                                 plan_id         : activeSubOrder[0].plan_id,
+                                subcription_id  : activeSubOrder[0]._id,
                                 user_id         : req.body.user_id,
                                 workSpace_id    : req.body.workSpace_id,
                                 date            : currDateISO,
@@ -671,8 +674,10 @@ exports.checkoutUser = (req, res, next) => {
                                     .find({
                                         user_id: req.body.user_id,
                                         plan_id: data[0].plan_id,
+                                        subcription_id  : data[0]._id,
                                     })
                                     .then(totCheckIns => {
+                                        console.log("data suborder => ",data);
                                         console.log("2 totCheckIns = ",totCheckIns.length);
                                         console.log("2 maxCheckIns = ",data[0].maxCheckIns);
                                         if (totCheckIns.length == data[0].maxCheckIns) {
