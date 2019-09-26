@@ -189,6 +189,7 @@ exports.paymentResponse = (req,res,next)=>{
     console.log("status = ",req.query.status);
     console.log("id = ",req.query.id);
     console.log("billnumbers = ",req.query.billnumbers);
+    console.log("Entered paymentResponse url at: ", new Date());
 
     res.writeHead(301, { "Location": "/payment-success/"+req.query.status+"/"+req.query.id+"/"+req.query.billnumbers });
     return res.end();
@@ -199,10 +200,13 @@ exports.paymentSuccess = (req,res,next)=>{
     // console.log(":status = ", req.params.status);
     // console.log(":id = ", req.params.id);
     // console.log(":billnumbers = ", req.params.billnumbers);
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    res.write('<div style="margin-top:200px;text-align:center;width:50%;margin-left:23%; padding: 30px; border: 1px solid #aaa;"><h1 style="color:#00aa00"> Congratulations !</h1><h3> Your Payment is Successful! <br/> </h3></div>');
-    res.status(200);
-    res.end();   
+
+    console.log("Entered paymentSuccess url at: ", new Date());
+
+    // res.writeHead(200, { 'Content-Type': 'text/html' });
+    // res.write('<div style="margin-top:200px;text-align:center;width:50%;margin-left:23%; padding: 30px; border: 1px solid #aaa;"><h1 style="color:#00aa00"> Congratulations !</h1><h3> Your Payment is Successful! <br/> </h3></div>');
+    // res.status(200);
+    // res.end();   
 }
 
 
