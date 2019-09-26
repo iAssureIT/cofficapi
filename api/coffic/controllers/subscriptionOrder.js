@@ -37,7 +37,7 @@ exports.submit_subscriptionOrder = (req, res, next) => {
                         if (month < 10 || month.length < 2) { month = '0' + month; }
                         currDate = year + "-" + month + "-" + day;
 
-                        var endDate = moment(currDate).add('days', parseInt(validityDays))
+                        var endDate = moment(currDate).add(parseInt(validityDays),'days');
                         const newSubscriptionOrder = new SubscriptionOrder({
                             _id: new mongoose.Types.ObjectId(),
                             plan_id: req.body.plan_id,
@@ -56,6 +56,7 @@ exports.submit_subscriptionOrder = (req, res, next) => {
                             .save()
                             .then(data => {
                                 if (data) {
+                                    console.log("subscription saved = ",data);
                                     res.status(200).json("New Subscription is made Successful");
                                 } else {
                                     res.status(400).json("New Subscription NOT Saved");
