@@ -123,6 +123,7 @@ exports.single_activesub = (req,res,next)=>{
                     var plan = []
                     for (i = 0; i < data.length; i++){
                         var planInfo = await getPlanInfo(data[i].plan_id)
+                        console.log('plan_info',planInfo)
                         plan.push({
                             planName    : planInfo.planName,
                             planPrice   : planInfo.price,
