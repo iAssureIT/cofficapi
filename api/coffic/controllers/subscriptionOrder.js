@@ -102,9 +102,23 @@ exports.single_activesub = (req,res,next)=>{
         .sort({createdAt: -1})
         .exec()
         .then(data=>{
-            console.log("data",data);
+            // console.log("data",data);
             if(data){
-                res.status(200).json(data);
+                getPlan();
+                async function getPlan(){
+                    var plan = []
+                    for (i = 0; i < data.length; i++){
+                        var planInfo = await getPlanInfo(data[i].plan_id)
+                        plan.push({
+                            planName    : planInfo.planName,
+                            planPrice   : planInfo.price,
+                            order       : data[i]
+                        })
+                    }
+                    if(i >= data.length){
+                        res.status(200).json(plan);
+                    }
+                }
             }else{
                 res.status(404).json('Not found');
             }
