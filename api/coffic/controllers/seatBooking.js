@@ -39,10 +39,9 @@ exports.chekinUser = (req, res, next) => {
                         plan_id: activeSubOrder[0].plan_id,
                         subcriptionorder_id  : activeSubOrder[0]._id,
                     })
-                    .count()
                     .then(totCheckIns => {
 
-                        if(totCheckIns <= activeSubOrder[0].maxCheckIns) {
+                        if(totCheckIns.length <= activeSubOrder[0].maxCheckIns) {
 
                             const seatBookingObj = new SeatBooking({
                                 _id                    : new mongoose.Types.ObjectId(),
@@ -61,10 +60,10 @@ exports.chekinUser = (req, res, next) => {
                                 .save()
                                 .then(data => {
                                     var message = "Booking Successful";
-                                    if (activeSubOrder[0].maxCheckIns == (totCheckIns + 1)) {
+                                    if (activeSubOrder[0].maxCheckIns == (totCheckIns.length + 1)) {
                                         SubscriptionOrder
                                             .update(
-                                                { subcriptionorder_id: activeSubOrder[0]._id },
+                                                { _id: new ObjectID(activeSubOrder[0]._id) },
                                                 { $set: { "status": "inactive" } }
                                             )
                                             .then(data => {
