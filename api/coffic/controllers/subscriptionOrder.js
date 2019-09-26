@@ -14,9 +14,9 @@ exports.submit_subscriptionOrder = (req, res, next) => {
 
             SubscriptionOrder.find({
                 user_id: req.body.user_id,
-                id: req.body.user.id,
-                billnumbers: req.body.user.billnumbers,
-                paymentId: req.body.user.paymentId,
+                id: req.body.id,
+                billnumbers: req.body.billnumbers,
+                paymentId: req.body.paymentId,
             })
                 .then(subscriptionOrders => {
                     if (subscriptionOrders.length == 0) {
