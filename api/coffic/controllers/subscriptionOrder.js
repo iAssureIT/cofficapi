@@ -14,16 +14,16 @@ exports.submit_subscriptionOrder = (req, res, next) => {
 
 
             SubscriptionOrder.find({
-                // user_id: req.body.user_id,
-                // id: req.body.id,
-                // billnumbers: req.body.billnumbers,
-                // paymentId: req.body.paymentId,
+                user_id    : req.body.user_id,
+                id         : req.body.id,
+                billnumbers: req.body.billnumbers,
+                paymentId  : req.body.paymentId,
             })
                 .then(subscriptionOrders => {
-                    // console.log("subscriptionOrders => ", subscriptionOrders);
-                    // console.log("subscriptionOrders length = ", subscriptionOrders.length);
+                    console.log("subscriptionOrders => ", subscriptionOrders);
+                    console.log("subscriptionOrders length = ", subscriptionOrders.length);
 
-                    // if (subscriptionOrders.length == 0) {
+                    if (subscriptionOrders.length == 0) {
                         const maxCheckIns = plan[0].maxCheckIns;
                         const validityDays = plan[0].validityDays;
                         var currDate = new Date();
@@ -68,7 +68,7 @@ exports.submit_subscriptionOrder = (req, res, next) => {
                                     error: err
                                 });
                             });
-                    // }
+                    }
 
                 })
                 .catch(err => {
