@@ -15,7 +15,7 @@ exports.dailyBeverage_Report = (req, res, next) => {
 		{
 			$match: {
 				"workSpace_id": req.params.workspace_ID,
-				// "date"			    : req.params.date
+				"orderedAt"	  : req.params.date
 
 			}
 		},
@@ -164,8 +164,7 @@ exports.dailyOrder_Report = (req, res, next) => {
 			{
 				$match: {
 					"workSpace_id": req.params.workspace_ID,
-					"date": new Date(req.params.date),
-
+					"orderedAt": req.params.date,
 				}
 			},
 			// {
