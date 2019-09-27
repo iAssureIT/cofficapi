@@ -58,7 +58,7 @@ exports.submit_subscriptionOrder = (req, res, next) => {
                             .then(data => {
                                 if (data) {
                                     console.log("subscription saved = ",data);
-                                    res.status(200).json("New Subscription is made Successful");
+                                    res.status(200).json({message : "New Subscription is made Successful",status : data.status});
                                 } else {
                                     res.status(400).json("New Subscription NOT Saved");
                                 }
