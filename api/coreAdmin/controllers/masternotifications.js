@@ -169,12 +169,14 @@ exports.send_notifications = (req, res, next) => {
         } else {
             // getProfileByUserId();
             userProfile = await getProfileByUserId(req.body.toUserId);
-            console.log("userProfile====>",userProfile); 
+            // console.log("userProfile====>",userProfile); 
             if (userProfile && userProfile !== null & userProfile !== "") {
                 toEmail = userProfile.emails[0].address;
                 toMobile = userProfile.profile.mobileNumber;
             }
         }
+        console.log("userProfile====>",userProfile); 
+
         // getTemplateDetails();
         const templateDetailsEmail = await getTemplateDetailsEmail(req.body.templateName, req.body.variables);
         console.log("templateDetailsEmail====>",templateDetailsEmail); 
