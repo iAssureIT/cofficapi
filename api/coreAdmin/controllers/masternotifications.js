@@ -169,6 +169,7 @@ exports.send_notifications = (req, res, next) => {
         } else {
             // getProfileByUserId();
             userProfile = await getProfileByUserId(req.body.toUserId);
+            console.log("userProfile====>",userProfile); 
             if (userProfile && userProfile !== null & userProfile !== "") {
                 toEmail = userProfile.emails[0].address;
                 toMobile = userProfile.profile.mobileNumber;
@@ -176,7 +177,11 @@ exports.send_notifications = (req, res, next) => {
         }
         // getTemplateDetails();
         const templateDetailsEmail = await getTemplateDetailsEmail(req.body.templateName, req.body.variables);
+        console.log("templateDetailsEmail====>",templateDetailsEmail); 
+
         const templateDetailsSMS = await getTemplateDetailsSMS(req.body.templateName, req.body.variables);
+        console.log("templateDetailsSMS====>",templateDetailsSMS); 
+
         var mailOptions = {
             from: '"Coffic Admin" <' + senderEmail + '>', // sender address
             to: toEmail, // list of receiver
