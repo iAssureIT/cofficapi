@@ -85,10 +85,10 @@ exports.update_notifications = (req, res, next) => {
         { _id: req.params.notificationmasterID },
         {
             $set: {
-                "templateType": req.body.templateType,
-                "templateName": req.body.templateName,
-                "subject": req.body.subject,
-                "content": req.body.content,
+                "templateType"  : req.body.templateType,
+                "templateName"  : req.body.templateName,
+                "subject"       : req.body.subject,
+                "content"       : req.body.content,
             }
         }
     )
@@ -168,6 +168,8 @@ exports.send_notifications = (req, res, next) => {
             subject: templateDetailsEmail.subject, // Subject line
             html: templateDetailsEmail.content, // html body
         };
+        console.log("mailOptions====>>>",mailOptions);
+
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 res.status(500).json({
