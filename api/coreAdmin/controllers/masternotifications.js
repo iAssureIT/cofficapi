@@ -135,17 +135,28 @@ exports.update_notifications = (req, res, next) => {
 
 //send Mail Notification -Rushikesh Salunkhe
 exports.send_notifications = (req, res, next) => {
-    const senderEmail = 'appstore@coffic.com';
-    const senderEmailPwd = 'Coffic@123';
+    console.log("req====>>>",req.body);
 
+    // const senderEmail = 'appstore@coffic.com';
+    // const senderEmailPwd = 'Coffic@123';
+    console.log('send mail');
     let transporter = nodeMailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 587,
-        auth: {
-            user: senderEmail,
-            pass: senderEmailPwd
-        }
+        service : 'gmail',
+        host    : 'smtp.gmail.com',
+        port    : 587,
+        auth    : {
+                   user: 'Appstore@coffic.com',
+                   pass: 'Coffic@123'
+                  }
     });
+    // let transporter = nodeMailer.createTransport({
+    //     host: 'smtp.gmail.com',
+    //     port: 587,
+    //     auth: {
+    //         user: senderEmail,
+    //         pass: senderEmailPwd
+    //     }
+    // });
     main();
     async function main() {
         var userProfile = {};
