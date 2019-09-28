@@ -137,26 +137,26 @@ exports.update_notifications = (req, res, next) => {
 exports.send_notifications = (req, res, next) => {
     console.log("Inside api req====>>>",req.body);
 
-    // const senderEmail = 'appstore@coffic.com';
-    // const senderEmailPwd = 'Coffic@123';
-    console.log('send mail');
-    let transporter = nodeMailer.createTransport({
-        service : 'gmail',
-        host    : 'smtp.gmail.com',
-        port    : 587,
-        auth    : {
-                   user: 'Appstore@coffic.com',
-                   pass: 'Coffic@123'
-                  }
-    });
+    const senderEmail = 'appstore@coffic.com';
+    const senderEmailPwd = 'Coffic@123';
+    // console.log('send mail');
     // let transporter = nodeMailer.createTransport({
-    //     host: 'smtp.gmail.com',
-    //     port: 587,
-    //     auth: {
-    //         user: senderEmail,
-    //         pass: senderEmailPwd
-    //     }
+    //     service : 'gmail',
+    //     host    : 'smtp.gmail.com',
+    //     port    : 587,
+    //     auth    : {
+    //                user: 'Appstore@coffic.com',
+    //                pass: 'Coffic@123'
+    //               }
     // });
+    let transporter = nodeMailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 587,
+        auth: {
+            user: senderEmail,
+            pass: senderEmailPwd
+        }
+    });
     main();
     console.log("Outside Main()");
 
@@ -169,21 +169,15 @@ exports.send_notifications = (req, res, next) => {
         } else {
             // getProfileByUserId();
             userProfile = await getProfileByUserId(req.body.toUserId);
-            // console.log("userProfile====>",userProfile); 
+            console.log("userProfile====>",userProfile); 
             if (userProfile && userProfile !== null & userProfile !== "") {
                 toEmail = userProfile.emails[0].address;
                 toMobile = userProfile.profile.mobileNumber;
             }
         }
-        console.log("userProfile====>",userProfile); 
-
         // getTemplateDetails();
         const templateDetailsEmail = await getTemplateDetailsEmail(req.body.templateName, req.body.variables);
-        console.log("templateDetailsEmail====>",templateDetailsEmail); 
-
         const templateDetailsSMS = await getTemplateDetailsSMS(req.body.templateName, req.body.variables);
-        console.log("templateDetailsSMS====>",templateDetailsSMS); 
-
         var mailOptions = {
             from: '"Coffic Admin" <' + senderEmail + '>', // sender address
             to: toEmail, // list of receiver
@@ -303,14 +297,11 @@ function getTemplateDetailsEmail(templateName, variables) {
     });
 }
 function getTemplateDetailsSMS(templateName, variables) {
-    console.log("Inside getTemplateSMS = ",templateName);
     return new Promise(function (resolve, reject) {
         Masternotifications
             .findOne({ "templateName": templateName, "templateType": 'SMS' })
             .exec()
             .then(NotificationData => {
-               console.log("Inside then SMS",NotificationData);
-
                 if (NotificationData) {
                     var content = NotificationData.content;
                     var wordsplit = [];
@@ -328,7 +319,6 @@ function getTemplateDetailsSMS(templateName, variables) {
                         }
                     }
                     var numOfVar = Object.keys(variables).length;
-                    console.log("numOfVar==>",numOfVar);
 
                     for (i = 0; i < numOfVar; i++) {
                         // var tokVar = tokens[i].substr(1,tokens[i].length-2);
@@ -340,7 +330,6 @@ function getTemplateDetailsSMS(templateName, variables) {
                         content: content,
                         subject: NotificationData.subject
                     }
-                    console.log("before Resolve SMS = ",tData);
                     resolve(tData);
                 }//NotificationData
 
