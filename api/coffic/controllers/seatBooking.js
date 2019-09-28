@@ -38,8 +38,10 @@ exports.chekinUser = (req, res, next) => {
                         user_id: req.body.user_id,
                         plan_id: activeSubOrder[0].plan_id,
                         subcriptionorder_id  : activeSubOrder[0]._id,
+
                     })
                     .then(totCheckIns => {
+
                         console.log("totCheckIns====>",totCheckIns.length);
                         console.log("activeSubOrder====>",activeSubOrder);
                         if(totCheckIns.length <= activeSubOrder[0].maxCheckIns) {
@@ -55,6 +57,7 @@ exports.chekinUser = (req, res, next) => {
                                 checkInTime            : new Date(),
                                 checkOutTime           : "",
                                 createAt               : new Date(),
+
                             });
 
                             seatBookingObj
@@ -65,6 +68,7 @@ exports.chekinUser = (req, res, next) => {
                                         SubscriptionOrder
                                             .update(
                                                 { _id: new ObjectID(activeSubOrder[0]._id) },
+
                                                 { $set: { "status": "inactive" } }
                                             )
                                             .then(data => {
@@ -303,10 +307,6 @@ exports.dailyBeverage_Report = (req, res, next) => {
         })
 
 };
-
-
-
-
 exports.availableSeats = (req, res, next) => {
     var currDate = new Date();
     var day = currDate.getDate();
@@ -329,9 +329,10 @@ exports.availableSeats = (req, res, next) => {
                     bookedSeats     : workspace.numberOfSeats,
                     availableSeats  : 0,
                     userList        : [],
+
                 };
                 res.status(200).json(returnData);
-            }else{
+            } else {
                 SeatBooking
                     .find({
                         workSpace_id: req.params.workspace_id,
@@ -347,6 +348,7 @@ exports.availableSeats = (req, res, next) => {
                                 bookedSeats     : bookedSeats.length,
                                 availableSeats  : workspace.numberOfSeats - bookedSeats.length,
                                 userList        : [],
+
                             };
                             console.log("returnData", returnData);
                             getData();
@@ -359,6 +361,7 @@ exports.availableSeats = (req, res, next) => {
                                         "checkInTime"   : bookedSeats[i].checkInTime,
                                         "checkOutTime"  : bookedSeats[i].checkOutTime,
                                         "userName"      : userData.profile.fullName,
+
                                     });
                                 }
                                 if (i >= bookedSeats.length) {
@@ -540,8 +543,6 @@ exports.delete_seatBooking = (req, res, next) => {
         });
 };
 
-
-
 // exports.validate_checkin = (req, res, next) => {
 //     SubscriptionOrder
 //         .find({
@@ -583,6 +584,7 @@ exports.delete_seatBooking = (req, res, next) => {
 //             });
 //         });
 // }
+
 exports.validate_checkin = (req, res, next) => {
     SubscriptionOrder
         .find({
@@ -591,7 +593,6 @@ exports.validate_checkin = (req, res, next) => {
             "status": "paid",
         })
         .then(data => {
-            console.log("data ",data);
             if (data.length > 0) {
                 SeatBooking
                     .find({
@@ -606,6 +607,7 @@ exports.validate_checkin = (req, res, next) => {
                             res.status(200).json({message:"User Subscription Plan is Valid for " + (data[0].maxCheckIns - totCheckIns.length) + " more times",available:data[0].maxCheckIns - totCheckIns.length});
                         }else{
                             res.status(200).json("User Consumed All Allowable Checkins");
+
                         }
                     })
                     .catch(err => {
@@ -642,8 +644,6 @@ exports.checkoutUser = (req, res, next) => {
 
     var currDateISO = year + "-" + month + "-" + day;
     if (currDateISO) {
-
-
         var selector = {
             "user_id": req.body.user_id,
             "workSpace_id": req.body.workspace_id,
@@ -651,6 +651,7 @@ exports.checkoutUser = (req, res, next) => {
             "date": currDateISO,
         };
         SeatBooking.updateOne(
+
                 selector,
                 {
                     $set: {
@@ -720,6 +721,8 @@ exports.checkoutUser = (req, res, next) => {
                             });
                         });
 
+                
+
                     res.status(200).json("Checkout is Successful");
                 } else {
                     res.status(200).json({
@@ -735,7 +738,6 @@ exports.checkoutUser = (req, res, next) => {
                     error: err
                 });
             });
-
 
     }
 };
