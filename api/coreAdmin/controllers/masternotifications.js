@@ -135,7 +135,7 @@ exports.update_notifications = (req, res, next) => {
 
 //send Mail Notification -Rushikesh Salunkhe
 exports.send_notifications = (req, res, next) => {
-    console.log("req====>>>",req.body);
+    console.log("Inside api req====>>>",req.body);
 
     // const senderEmail = 'appstore@coffic.com';
     // const senderEmailPwd = 'Coffic@123';
@@ -158,7 +158,11 @@ exports.send_notifications = (req, res, next) => {
     //     }
     // });
     main();
+    console.log("Outside Main()");
+
     async function main() {
+
+        console.log("Inside Main()");
         var userProfile = {};
         if (req.body.toUserId === "admin") {
             toEmail = "appstore@coffic.com";
@@ -177,7 +181,7 @@ exports.send_notifications = (req, res, next) => {
             from: '"Coffic Admin" <' + senderEmail + '>', // sender address
             to: toEmail, // list of receiver
             subject: templateDetailsEmail.subject, // Subject line
-            html: templateDetailsEmail.content, // html body
+            html: "<pre>" + templateDetailsEmail.content + "</pre>", // html body
         };
         console.log("mailOptions====>>>",mailOptions);
 
