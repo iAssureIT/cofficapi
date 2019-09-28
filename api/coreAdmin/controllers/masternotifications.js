@@ -303,11 +303,14 @@ function getTemplateDetailsEmail(templateName, variables) {
     });
 }
 function getTemplateDetailsSMS(templateName, variables) {
+    console.log("Inside getTemplateSMS = ",templateName);
     return new Promise(function (resolve, reject) {
         Masternotifications
             .findOne({ "templateName": templateName, "templateType": 'SMS' })
             .exec()
             .then(NotificationData => {
+               console.log("Inside then SMS",NotificationData);
+
                 if (NotificationData) {
                     var content = NotificationData.content;
                     var wordsplit = [];
@@ -325,6 +328,7 @@ function getTemplateDetailsSMS(templateName, variables) {
                         }
                     }
                     var numOfVar = Object.keys(variables).length;
+                    console.log("numOfVar==>",numOfVar);
 
                     for (i = 0; i < numOfVar; i++) {
                         // var tokVar = tokens[i].substr(1,tokens[i].length-2);
@@ -336,6 +340,7 @@ function getTemplateDetailsSMS(templateName, variables) {
                         content: content,
                         subject: NotificationData.subject
                     }
+                    console.log("before Resolve SMS = ",tData);
                     resolve(tData);
                 }//NotificationData
 
