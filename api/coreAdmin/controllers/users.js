@@ -1586,16 +1586,21 @@ exports.user_otpverification_forgotpassword = (req, res, next) => {
 
 
 				// console.log('Plivo Client = ',forgotuserotp.mobileNumber);
-				const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
-				// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');
-				const sourceMobile = "+919923393733";
+				// const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+				const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');
+				const sourceMobile = "+919983196932";
+				// const sourceMobile = "+919923393733";
 				var text = "Dear User," + '\n' + "Your account verification code is " + forgotuserotp.mobileOTP + "\nRegards,\nTeam Coffic"
+				console.log('client =========>>>', client);
+				console.log('text =========>>>', text);
 
 				client.messages.create(
 					src = sourceMobile,
 					dst = req.body.mobileNumber,
 					text = text
 				).then((result) => {
+					console.log('result =========>>>', result);
+
 					// console.log("src = ",src," | DST = ", dst, " | result = ", result);
 					// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 					return res.status(200).json({
