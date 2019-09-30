@@ -172,12 +172,16 @@ exports.send_notifications = (req, res, next) => {
             console.log("userProfile====>",userProfile); 
             if (userProfile && userProfile !== null & userProfile !== "") {
                 toEmail = userProfile.emails[0].address;
-                toMobile = userProfile.profile.mobileNumber;
+                toMobile = userProfile.mobileNumber;
             }
         }
         // getTemplateDetails();
         const templateDetailsEmail = await getTemplateDetailsEmail(req.body.templateName, req.body.variables);
+        console.log("templateDetailsEmail====>",templateDetailsEmail); 
+
         const templateDetailsSMS = await getTemplateDetailsSMS(req.body.templateName, req.body.variables);
+        console.log("templateDetailsSMS====>",templateDetailsSMS); 
+
         var mailOptions = {
             from: '"Coffic Admin" <' + senderEmail + '>', // sender address
             to: toEmail, // list of receiver
@@ -193,7 +197,10 @@ exports.send_notifications = (req, res, next) => {
                 });
             }
             if (info) {
+        console.log("Mail Sent Successfully====>>>",info);
+
                 res.status(200).json({
+                    
                     message: "Mail Sent Successfully",
                 });
             }
@@ -212,6 +219,8 @@ exports.send_notifications = (req, res, next) => {
             dst = toMobile,
             text = text
         ).then((result) => {
+        console.log("SMS Sent Successfully====>>>",result);
+
             // return res.status(200).json("OTP "+OTP+" Sent Successfully ");
             return res.status(200).json({
                 "message": 'SMS-SEND-SUCCESSFULLY',
