@@ -193,10 +193,10 @@ exports.user_otpverification = (req, res, next) => {
 		// 		error: err
 		// 	});
 		// });    
-		// const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
-		const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
-		// const sourceMobile = "+919923393733";
-		const sourceMobile = "+919983196932";
+		const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+		// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
+		const sourceMobile = "+919923393733";
+		// const sourceMobile = "+919983196932";
 		var text = "Dear " + newUser.firstName + ',' + '\n' + "Your account verification code is " + newUser.mobileOTP + "\nRegards,\nTeam Coffic"
 			    console.log('client =========>>>', client);
 				console.log('text =========>>>', text);
