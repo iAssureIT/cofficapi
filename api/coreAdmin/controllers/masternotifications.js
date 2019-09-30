@@ -213,7 +213,7 @@ exports.send_notifications = (req, res, next) => {
         var text = templateDetailsSMS.content.replace(/<[^>]+>/g, '');
         // htmlString.replace(/<[^>]+>/g, '');
 
-        // console.log("text=========+>",text);
+        console.log("text=========+>",text);
         client.messages.create(
             src = sourceMobile,
             dst = toMobile,

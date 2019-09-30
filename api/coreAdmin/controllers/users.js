@@ -1677,6 +1677,8 @@ exports.user_otpverification_forgotpassword = (req, res, next) => {
 				const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');
 				const sourceMobile = "+919983196932";
 				var text = "Dear User," + '\n' + "Your account verification code is " + forgotuserotp.mobileOTP + "\nRegards,\nTeam Coffic"
+				console.log("text=========+>",text);
+				console.log("client=========+>",client);
 
 				client.messages.create(
 					src = sourceMobile,
