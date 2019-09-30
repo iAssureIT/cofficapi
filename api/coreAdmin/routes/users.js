@@ -12,7 +12,7 @@ router.post('/post', UserController.user_signupadmin);
 
 router.post('/post/mobSignup',UserController.user_signupmobile);
 
-router.post('/post/googlesignup',UserController.user_signupgoogle);
+// router.post('/post/googlesignup',UserController.user_signupgoogle);
 
 router.post('/post/admin',UserController.user_loginwithadmin);
 
