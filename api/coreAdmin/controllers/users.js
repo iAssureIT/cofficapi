@@ -205,6 +205,8 @@ exports.user_otpverification = (req, res, next) => {
 			dst = req.body.mobileNumber,
 			text = text
 		).then((result) => {
+			console.log('result =========>>>', result);
+
 			// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 			return res.status(200).json({
 				"message": 'OTP-SEND-SUCCESSFULLY',
@@ -212,6 +214,8 @@ exports.user_otpverification = (req, res, next) => {
 			});
 		})
 			.catch(otpError => {
+       			console.log('otpError =========>>>', otpError);
+
 				return res.status(501).json({
 					message: "Some Error Occurred in OTP Send Function",
 					error: otpError
