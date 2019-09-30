@@ -197,6 +197,8 @@ exports.send_notifications = (req, res, next) => {
                 });
             }
             if (info) {
+        console.log("info====>>>",info);
+
                 res.status(200).json({
                     
                     message: "Mail Sent Successfully",
