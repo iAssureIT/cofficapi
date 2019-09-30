@@ -197,8 +197,6 @@ exports.send_notifications = (req, res, next) => {
                 });
             }
             if (info) {
-        console.log("Mail Sent Successfully====>>>",info);
-
                 res.status(200).json({
                     
                     message: "Mail Sent Successfully",
@@ -206,21 +204,19 @@ exports.send_notifications = (req, res, next) => {
             }
             res.render('index');
         });
-        // const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
-        const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
+        const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+        // const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
 
-        const sourceMobile = "+919983196932";
+        const sourceMobile = "+919923393733";
         var text = templateDetailsSMS.content.replace(/<[^>]+>/g, '');
         // htmlString.replace(/<[^>]+>/g, '');
 
-        console.log("text=========+>",text);
+        // console.log("text=========+>",text);
         client.messages.create(
             src = sourceMobile,
             dst = toMobile,
             text = text
         ).then((result) => {
-        console.log("SMS Sent Successfully====>>>",result);
-
             // return res.status(200).json("OTP "+OTP+" Sent Successfully ");
             return res.status(200).json({
                 "message": 'SMS-SEND-SUCCESSFULLY',
