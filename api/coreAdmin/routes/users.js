@@ -22,7 +22,7 @@ router.post('/post/loginwithvendor',UserController.user_loginwithvendor);
 
 router.post('/post/loginwithuser',UserController.user_loginwithuser);
 
-router.post('/post/loginwithgoogle',UserController.user_loginwithgoogle); 
+// router.post('/post/loginwithgoogle',UserController.user_loginwithgoogle); 
 
 router.post('/post/forgot-pwd',UserController.forgot_pwd); 
 
