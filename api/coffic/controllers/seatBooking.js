@@ -767,4 +767,3 @@ exports.checkoutUser = (req, res, next) => {
 
     }
 };
-
