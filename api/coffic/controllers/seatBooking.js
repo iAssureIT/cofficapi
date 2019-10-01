@@ -331,7 +331,33 @@ exports.availableSeats = (req, res, next) => {
                     userList        : [],
 
                 };
-                res.status(200).json(returnData);
+                SeatBooking
+                    .find({
+                        workSpace_id: req.params.workspace_id,
+                        date: currDateISO,
+                        checkOutTime: null
+                    })
+                    .exec()
+                    .then(bookedSeats => {
+                        // console.log("Inside bookedSeats", bookedSeats);
+                        getData();
+                        async function getData() {
+                            for (i = 0; i < bookedSeats.length; i++) {
+                                var userData = await getuserDetails(bookedSeats[i].user_id);
+                                returnData.userList.push({
+                                    "user_id"       : userData._id,
+                                    "workspace_id"  : bookedSeats[i].workSpace_id,
+                                    "checkInTime"   : bookedSeats[i].checkInTime,
+                                    "checkOutTime"  : bookedSeats[i].checkOutTime,
+                                    "userName"      : userData.profile.fullName,
+
+                                });
+                            }
+                            if (i >= bookedSeats.length) {
+                                res.status(200).json(returnData);
+                            }
+                        }
+                    })
             } else {
                 SeatBooking
                     .find({
@@ -350,7 +376,7 @@ exports.availableSeats = (req, res, next) => {
                                 userList        : [],
 
                             };
-                            console.log("returnData", returnData);
+                            // console.log("returnData", returnData);
                             getData();
                             async function getData() {
                                 for (i = 0; i < bookedSeats.length; i++) {
