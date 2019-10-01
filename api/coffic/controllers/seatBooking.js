@@ -25,7 +25,7 @@ exports.chekinUser = (req, res, next) => {
     console.log('selector', selector)
     SubscriptionOrder
         .find({ 
-                
+        
                 "user_id" : req.body.user_id,
                 "endDate" : {$gte : new Date()},
                 "status" : "paid" ,
