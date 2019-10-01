@@ -178,6 +178,7 @@ exports.list_workspace = (req,res,next)=>{
     .sort({"createdAt":-1})
     .exec()
     .then(data=>{
+        console.log('data',data)
         if(data.length > 0 ){
             console.log('center',req.params.center)
             getData();
