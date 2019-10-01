@@ -153,7 +153,7 @@ function getlatlongradious(location,center,range){
     var kx = Math.cos(Math.PI * location.latitude/180.0) * ky;
     var dx = Math.abs(center.longitude - location.longitude) * kx;
     var dy = Math.abs(center.latitude - location.latitude) * ky;
-    return Math.sqrt(dx * dx + dy * dy) <= km
+    return Math.sqrt(dx * dx + dy * dy) <= range
 }
 exports.list_workspace = (req,res,next)=>{
     WorkspaceDetails
@@ -163,7 +163,7 @@ exports.list_workspace = (req,res,next)=>{
     .then(data=>{
         console.log('data=======>>>>',data)
         if(data.length > 0 ){
-            console.log('center',req.params.center)
+            console.log('center',req.body.center)
             getData();
             async function getData(){
             var returndata= [];
