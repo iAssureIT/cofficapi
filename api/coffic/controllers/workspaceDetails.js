@@ -147,23 +147,6 @@ exports.id_cafeAdmin = (req, res, next) => {
 //     });
 // }
 
-function getlatlongradious() {
-    return new Promise(function (resolve, reject) {
-        WorkspaceDetails
-            .findOne({ "_id": toUserId })
-            .exec()
-            .then(data => {
-                resolve(data);
-            })
-            .catch(err => {
-                console.log(err);
-                res.status(500).json({
-                    error: err
-                });
-            });
-
-    });
-}
 
 function getlatlongradious(location,center,range){
     var ky = 40000/360;
@@ -178,7 +161,7 @@ exports.list_workspace = (req,res,next)=>{
     .sort({"createdAt":-1})
     .exec()
     .then(data=>{
-        console.log('data',data)
+        console.log('data=======>>>>',data)
         if(data.length > 0 ){
             console.log('center',req.params.center)
             getData();
