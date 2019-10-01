@@ -157,7 +157,7 @@ function getlatlongradious(location,center,range){
 }
 exports.list_workspace = (req,res,next)=>{
     WorkspaceDetails
-
+    .find()
     .sort({"createdAt":-1})
     .exec()
     .then(data=>{
