@@ -139,16 +139,6 @@ exports.send_notifications = (req, res, next) => {
 
     const senderEmail = 'appstore@coffic.com';
     const senderEmailPwd = 'Coffic@123';
-    // console.log('send mail');
-    // let transporter = nodeMailer.createTransport({
-    //     service : 'gmail',
-    //     host    : 'smtp.gmail.com',
-    //     port    : 587,
-    //     auth    : {
-    //                user: 'Appstore@coffic.com',
-    //                pass: 'Coffic@123'
-    //               }
-    // });
     let transporter = nodeMailer.createTransport({
         host: 'smtp.gmail.com',
         port: 587,
@@ -162,7 +152,7 @@ exports.send_notifications = (req, res, next) => {
 
     async function main() {
 
-        console.log("Inside Main()");
+        console.log("Inside Main()",req.body.toUserId);
         var userProfile = {};
         if (req.body.toUserId === "admin") {
             toEmail = "appstore@coffic.com";
