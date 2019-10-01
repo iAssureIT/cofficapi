@@ -134,7 +134,60 @@ exports.update_notifications = (req, res, next) => {
 
 
 //send Mail Notification -Rushikesh Salunkhe
+// exports.send_notifications = (req, res, next) => {
+//     const senderEmail = 'appstore@coffic.com';
+//     const senderEmailPwd = 'Coffic@123';
+//     let transporter = nodeMailer.createTransport({
+//         host: 'smtp.gmail.com',
+//         port: 587,
+//         auth: {
+//             user: senderEmail,
+//             pass: senderEmailPwd
+//         }
+//     });
+//     main();
+//     async function main(){
+//         const templateDetailsEmail = await getTemplateDetailsEmail(req.body.templateName, req.body.variables);
+//         const templateDetailsSMS = await getTemplateDetailsSMS(req.body.templateName, req.body.variables);    
+//     }
+//     var toEmail = "";
+//     var userProfile = {};
+//     if (req.body.toUserId === "admin") {
+//         toEmail = "appstore@coffic.com";
+//     } else {
+//         // getProfileByUserId();
+//         userProfile = await getProfileByUserId(req.body.toUserId);
+//         console.log("userProfile====>",userProfile); 
+//         if (userProfile && userProfile !== null & userProfile !== "") {
+//             toEmail = userProfile.emails[0].address;
+//             toMobile = userProfile.mobileNumber;
+//         }
+//     }
+//     if(toEmail != ""){
+//         var mailOptions = {
+//             from: '"Coffic Admin" <' + senderEmail + '>', // sender address
+//             to: toEmail, // list of receiver
+//             subject: templateDetailsEmail.subject, // Subject line
+//             html: "<pre>" + templateDetailsEmail.content + "</pre>", // html body
+//         };
+//         transporter.sendMail(mailOptions, (error, info) => {
+//             if (error) {
+//                 res.status(500).json({
+//                     message: "Send Email Failed",
+//                 });
+//             }
+//             if (info) {
+//                 res.status(200).json({
+//                     message: "Mail Sent Successfully",
+//                 });
+//             }
+//             res.render('index');
+//         });
+//     }
+// }
 exports.send_notifications = (req, res, next) => {
+    console.log("Inside api req====>>>",req.body);
+
     const senderEmail = 'appstore@coffic.com';
     const senderEmailPwd = 'Coffic@123';
     let transporter = nodeMailer.createTransport({
@@ -146,30 +199,39 @@ exports.send_notifications = (req, res, next) => {
         }
     });
     main();
-    async function main(){
-        const templateDetailsEmail = await getTemplateDetailsEmail(req.body.templateName, req.body.variables);
-        const templateDetailsSMS = await getTemplateDetailsSMS(req.body.templateName, req.body.variables);    
-    }
-    var toEmail = "";
-    var userProfile = {};
-    if (req.body.toUserId === "admin") {
-        toEmail = "appstore@coffic.com";
-    } else {
-        // getProfileByUserId();
-        userProfile = await getProfileByUserId(req.body.toUserId);
-        console.log("userProfile====>",userProfile); 
-        if (userProfile && userProfile !== null & userProfile !== "") {
-            toEmail = userProfile.emails[0].address;
-            toMobile = userProfile.mobileNumber;
+    console.log("Outside Main()");
+
+    async function main() {
+
+        console.log("Inside Main()",req.body.toUserId);
+        var toEmail = "";
+        var userProfile = {};
+        if (req.body.toUserId === "admin") {
+            toEmail = "appstore@coffic.com";
+        } else {
+            // getProfileByUserId();
+            userProfile = await getProfileByUserId(req.body.toUserId);
+            console.log("userProfile====>",userProfile); 
+            if (userProfile && userProfile !== null & userProfile !== "") {
+                toEmail = userProfile.emails[0].address;
+                toMobile = userProfile.mobileNumber;
+            }
         }
-    }
-    if(toEmail != ""){
+        // getTemplateDetails();
+        const templateDetailsEmail = await getTemplateDetailsEmail(req.body.templateName, req.body.variables);
+        console.log("templateDetailsEmail====>",templateDetailsEmail); 
+
+        const templateDetailsSMS = await getTemplateDetailsSMS(req.body.templateName, req.body.variables);
+        console.log("templateDetailsSMS====>",templateDetailsSMS); 
+
         var mailOptions = {
             from: '"Coffic Admin" <' + senderEmail + '>', // sender address
             to: toEmail, // list of receiver
             subject: templateDetailsEmail.subject, // Subject line
             html: "<pre>" + templateDetailsEmail.content + "</pre>", // html body
         };
+        console.log("mailOptions====>>>",mailOptions);
+
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 res.status(500).json({
@@ -177,13 +239,43 @@ exports.send_notifications = (req, res, next) => {
                 });
             }
             if (info) {
+        console.log("info====>>>",info);
+
                 res.status(200).json({
+                    
                     message: "Mail Sent Successfully",
                 });
             }
             res.render('index');
         });
+        const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+        // const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
+
+        const sourceMobile = "+919923393733";
+        var text = templateDetailsSMS.content.replace(/<[^>]+>/g, '');
+        // htmlString.replace(/<[^>]+>/g, '');
+
+        // console.log("text=========+>",text);
+        client.messages.create(
+            src = sourceMobile,
+            dst = toMobile,
+            text = text
+        ).then((result) => {
+            // return res.status(200).json("OTP "+OTP+" Sent Successfully ");
+            return res.status(200).json({
+                "message": 'SMS-SEND-SUCCESSFULLY',
+
+            });
+        })
+            .catch(otpError => {
+                return res.status(501).json({
+                    message: "Some Error Occurred in SMS Send Function",
+                    error: otpError
+                });
+            });
+
     }
+
 }
 
 
@@ -218,7 +310,6 @@ function getTemplateDetailsEmail(templateName, variables) {
                     if (content.indexOf('[') > -1) {
                         wordsplit = content.split('[');
                     }
-
                     var tokens = [];
                     var n = 0;
                     for (i = 0; i < wordsplit.length; i++) {
