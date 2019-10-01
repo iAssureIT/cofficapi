@@ -153,6 +153,7 @@ exports.send_notifications = (req, res, next) => {
     async function main() {
 
         console.log("Inside Main()",req.body.toUserId);
+        var toEmail = "";
         var userProfile = {};
         if (req.body.toUserId === "admin") {
             toEmail = "appstore@coffic.com";
