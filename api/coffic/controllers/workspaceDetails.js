@@ -91,17 +91,101 @@ exports.id_cafeAdmin = (req, res, next) => {
         });
 
 }
+// exports.list_workspace = (req,res,next)=>{
+//     WorkspaceDetails
+//     .find()
+//     .sort({"createdAt":-1})
+//     .exec()
+//     .then(data=>{
+//         if(data.length > 0 ){
+//             getData();
+//             async function getData(){
+//             var returndata= [];
+//             for(k = 0 ; k < data.length ; k++){
+//              var seatData = await availableSeats(data[k]._id);
+//               returndata.push({
+//                 "workspace_id"    : data[k]._id,
+//                 "nameOfCafe"      : data[k].nameOfCafe,
+//                 // "address"         : data[k].address,
+//                 // "landmark"        : data[k].landmark,
+//                 // "area"            : data[k].area,
+//                 // "city"            : data[k].city,
+//                 // "state"           : data[k].state,
+//                 // "country"         : data[k].country,
+//                 // "pin"             : data[k].pin,
+//                 "location"        : data[k].location,
+//                 "numberOfSeats"   : data[k].numberOfSeats,
+//                 // "name"            : data[k].name,
+//                 // "email"           : data[k].email,
+//                 // "facilities"      : data[k].facilities,
+//                 // "cost"            : data[k].cost,
+//                 "openingtime"     : data[k].openingtime,
+//                 "closingtime"     : data[k].closingtime,
+//                 "logo"            : data[k].logo,
+//                 "banner"          : data[k].banner,
+//                 "workspaceImages" : data[k].workspaceImages,
+//                 "seatData"        : seatData,
+//                 // "cafeAdmin"       : data[k].cafeAdmin,
+//                 // "bankDetails"     : data[k].bankDetails,
+                
+//               })
+//              }
+//              if(k >= data.length){
+//                 res.status(200).json(returndata);
+//              }
+//         }
+//         }else{
+//             res.status(200).json({message : "Data not found"});
+//         }
+        
+//     })
+//     .catch(err =>{
+//         console.log(err);
+//         res.status(500).json({
+//             error: err
+//         });
+//     });
+// }
+
+function getlatlongradious() {
+    return new Promise(function (resolve, reject) {
+        WorkspaceDetails
+            .findOne({ "_id": toUserId })
+            .exec()
+            .then(data => {
+                resolve(data);
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    error: err
+                });
+            });
+
+    });
+}
+
+function getlatlongradious(location,center,range){
+    var ky = 40000/360;
+    var kx = Math.cos(Math.PI * location.latitude/180.0) * ky;
+    var dx = Math.abs(center.longitude - location.longitude) * kx;
+    var dy = Math.abs(center.latitude - location.latitude) * ky;
+    return Math.sqrt(dx * dx + dy * dy) <= km
+}
 exports.list_workspace = (req,res,next)=>{
     WorkspaceDetails
-    .find()
+
     .sort({"createdAt":-1})
     .exec()
     .then(data=>{
         if(data.length > 0 ){
+            console.log('center',req.params.center)
             getData();
             async function getData(){
             var returndata= [];
             for(k = 0 ; k < data.length ; k++){
+            var inRange = await getlatlongradious(data[i].location,req.params.center,20)
+
              var seatData = await availableSeats(data[k]._id);
               returndata.push({
                 "workspace_id"    : data[k]._id,
