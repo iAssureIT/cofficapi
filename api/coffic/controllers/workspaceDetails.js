@@ -168,7 +168,7 @@ exports.list_workspace = (req,res,next)=>{
             async function getData(){
             var returndata= [];
             for(k = 0 ; k < data.length ; k++){
-            // var inRange = await getlatlongradious(data[k].location,req.params.center,20)
+            var inRange = await getlatlongradious(data[k].location,req.params.center,20)
 
              var seatData = await availableSeats(data[k]._id);
               returndata.push({
