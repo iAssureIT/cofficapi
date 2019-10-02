@@ -162,7 +162,7 @@ exports.list_workspace = (req,res,next)=>{
     .exec()
     .then(data=>{
         console.log('data=======>>>>',data)
-        console.log('center======>',req.body.region)
+        console.log('center======>',req.params.region)
         if(data.length > 0 ){
             
             getData();
