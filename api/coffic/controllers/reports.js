@@ -40,13 +40,7 @@ exports.loginuserlist = (req,res,next) =>{
 					 	}
 				 	}
 				 }else{
-				 	res.status(200).json([{
-				 		id 			: "",
-			 			userName 	: "",
-			 			orderTime 	: "",
-			 			menuOrdered : "",
-			 			checked		: ""
-				 	}]);
+				 	res.status(200).json([]);
 				 }
 			 })
 			 .catch(err => {
