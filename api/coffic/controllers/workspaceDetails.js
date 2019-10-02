@@ -162,6 +162,7 @@ function getlatlongradious(location,centerlat,centerlong,range){
 
     var dy = Math.abs(centerlat - location.latitude) * ky;
     console.log('dy=======>>>>',dy)
+    console.log('Math.sqrt(dx * dx + dy * dy) Cal=======>>>>',Math.sqrt(dx * dx + dy * dy))
     console.log('Math.sqrt(dx * dx + dy * dy) <= range=======>>>>',Math.sqrt(dx * dx + dy * dy) <= range)
 
     return Math.sqrt(dx * dx + dy * dy) <= range
