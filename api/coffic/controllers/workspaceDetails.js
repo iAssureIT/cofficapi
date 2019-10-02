@@ -148,9 +148,9 @@ exports.id_cafeAdmin = (req, res, next) => {
 // }
 
 
-function getlatlongradious(center,location,range){
+function getlatlongradious(location,center,range){
     var ky = 40000/360;
-    var kx = Math.cos(Math.PI * location.latitude/180.0) * ky;
+    var kx = Math.cos(Math.PI * center.latitude/180.0) * ky;
     var dx = Math.abs(center.longitude - location.longitude) * kx;
     var dy = Math.abs(center.latitude - location.latitude) * ky;
     return Math.sqrt(dx * dx + dy * dy) <= range
