@@ -6,7 +6,7 @@ const User = require('../models/users');
 var request = require('request-promise');
 const globalVariable = require('../../../nodemon.js')
 const WorkspaceDetails = require('../../coffic/models/workspaceDetails');
-
+const ProjectSettings  = require('../../coreAdmin/models/projectSettings.js');
 function getRandomInt(min, max) {
 	min = Math.ceil(min);
 	max = Math.floor(max);
