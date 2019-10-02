@@ -30,7 +30,7 @@ router.get('/get/dailyBeverageReport/:workspace_ID/:date/:startLimit/:endLimit',
 
 router.get('/get/dailyOrderReport/:workspace_ID/:date/:startLimit/:endLimit',reportController.dailyOrder_Report);
 
-
+router.get('/get/loginuserlist/:workspace_ID/:today',reportController.loginuserlist);
 
 module.exports = router;
 

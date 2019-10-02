@@ -10,6 +10,36 @@ const globaleVaiable = require('../../../nodemon.js');
 const SubscriptionOrder = require("../models/subscriptionOrder.js");
 const SubscriptionPlan = require("../models//subscriptionPlan.js");
 
+exports.loginuserlist = (req,res,next) =>{
+	MenuOrder.find({workSpace_id : req.params.workspace_ID, orderedAt : req.params.today})
+			 .exec()
+			 .then(data=>{
+			 	getData();
+			 	async function getData(){
+				 	var i = 0;
+				 	var returnData = [];
+				 	for(i = 0 ; i < data.length; i++){
+				 		var usrName = "User Not Found";
+						if (userInfor && userInfor.profile && userInfor.profile.fullName) {
+							usrName = userInfor.profile.fullName;
+						}
+				 		returnData.push({
+				 			id 			: data[i]._id,
+				 			userName 	: usrName,
+				 			orderTime 	: data[i].date,
+				 			menuOrdered : data[i].item,
+				 			checked		: data[i].isDelivered
+				 		});
+				 	}
+				 	if(i > data.length){
+				 		res.status(200).json(returnData);
+				 	}
+			 	}
+			 })
+			 .catch(err => {
+				res.status(200).json({ error: err });
+			});
+};
 exports.dailyBeverage_Report = (req, res, next) => {
 	MenuOrder.aggregate([
 		{
@@ -44,8 +74,7 @@ exports.dailyBeverage_Report = (req, res, next) => {
 		.catch(err => {
 			res.status(200).json({ error: err });
 		});
-}
-
+};
 exports.vendor_dailycheckins = (req, res, next) => {
 	SeatBooking.aggregate(
 		[
@@ -94,69 +123,7 @@ exports.vendor_dailycheckins = (req, res, next) => {
 		.catch(err => {
 			res.status(200).json({ error: err });
 		});
-}
-
-// exports.dailyOrder_Report=(req,res,next)=>{
-
-// 	MenuOrder.aggregate(
-// 							[
-// 								{
-// 									$match : {
-// 										"workSpace_id"  : req.params.workspace_ID,
-// 										"date"			: {$eq : new Date(req.params.date)},
-
-// 									}
-// 								},
-// 								// {
-// 								// 	$project : {
-// 								// 					"workSpace_id"	: "$_id",
-// 								// 					"orderedAt"   	: "$orderedAt",
-// 								// 					"item"	        : "$item",
-// 								// 					"user_id"		: "$user_id"
-// 								// 				}				
-// 								// }
-// 							]
-// 		               )
-//     //          .sort({ "createdAt": -1 })
-// 			 // .skip(parseInt(req.params.startLimit))
-// 			 // .limit(parseInt(req.params.endLimit))
-// 			 .exec()
-// 			 .then(data=>{
-// 			 	console.log("dailydata",data);
-// 			 	if(data.length > 0){
-// 			 		getData();
-// 			 		async function getData(){
-// 			 			var i = 0;
-// 			 			var returnData = [];
-// 			 			for(i = 0 ; i < data.length ; i++){
-// 			 				var userInfo = await getuserDetails(data[i].user_id);
-// 			 				var name = "User Not Found";
-// 			 				if(userInfo && userInfo.profile && userInfo.profile.fullName){
-// 			 					name = userInfo.profile.fullName;
-// 			 				}
-// 			 				returnData.push({
-// 			 					"UserName" 		: name,
-// 			 					"Item"	   		: data[i].item,
-// 			 					"OrderedAt"		: data[i].orderedAt,
-// 			 					"isDelivered"	: data[i].isDelivered,
-// 			 					"data"			: data[i]
-// 			 				});
-// 			 			}
-// 			 			if(i >= data.length){
-// 			 				res.status(200).json(returnData);
-// 			 			}
-// 			 		}
-// 			 	}else{
-// 			 		res.status(200).json("Data not Found");
-// 			 	}
-// 			 	// res.status(200).json(data);
-// 			 })
-// 			 .catch(err=>{
-// 			 	res.status(200).json({error:err});
-// 			 });
-// }
-
-
+};
 exports.dailyOrder_Report = (req, res, next) => {
 
 	MenuOrder.aggregate(
@@ -214,9 +181,7 @@ exports.dailyOrder_Report = (req, res, next) => {
 		.catch(err => {
 			res.status(200).json({ error: err });
 		});
-}
-
-
+};
 /*Bank Report*/
 exports.bankreport = (req, res, next) => {
 	WorkspaceDetails.find()
@@ -273,7 +238,7 @@ function getUserCount(role) {
 				reject(err);
 			})
 	});
-}
+};
 function getActiveVendor() {
 	return new Promise(function (resolve, reject) {
 		User.countDocuments({ "roles": { $in: ["vendor"] }, "profile.status": "Active" })
@@ -285,7 +250,7 @@ function getActiveVendor() {
 				reject(err);
 			})
 	});
-}
+};
 function getSubUser() {
 	return new Promise(function (resolve, reject) {
 		SubscriptionOrder.countDocuments({ "status": "paid" })

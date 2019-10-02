@@ -3,6 +3,35 @@ const ObjectID  = require("mongodb").ObjectID;
 const Menuorders = require('../models/menuOrders');
 const WorkspaceDetails = require('../models/workspaceDetails');
 
+exports.update_isDelivered = (req,res,next)=>{
+       Menuorders.updateOne(
+            { _id:req.body.ordersID},  
+            {
+                $set:{
+                    isDelivered                :  req.body.checked,
+                }
+            }
+        )
+        .exec()
+        .then(data=>{
+            if(data.nModified == 1){
+                res.status(200).json({
+                    "message": "Orders Updated Successfully."
+                });
+            }else{
+                res.status(401).json({
+                    "message": "Orders  Not Found"
+                });
+            }
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+}
+
 exports.create_orders = (req,res,next)=>{
            const menuorders = new Menuorders({
                 _id                      : new mongoose.Types.ObjectId(),
