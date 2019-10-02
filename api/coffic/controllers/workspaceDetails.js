@@ -174,7 +174,8 @@ exports.list_workspace = (req,res,next)=>{
     .exec()
     .then(data=>{
         console.log('data=======>>>>',data)
-        console.log('center======>',req.params.region)
+        console.log('lastlat======>',req.body.lastlat)
+        console.log('lastlong======>',req.body.lastlong)
         if(data.length > 0 ){
             
             getData();

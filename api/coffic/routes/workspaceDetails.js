@@ -8,7 +8,7 @@ const workspaceController = require('../controllers/workspaceDetails');
 
 router.post('/post', workspaceController.create_workspace);
 
-router.post('/get/list/:region', workspaceController.list_workspace);
+router.post('/get/list/', workspaceController.list_workspace);
 
 router.get('/get/single/:user_id', workspaceController.id_cafeAdmin); 
 
