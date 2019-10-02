@@ -366,7 +366,7 @@ exports.update_workspacestatus = (req,res,next)=>{
     .updateOne({"_id":req.params.workspaceID},
                        { $set:{
                                         
-                            status                 : req.body.status,
+                            status  : req.body.status,
                     
                             }
                                     

@@ -6,7 +6,9 @@ const User = require('../models/users');
 var request = require('request-promise');
 const globalVariable = require('../../../nodemon.js')
 const WorkspaceDetails = require('../../coffic/models/workspaceDetails');
-const ProjectSettings  = require('../../coreAdmin/models/projectSettings.js');
+
+const ProjectSettings   = require('../models/projectSettings');
+
 function getRandomInt(min, max) {
 	min = Math.ceil(min);
 	max = Math.floor(max);
@@ -193,6 +195,11 @@ exports.user_otpverification = (req, res, next) => {
 		// 		error: err
 		// 	});
 		// });    
+
+		ProjectSettings.findOne({  "type": "SMS" })
+		.exec()
+		.then(plivosecret => {
+			console.log("plivosecret",plivosecret);
 		const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
 		// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
 		const sourceMobile = "+919923393733";
@@ -221,6 +228,7 @@ exports.user_otpverification = (req, res, next) => {
 					error: otpError
 				});
 			});
+		});
 	}
 
 };
