@@ -153,10 +153,12 @@ function getlatlongradious(location,center,range){
     console.log('ky=======>>>>',ky)
 
     var kx = Math.cos(Math.PI * center.latitude/180.0) * ky;
-    console.log('kx=======>>>>',kx)
+    console.log('center.latitude=======>>>>',center.latitude)
 
     var dx = Math.abs(center.longitude - location.longitude) * kx;
-    console.log('dx=======>>>>',dx)
+    console.log('center.longitude=======>>>>',center.longitude)
+    console.log('location.longitude=======>>>>',location.latitude)
+    console.log('location.longitude=======>>>>',location.longitude)
 
     var dy = Math.abs(center.latitude - location.latitude) * ky;
     console.log('dy=======>>>>',dy)
