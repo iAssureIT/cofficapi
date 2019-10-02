@@ -9,6 +9,10 @@ const projectSettingsSchema = mongoose.Schema({
     region      : String,
     authID 		: String,
     authToken 	: String,
+
+    plivokey    : String,
+    plivosecret : String,
+    source      : String,
 });
 
 module.exports = mongoose.model('projectSettings',projectSettingsSchema);

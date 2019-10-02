@@ -20,7 +20,11 @@ exports.create_projectSettings = (req, res, next) => {
                 region          : req.body.region,
                 type            : req.body.type,
                 authID          : req.body.authID,
-                authToken       : req.body.authToken
+                authToken       : req.body.authToken,
+
+                plivokey        : req.body.plivokey,
+                plivosecret     : req.body.plivosecret,
+                source          : req.body.source,
             });
             
             projectsetting.save(
