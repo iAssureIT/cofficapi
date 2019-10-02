@@ -148,19 +148,19 @@ exports.id_cafeAdmin = (req, res, next) => {
 // }
 
 
-function getlatlongradious(location,center,range){
+function getlatlongradious(location,centerlat,centerlong,range){
     var ky = 40000/360;
     console.log('ky=======>>>>',ky)
 
-    var kx = Math.cos(Math.PI * center.latitude/180.0) * ky;
-    console.log('center.latitude=======>>>>',center.latitude)
+    var kx = Math.cos(Math.PI * centerlat/180.0) * ky;
+    console.log('center.latitude=======>>>>',centerlat)
 
-    var dx = Math.abs(center.longitude - location.longitude) * kx;
-    console.log('center.longitude=======>>>>',center.longitude)
+    var dx = Math.abs(centerlong - location.longitude) * kx;
+    console.log('center.longitude=======>>>>',centerlong)
     console.log('location.longitude=======>>>>',location.latitude)
     console.log('location.longitude=======>>>>',location.longitude)
 
-    var dy = Math.abs(center.latitude - location.latitude) * ky;
+    var dy = Math.abs(centerlat - location.latitude) * ky;
     console.log('dy=======>>>>',dy)
     console.log('Math.sqrt(dx * dx + dy * dy) <= range=======>>>>',Math.sqrt(dx * dx + dy * dy) <= range)
 
@@ -182,7 +182,7 @@ exports.list_workspace = (req,res,next)=>{
             async function getData(){
             var returndata= [];
             for(k = 0 ; k < data.length ; k++){
-            var inRange = await getlatlongradious(data[k].location,req.params.region,20)
+            var inRange = await getlatlongradious(data[k].location,req.body.lastlat,req.body.lastlong,20)
             console.log('inRNGE=====>',inRange)
             if(inRange){
                 var seatData = await availableSeats(data[k]._id);
