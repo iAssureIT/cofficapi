@@ -162,8 +162,9 @@ exports.list_workspace = (req,res,next)=>{
     .exec()
     .then(data=>{
         console.log('data=======>>>>',data)
+        console.log('center======>',req.body.region)
         if(data.length > 0 ){
-            console.log('center',req.body.region)
+            
             getData();
             async function getData(){
             var returndata= [];
