@@ -11,30 +11,37 @@ const SubscriptionOrder = require("../models/subscriptionOrder.js");
 const SubscriptionPlan = require("../models//subscriptionPlan.js");
 
 exports.loginuserlist = (req,res,next) =>{
+	console.log("loginuserlist");
 	MenuOrder.find({workSpace_id : req.params.workspace_ID, orderedAt : req.params.today})
 			 .exec()
 			 .then(data=>{
-			 	getData();
-			 	async function getData(){
-				 	var i = 0;
-				 	var returnData = [];
-				 	for(i = 0 ; i < data.length; i++){
-				 		var usrName = "User Not Found";
-						if (userInfor && userInfor.profile && userInfor.profile.fullName) {
-							usrName = userInfor.profile.fullName;
-						}
-				 		returnData.push({
-				 			id 			: data[i]._id,
-				 			userName 	: usrName,
-				 			orderTime 	: data[i].date,
-				 			menuOrdered : data[i].item,
-				 			checked		: data[i].isDelivered
-				 		});
+			 	if(data.length > 0){
+				 	console.log("data ",data);
+				 	getData();
+				 	async function getData(){
+					 	var i = 0;
+					 	var returnData = [];
+					 	for(i = 0 ; i < data.length; i++){
+					 		var usrName = "User Not Found";
+					 		var userInfor = await getuserDetails(data[i].user_id);
+							if (userInfor && userInfor.profile && userInfor.profile.fullName) {
+								usrName = userInfor.profile.fullName;
+							}
+					 		returnData.push({
+					 			id 			: data[i]._id,
+					 			userName 	: usrName,
+					 			orderTime 	: data[i].date,
+					 			menuOrdered : data[i].item,
+					 			checked		: data[i].isDelivered
+					 		});
+					 	}
+					 	if(i > data.length){
+					 		res.status(200).json(returnData);
+					 	}
 				 	}
-				 	if(i > data.length){
-				 		res.status(200).json(returnData);
-				 	}
-			 	}
+				 }else{
+				 	res.status(200).json([]);
+				 }
 			 })
 			 .catch(err => {
 				res.status(200).json({ error: err });

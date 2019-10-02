@@ -7,6 +7,8 @@ const projectSettingsSchema = mongoose.Schema({
     secret      : String,
     bucket      : String,
     region      : String,
+    authID 		: String,
+    authToken 	: String,
 });
 
 module.exports = mongoose.model('projectSettings',projectSettingsSchema);

@@ -37,7 +37,7 @@
     
     const WorkspaceDetailsurl 	       = require("./api/coffic/routes/workspaceDetails");
     const SubscriptionPlanurl          = require("./api/coffic/routes/subscriptionPlan");
-    const ProjectSettingsurl           = require("./api/coffic/routes/projectSettings");
+    const ProjectSettingsurl           = require("./api/coreAdmin/routes/projectSettings");
     const WorkAmenitiessurl            = require("./api/coffic/routes/workAmenities");
     const CafeMenuUrl                  = require("./api/coffic/routes/CafeMenu");
     const SubscriptionOrderUrl         = require("./api/coffic/routes/subscriptionOrder");
