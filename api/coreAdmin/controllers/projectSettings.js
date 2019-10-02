@@ -1,8 +1,8 @@
 const mongoose	        = require("mongoose");
 const ProjectSettings   = require('../models/projectSettings');
 
-
 exports.create_projectSettings = (req, res, next) => {
+    console.log("project setting body ");
     var projectSettingsData = req.body.type;
 	ProjectSettings.findOne({type:projectSettingsData})
 		.exec()
@@ -18,7 +18,9 @@ exports.create_projectSettings = (req, res, next) => {
                 secret          : req.body.secret,
                 bucket          : req.body.bucket,
                 region          : req.body.region,
-                type            : req.body.type
+                type            : req.body.type,
+                authID          : req.body.authID,
+                authToken       : req.body.authToken
             });
             
             projectsetting.save(
@@ -45,8 +47,6 @@ exports.create_projectSettings = (req, res, next) => {
             });
         });
 };
-
-
 exports.fetch_projectsettings = (req, res, next)=>{
     const type = req.params.type;
         ProjectSettings.findOne({"type": req.params.type})

@@ -11,6 +11,7 @@ const SubscriptionOrder = require("../models/subscriptionOrder.js");
 const SubscriptionPlan = require("../models//subscriptionPlan.js");
 
 exports.loginuserlist = (req,res,next) =>{
+	console.log("loginuserlist");
 	MenuOrder.find({workSpace_id : req.params.workspace_ID, orderedAt : req.params.today})
 			 .exec()
 			 .then(data=>{
