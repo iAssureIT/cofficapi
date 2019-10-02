@@ -15,12 +15,14 @@ exports.loginuserlist = (req,res,next) =>{
 	MenuOrder.find({workSpace_id : req.params.workspace_ID, orderedAt : req.params.today})
 			 .exec()
 			 .then(data=>{
+			 	console.log("data ",data);
 			 	getData();
 			 	async function getData(){
 				 	var i = 0;
 				 	var returnData = [];
 				 	for(i = 0 ; i < data.length; i++){
 				 		var usrName = "User Not Found";
+				 		var userInfor = await getuserDetails(data[i].user_id);
 						if (userInfor && userInfor.profile && userInfor.profile.fullName) {
 							usrName = userInfor.profile.fullName;
 						}
