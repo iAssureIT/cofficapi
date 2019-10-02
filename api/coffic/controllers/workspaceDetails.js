@@ -150,10 +150,20 @@ exports.id_cafeAdmin = (req, res, next) => {
 
 function getlatlongradious(location,center,range){
     var ky = 40000/360;
+    console.log('ky=======>>>>',ky)
+
     var kx = Math.cos(Math.PI * center.latitude/180.0) * ky;
+    console.log('kx=======>>>>',kx)
+
     var dx = Math.abs(center.longitude - location.longitude) * kx;
+    console.log('dx=======>>>>',dx)
+
     var dy = Math.abs(center.latitude - location.latitude) * ky;
+    console.log('dy=======>>>>',dy)
+    console.log('Math.sqrt(dx * dx + dy * dy) <= range=======>>>>',Math.sqrt(dx * dx + dy * dy) <= range)
+
     return Math.sqrt(dx * dx + dy * dy) <= range
+    
 }
 exports.list_workspace = (req,res,next)=>{
     WorkspaceDetails
