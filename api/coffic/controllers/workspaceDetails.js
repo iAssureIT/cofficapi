@@ -220,8 +220,8 @@ exports.list_workspace = (req,res,next)=>{
                 console.log("currLat = " + currLat + "  |  currLong = "+currLong);
                 console.log("cafeLat = " + cafeLat + "  |  cafeLong = "+cafeLong);
                 
-                if(cafeLat && cafeLong && currLat && currLong){
-                    console.log('in IF=====>');
+                
+                
 
                     var inRange  = await distance(cafeLat,cafeLong,currLat,currLong,"K");
                     // var inRange = await getlatlongradious(data[k].location,req.body.lastlat,req.body.lastlong,20)
@@ -244,13 +244,7 @@ exports.list_workspace = (req,res,next)=>{
         
                         
                     }
-                     
-                     
-                    }else{
-                        console.log('in ELSE=====>');
-                        res.status(200).json({message : "Lat & Long not found"});
-
-                    }
+                    
                 }
 
                 if(k >= data.length){
