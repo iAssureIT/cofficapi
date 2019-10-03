@@ -197,13 +197,12 @@ function distance(lat1, lon1, lat2, lon2, unit) {
 }
 exports.list_workspace = (req,res,next)=>{
     WorkspaceDetails
-    .find()
+    .find({})
     .sort({"createdAt":-1})
     .exec()
     .then(data=>{
-        console.log('data=======>>>>',data)
-        console.log('lastlat======>',req.body.lastlat)
-        console.log('lastlong======>',req.body.lastlong)
+        console.log("Total Cafes = ",data.length);
+        console.log('data = ' + data.nameOfCafe + "  |  lat = " + data.location.latitude+ "  |  long = "+data.location.longitude );
         var currLat  = req.body.lastlat
         var currLong = req.body.lastlong;
         if(data.length > 0 ){
@@ -214,6 +213,7 @@ exports.list_workspace = (req,res,next)=>{
             for(k = 0 ; k < data.length ; k++){
                 var cafeLat = data[k].location.latitude;
                 var cafeLong = data[k].location.longitude;
+                console.log("currLat = " + currLat + "  |  currLong = "+currLong);
                 console.log("cafeLat = " + cafeLat + "  |  cafeLong = "+cafeLong);
                 
                 if(cafeLat && cafeLong && currLat && currLong){
@@ -227,27 +227,14 @@ exports.list_workspace = (req,res,next)=>{
                         returndata.push({
                           "workspace_id"    : data[k]._id,
                           "nameOfCafe"      : data[k].nameOfCafe,
-                          // "address"         : data[k].address,
-                          // "landmark"        : data[k].landmark,
-                          // "area"            : data[k].area,
-                          // "city"            : data[k].city,
-                          // "state"           : data[k].state,
-                          // "country"         : data[k].country,
-                          // "pin"             : data[k].pin,
                           "location"        : data[k].location,
                           "numberOfSeats"   : data[k].numberOfSeats,
-                          // "name"            : data[k].name,
-                          // "email"           : data[k].email,
-                          // "facilities"      : data[k].facilities,
-                          // "cost"            : data[k].cost,
                           "openingtime"     : data[k].openingtime,
                           "closingtime"     : data[k].closingtime,
                           "logo"            : data[k].logo,
                           "banner"          : data[k].banner,
                           "workspaceImages" : data[k].workspaceImages,
                           "seatData"        : seatData,
-                          // "cafeAdmin"       : data[k].cafeAdmin,
-                          // "bankDetails"     : data[k].bankDetails,
                         })  
                         // console.log("out of If return Data=====>",returndata);
         
