@@ -196,9 +196,7 @@ exports.user_otpverification = (req, res, next) => {
 		// 	});
 		// });    
 
-		ProjectSettings.findOne({  "type": "SMS" })
-		.exec()
-		.then(plivosecret => {
+		
 			console.log("plivosecret",plivosecret);
 		const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
 		// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
@@ -228,7 +226,7 @@ exports.user_otpverification = (req, res, next) => {
 					error: otpError
 				});
 			});
-		});
+		
 	}
 
 };
