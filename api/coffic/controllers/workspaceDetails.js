@@ -238,6 +238,7 @@ exports.list_workspace = (req,res,next)=>{
                   // "bankDetails"     : data[k].bankDetails,
                 })  
                 if(k >= data.length){
+                    res.header("Access-Control-Allow-Origin","*");
                     res.status(200).json(returndata);
                  }
             }else{
