@@ -202,7 +202,6 @@ exports.list_workspace = (req,res,next)=>{
     .exec()
     .then(data=>{
         console.log("Total Cafes = ",data.length);
-        console.log('data = ' + data.nameOfCafe + "  |  lat = " + data.location.latitude+ "  |  long = "+data.location.longitude );
         var currLat  = req.body.lastlat
         var currLong = req.body.lastlong;
         if(data.length > 0 ){
@@ -211,6 +210,8 @@ exports.list_workspace = (req,res,next)=>{
             async function getData(){
             var returndata= [];
             for(k = 0 ; k < data.length ; k++){
+                console.log('data = ' + data[k].nameOfCafe + "  |  lat = " + data[k].location.latitude+ "  |  long = "+data[k].location.longitude );
+
                 var cafeLat = data[k].location.latitude;
                 var cafeLong = data[k].location.longitude;
                 console.log("currLat = " + currLat + "  |  currLong = "+currLong);
