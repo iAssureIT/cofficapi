@@ -196,7 +196,7 @@ function distance(lat1, lon1, lat2, lon2, unit) {
 	
 }
 exports.list_workspace = (req,res,next)=>{
-    console.long("inside list_workspace = ", req.body);
+    console.log("inside list_workspace = ", req.body);
     WorkspaceDetails
     .find({})
     .sort({"createdAt":-1})
