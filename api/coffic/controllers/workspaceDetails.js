@@ -204,6 +204,7 @@ exports.list_workspace = (req,res,next)=>{
         console.log("Total Cafes = ",data.length);
         var currLat  = req.body.lastlat
         var currLong = req.body.lastlong;
+        console.log("currLat = " + currLat + "  |  currLong = "+currLong);
         if(data.length > 0 ){
             var k = 0;
             getData();
