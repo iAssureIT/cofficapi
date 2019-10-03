@@ -207,10 +207,15 @@ exports.list_workspace = (req,res,next)=>{
             async function getData(){
             var returndata= [];
             for(k = 0 ; k < data.length ; k++){
-            var inRange = await distance(data[k].location.latitude,data[k].location.longitude,req.body.lastlat,req.body.lastlong,"K")
+                var cafeLat = data[k].location.latitude;
+                var cafeLong = data[k].location.longitude;
+                console.log("cafeLat = " + cafeLat + "  |  cafeLong = "+cafeLong);
+                var currLat = req.body.lastlat
+                var currLong = req.body.lastlong;
+                var inRange = await distance(cafeLat,cafeLong,currLat,currLong,"K");
             // var inRange = await getlatlongradious(data[k].location,req.body.lastlat,req.body.lastlong,20)
             console.log('inRNGE=====>',parseInt(inRange))
-            if(parseInt(inRange)<= 20){
+            if(parseInt(inRange)<= 2057){
                 var seatData = await availableSeats(data[k]._id);
                 returndata.push({
                   "workspace_id"    : data[k]._id,
