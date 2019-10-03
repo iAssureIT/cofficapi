@@ -215,7 +215,7 @@ exports.list_workspace = (req,res,next)=>{
                 var inRange = await distance(cafeLat,cafeLong,currLat,currLong,"K");
             // var inRange = await getlatlongradious(data[k].location,req.body.lastlat,req.body.lastlong,20)
             console.log('inRNGE=====>',parseInt(inRange))
-            if(parseInt(inRange)<= 952){
+            if(parseInt(inRange)<= 20){
                 var seatData = await availableSeats(data[k]._id);
                 returndata.push({
                   "workspace_id"    : data[k]._id,
@@ -243,7 +243,7 @@ exports.list_workspace = (req,res,next)=>{
                   // "bankDetails"     : data[k].bankDetails,
                 })  
                 if(k >= data.length){
-                    res.header("Access-Control-Allow-Origin","*");
+                    console.log("return Data",returndata);
                     res.status(200).json(returndata);
                  }
             }else{
