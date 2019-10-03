@@ -91,61 +91,61 @@ exports.id_cafeAdmin = (req, res, next) => {
         });
 
 }
-// exports.list_workspace = (req,res,next)=>{
-//     WorkspaceDetails
-//     .find()
-//     .sort({"createdAt":-1})
-//     .exec()
-//     .then(data=>{
-//         if(data.length > 0 ){
-//             getData();
-//             async function getData(){
-//             var returndata= [];
-//             for(k = 0 ; k < data.length ; k++){
-//              var seatData = await availableSeats(data[k]._id);
-//               returndata.push({
-//                 "workspace_id"    : data[k]._id,
-//                 "nameOfCafe"      : data[k].nameOfCafe,
-//                 // "address"         : data[k].address,
-//                 // "landmark"        : data[k].landmark,
-//                 // "area"            : data[k].area,
-//                 // "city"            : data[k].city,
-//                 // "state"           : data[k].state,
-//                 // "country"         : data[k].country,
-//                 // "pin"             : data[k].pin,
-//                 "location"        : data[k].location,
-//                 "numberOfSeats"   : data[k].numberOfSeats,
-//                 // "name"            : data[k].name,
-//                 // "email"           : data[k].email,
-//                 // "facilities"      : data[k].facilities,
-//                 // "cost"            : data[k].cost,
-//                 "openingtime"     : data[k].openingtime,
-//                 "closingtime"     : data[k].closingtime,
-//                 "logo"            : data[k].logo,
-//                 "banner"          : data[k].banner,
-//                 "workspaceImages" : data[k].workspaceImages,
-//                 "seatData"        : seatData,
-//                 // "cafeAdmin"       : data[k].cafeAdmin,
-//                 // "bankDetails"     : data[k].bankDetails,
+exports.alllist_workspace = (req,res,next)=>{
+    WorkspaceDetails
+    .find()
+    .sort({"createdAt":-1})
+    .exec()
+    .then(data=>{
+        if(data.length > 0 ){
+            getData();
+            async function getData(){
+            var returndata= [];
+            for(k = 0 ; k < data.length ; k++){
+             var seatData = await availableSeats(data[k]._id);
+              returndata.push({
+                "workspace_id"    : data[k]._id,
+                "nameOfCafe"      : data[k].nameOfCafe,
+                // "address"         : data[k].address,
+                // "landmark"        : data[k].landmark,
+                // "area"            : data[k].area,
+                // "city"            : data[k].city,
+                // "state"           : data[k].state,
+                // "country"         : data[k].country,
+                // "pin"             : data[k].pin,
+                "location"        : data[k].location,
+                "numberOfSeats"   : data[k].numberOfSeats,
+                // "name"            : data[k].name,
+                // "email"           : data[k].email,
+                // "facilities"      : data[k].facilities,
+                // "cost"            : data[k].cost,
+                "openingtime"     : data[k].openingtime,
+                "closingtime"     : data[k].closingtime,
+                "logo"            : data[k].logo,
+                "banner"          : data[k].banner,
+                "workspaceImages" : data[k].workspaceImages,
+                "seatData"        : seatData,
+                // "cafeAdmin"       : data[k].cafeAdmin,
+                // "bankDetails"     : data[k].bankDetails,
                 
-//               })
-//              }
-//              if(k >= data.length){
-//                 res.status(200).json(returndata);
-//              }
-//         }
-//         }else{
-//             res.status(200).json({message : "Data not found"});
-//         }
+              })
+             }
+             if(k >= data.length){
+                res.status(200).json(returndata);
+             }
+        }
+        }else{
+            res.status(200).json({message : "Data not found"});
+        }
         
-//     })
-//     .catch(err =>{
-//         console.log(err);
-//         res.status(500).json({
-//             error: err
-//         });
-//     });
-// }
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    });
+}
 
 
 function getlatlongradious(location,centerlat,centerlong,range){
