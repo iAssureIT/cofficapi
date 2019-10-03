@@ -242,12 +242,17 @@ exports.list_workspace = (req,res,next)=>{
                   // "cafeAdmin"       : data[k].cafeAdmin,
                   // "bankDetails"     : data[k].bankDetails,
                 })  
+                console.log("out of If return Data=====>",returndata);
+
                 if(k >= data.length){
-                    console.log("return Data",returndata);
+                    console.log("Inside If return Data ===>",returndata);
                     res.status(200).json(returndata);
                  }
             }else{
+                console.log("return Data",returndata);
+
                 res.status(200).json({
+                    
                     message : "No Work Space found in your area"
                 });
 
