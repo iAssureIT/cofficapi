@@ -196,6 +196,7 @@ function distance(lat1, lon1, lat2, lon2, unit) {
 	
 }
 exports.list_workspace = (req,res,next)=>{
+    console.long("inside list_workspace = ", req.body);
     WorkspaceDetails
     .find({})
     .sort({"createdAt":-1})
@@ -208,6 +209,7 @@ exports.list_workspace = (req,res,next)=>{
         if(data.length > 0 ){
             var k = 0;
             getData();
+
             async function getData(){
             var returndata= [];
             for(k = 0 ; k < data.length ; k++){
@@ -224,7 +226,7 @@ exports.list_workspace = (req,res,next)=>{
                     var inRange  = await distance(cafeLat,cafeLong,currLat,currLong,"K");
                     // var inRange = await getlatlongradious(data[k].location,req.body.lastlat,req.body.lastlong,20)
                     console.log('inRNGE=====>',parseInt(inRange))
-                    if(parseInt(inRange)<= 20){
+                    if(parseInt(inRange) <= 20){
                         var seatData = await availableSeats(data[k]._id);
                         returndata.push({
                           "workspace_id"    : data[k]._id,
@@ -241,25 +243,20 @@ exports.list_workspace = (req,res,next)=>{
                         // console.log("out of If return Data=====>",returndata);
         
                         
-                    }else{
-                        // console.log("return Data",returndata);
-        
-                        res.status(200).json({
-                            
-                            message : "No Work Space found in your area"
-                        });
-        
                     }
                      
-                     if(k >= data.length){
-                        console.log("Inside If return Data ===>",returndata);
-                        res.status(200).json(returndata);
-                     }
+                     
                     }else{
                         console.log('in ELSE=====>');
+                        res.status(200).json({message : "Lat & Long not found"});
 
                     }
                 }
+
+                if(k >= data.length){
+                    console.log("Inside If return Data ===>",returndata);
+                    res.status(200).json(returndata);
+                 }
           
              
         }
