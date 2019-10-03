@@ -201,8 +201,10 @@ exports.list_workspace = (req,res,next)=>{
         console.log('data=======>>>>',data)
         console.log('lastlat======>',req.body.lastlat)
         console.log('lastlong======>',req.body.lastlong)
+        var currLat  = req.body.lastlat
+        var currLong = req.body.lastlong;
         if(data.length > 0 ){
-            
+            var k = 0;
             getData();
             async function getData(){
             var returndata= [];
@@ -210,55 +212,63 @@ exports.list_workspace = (req,res,next)=>{
                 var cafeLat = data[k].location.latitude;
                 var cafeLong = data[k].location.longitude;
                 console.log("cafeLat = " + cafeLat + "  |  cafeLong = "+cafeLong);
-                var currLat = req.body.lastlat
-                var currLong = req.body.lastlong;
-                var inRange = await distance(cafeLat,cafeLong,currLat,currLong,"K");
-            // var inRange = await getlatlongradious(data[k].location,req.body.lastlat,req.body.lastlong,20)
-            console.log('inRNGE=====>',parseInt(inRange))
-            if(parseInt(inRange)<= 20){
-                var seatData = await availableSeats(data[k]._id);
-                returndata.push({
-                  "workspace_id"    : data[k]._id,
-                  "nameOfCafe"      : data[k].nameOfCafe,
-                  // "address"         : data[k].address,
-                  // "landmark"        : data[k].landmark,
-                  // "area"            : data[k].area,
-                  // "city"            : data[k].city,
-                  // "state"           : data[k].state,
-                  // "country"         : data[k].country,
-                  // "pin"             : data[k].pin,
-                  "location"        : data[k].location,
-                  "numberOfSeats"   : data[k].numberOfSeats,
-                  // "name"            : data[k].name,
-                  // "email"           : data[k].email,
-                  // "facilities"      : data[k].facilities,
-                  // "cost"            : data[k].cost,
-                  "openingtime"     : data[k].openingtime,
-                  "closingtime"     : data[k].closingtime,
-                  "logo"            : data[k].logo,
-                  "banner"          : data[k].banner,
-                  "workspaceImages" : data[k].workspaceImages,
-                  "seatData"        : seatData,
-                  // "cafeAdmin"       : data[k].cafeAdmin,
-                  // "bankDetails"     : data[k].bankDetails,
-                })  
-                // console.log("out of If return Data=====>",returndata);
-
                 
-            }else{
-                // console.log("return Data",returndata);
+                if(cafeLat && cafeLong && currLat && currLong){
+                    console.log('in IF=====>');
 
-                res.status(200).json({
-                    
-                    message : "No Work Space found in your area"
-                });
+                    var inRange  = await distance(cafeLat,cafeLong,currLat,currLong,"K");
+                    // var inRange = await getlatlongradious(data[k].location,req.body.lastlat,req.body.lastlong,20)
+                    console.log('inRNGE=====>',parseInt(inRange))
+                    if(parseInt(inRange)<= 20){
+                        var seatData = await availableSeats(data[k]._id);
+                        returndata.push({
+                          "workspace_id"    : data[k]._id,
+                          "nameOfCafe"      : data[k].nameOfCafe,
+                          // "address"         : data[k].address,
+                          // "landmark"        : data[k].landmark,
+                          // "area"            : data[k].area,
+                          // "city"            : data[k].city,
+                          // "state"           : data[k].state,
+                          // "country"         : data[k].country,
+                          // "pin"             : data[k].pin,
+                          "location"        : data[k].location,
+                          "numberOfSeats"   : data[k].numberOfSeats,
+                          // "name"            : data[k].name,
+                          // "email"           : data[k].email,
+                          // "facilities"      : data[k].facilities,
+                          // "cost"            : data[k].cost,
+                          "openingtime"     : data[k].openingtime,
+                          "closingtime"     : data[k].closingtime,
+                          "logo"            : data[k].logo,
+                          "banner"          : data[k].banner,
+                          "workspaceImages" : data[k].workspaceImages,
+                          "seatData"        : seatData,
+                          // "cafeAdmin"       : data[k].cafeAdmin,
+                          // "bankDetails"     : data[k].bankDetails,
+                        })  
+                        // console.log("out of If return Data=====>",returndata);
+        
+                        
+                    }else{
+                        // console.log("return Data",returndata);
+        
+                        res.status(200).json({
+                            
+                            message : "No Work Space found in your area"
+                        });
+        
+                    }
+                     
+                     if(k >= data.length){
+                        console.log("Inside If return Data ===>",returndata);
+                        res.status(200).json(returndata);
+                     }
+                    }else{
+                        console.log('in ELSE=====>');
 
-            }
-             }
-             if(k >= data.length){
-                console.log("Inside If return Data ===>",returndata);
-                res.status(200).json(returndata);
-             }
+                    }
+                }
+          
              
         }
         }else{
