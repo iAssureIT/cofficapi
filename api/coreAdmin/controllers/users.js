@@ -114,26 +114,26 @@ exports.user_signupadmin = (req, res, next) => {
 									// });    
 
 									// const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz'); // iAssureIT
-									// // const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
-									// const sourceMobile = "+919923393733";
-									// var text = 'Dear Vendor ,' + "\nYour account has been created successfully on Coffic. Your Login details are as follows:\nEmail ID  :" + newUser.profile.emailId + "Default Password:test123" + '\n' + '\n' + '\nRegards,\nTeam Coffic';
-									// client.messages.create(
-									// 	src = sourceMobile,
-									// 	dst = req.body.mobileNumber,
-									// 	text = text
-									// ).then((result) => {
-									// 	// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
-									// 	return res.status(200).json({
-									// 		"message": 'OTP-SEND-SUCCESSFULLY',
+									const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
+									const sourceMobile = "+919983196932";
+									var text = 'Dear Vendor ,' + "\nYour account has been created successfully on Coffic. Your Login details are as follows:\nEmail ID  :" + newUser.profile.emailId + "Default Password:coffic123" + '\n' + '\n' + '\nRegards,\nTeam Coffic';
+									client.messages.create(
+										src = sourceMobile,
+										dst = req.body.mobileNumber,
+										text = text
+									).then((result) => {
+										// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
+										return res.status(200).json({
+											"message": 'OTP-SEND-SUCCESSFULLY',
 
-									// 	});
-									// })
-									// 	.catch(otpError => {
-									// 		return res.status(501).json({
-									// 			message: "Some Error Occurred in OTP Send Function",
-									// 			error: otpError
-									// 		});
-									// 	});
+										});
+									})
+										.catch(otpError => {
+											return res.status(501).json({
+												message: "Some Error Occurred in OTP Send Function",
+												error: otpError
+											});
+										});
 								}
 
 							})
@@ -197,35 +197,35 @@ exports.user_otpverification = (req, res, next) => {
 		// });    
 
 		
-		// 	console.log("plivosecret",plivosecret);
+			console.log("plivosecret",plivosecret);
 		// const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
-		// // const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
+		const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
 		// const sourceMobile = "+919923393733";
-		// // const sourceMobile = "+919983196932";
-		// var text = "Dear " + newUser.firstName + ',' + '\n' + "Your account verification code is " + newUser.mobileOTP + "\nRegards,\nTeam Coffic"
-		// 	    console.log('client =========>>>', client);
-		// 		console.log('text =========>>>', text);
-		// client.messages.create(
-		// 	src = sourceMobile,
-		// 	dst = req.body.mobileNumber,
-		// 	text = text
-		// ).then((result) => {
-		// 	console.log('result =========>>>', result);
+		const sourceMobile = "+919983196932";
+		var text = "Dear " + newUser.firstName + ',' + '\n' + "Your account verification code is " + newUser.mobileOTP + "\nRegards,\nTeam Coffic"
+			    console.log('client =========>>>', client);
+				console.log('text =========>>>', text);
+		client.messages.create(
+			src = sourceMobile,
+			dst = req.body.mobileNumber,
+			text = text
+		).then((result) => {
+			console.log('result =========>>>', result);
 
-		// 	// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
-		// 	return res.status(200).json({
-		// 		"message": 'OTP-SEND-SUCCESSFULLY',
-		// 		// "otp"     : newUser.emailOTP,
-		// 	});
-		// })
-		// 	.catch(otpError => {
-       	// 		console.log('otpError =========>>>', otpError);
+			// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
+			return res.status(200).json({
+				"message": 'OTP-SEND-SUCCESSFULLY',
+				// "otp"     : newUser.emailOTP,
+			});
+		})
+			.catch(otpError => {
+       			console.log('otpError =========>>>', otpError);
 
-		// 		return res.status(501).json({
-		// 			message: "Some Error Occurred in OTP Send Function",
-		// 			error: otpError
-		// 		});
-		// 	});
+				return res.status(501).json({
+					message: "Some Error Occurred in OTP Send Function",
+					error: otpError
+				});
+			});
 		
 	}
 
@@ -361,7 +361,7 @@ exports.user_createVendor = (req, res, next) => {
 								// const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
 								// // const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
 								// const sourceMobile = "+919923393733";
-								// var text = 'Dear Vendor ,' + "\nYour account has been created successfully on Coffic. Your Login details are as follows:\nEmail ID  :" + newUser.profile.emailId + "\nDefault Password:test123" + '\n' + '\n' + '\nRegards,\nTeam Coffic';
+								// var text = 'Dear Vendor ,' + "\nYour account has been created successfully on Coffic. Your Login details are as follows:\nEmail ID  :" + newUser.profile.emailId + "\nDefault Password:coffic123" + '\n' + '\n' + '\nRegards,\nTeam Coffic';
 								// client.messages.create(
 								// 	src = sourceMobile,
 								// 	dst = req.body.mobileNumber,
