@@ -166,50 +166,24 @@ exports.user_otpverification = (req, res, next) => {
 		emailId: req.body.emailId,
 		mobileNumber: req.body.mobileNumber,
 	};
+	console.log("new User  = ", newUser);
 
-	if (newUser) {
-		console.log("plivosecret",plivosecret);
-		// request({
-
-		// 	"method"    : "POST",
-		// 	"url"       : "http://localhost:"+globalVariable.PORT+"/send-email",
-		// 	"body"      : 	{
-		// 						"email"     : newUser.emailId,
-		// 						"subject"   : 'Verify your Account',
-		// 						"text"      : "WOW Its done",
-		// 						// "mail"      : "Hello"+newUser.profile.firstName+','+'\n'+"Your account verifcation code is"+OTP,
-		// 						"mail"      : 'Dear '+newUser.firstName+','+'\n'+"\n <br><br>Your account verification code is "+"<b>"+newUser.emailOTP+"</b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team Coffic',
-		// 					},
-		// 	"json"      : true,
-		// 	"headers"   : {
-		// 					"User-Agent": "Test App"
-		// 				}
-		// })
-		// .then((sentemail)=>{
-		// 	res.header("Access-Control-Allow-Origin","*");
-		// 	res.status(200).json({message:"Mail Sent successfully"});
-		// })
-		// .catch((err) =>{
-		// 	res.status(500).json({
-		// 		error: err
-		// 	});
-		// });    
-
-		
-		console.log("plivosecret",plivosecret);
+	if (newUser) {		
+		// console.log("plivosecret = ",plivosecret);
 		// const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
 		const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
 		// const sourceMobile = "+919923393733";
 		const sourceMobile = "+919983196932";
+
 		var text = "Dear " + newUser.firstName + ',' + '\n' + "Your account verification code is " + newUser.mobileOTP + "\nRegards,\nTeam Coffic"
-			    console.log('client =========>>>', client);
-				console.log('text =========>>>', text);
+			    // console.log('client =========>>>', client);
+		console.log('text =========>>>', text);
 		client.messages.create(
 			src = sourceMobile,
 			dst = req.body.mobileNumber,
 			text = text
 		).then((result) => {
-			console.log('result =========>>>', result);
+			console.log('result of SMS Send =========>>>', result);
 
 			// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
 			return res.status(200).json({
@@ -219,7 +193,6 @@ exports.user_otpverification = (req, res, next) => {
 		})
 			.catch(otpError => {
        			console.log('otpError =========>>>', otpError);
-
 				return res.status(501).json({
 					message: "Some Error Occurred in OTP Send Function",
 					error: otpError
