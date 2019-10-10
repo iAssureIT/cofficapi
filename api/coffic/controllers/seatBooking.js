@@ -65,23 +65,23 @@ exports.chekinUser = (req, res, next) => {
                                 .save()
                                 .then(data => {
                                     var message = "Booking Successful";
-                                    if (activeSubOrder[0].maxCheckIns == (totCheckIns.length + 1)) {
-                                        SubscriptionOrder
-                                            .update(
-                                                { _id: new ObjectID(activeSubOrder[0]._id) },
+                                    // if (activeSubOrder[0].maxCheckIns == (totCheckIns.length + 1)) {
+                                        // SubscriptionOrder
+                                        //     .update(
+                                        //         { _id: new ObjectID(activeSubOrder[0]._id) },
 
-                                                { $set: { "status": "inactive" } }
-                                            )
-                                            .then(data => {
-                                                message = "Booking Successful & Order status made inactive";
-                                            })
-                                            .catch(err => {
-                                                console.log(err);
-                                                res.status(500).json({
-                                                    error: err
-                                                });
-                                            });
-                                    }
+                                        //         { $set: { "status": "inactive" } }
+                                        //     )
+                                        //     .then(data => {
+                                        //         message = "Booking Successful & Order status made inactive";
+                                        //     })
+                                        //     .catch(err => {
+                                        //         console.log(err);
+                                        //         res.status(500).json({
+                                        //             error: err
+                                        //         });
+                                        //     });
+                                    // }
                                     res.status(200).json(message);
                                 })
                                 .catch(err => {

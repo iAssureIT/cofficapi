@@ -807,15 +807,16 @@ exports.user_loginwithadmin = (req, res, next) => {
 };
 
 exports.user_loginwithvendor = (req, res, next) => {
+	console.log("inside user_loginwithvendor = ",req.body);
 	User.findOne({ emails: { $elemMatch: { address: req.body.email } }, roles: "vendor", emailId: req.body.emailId })
 		.exec()
 		.then(user => {
-			console.log("users==>",user);
+			// console.log("users==>",user);
 			if (user) {
-				console.log("in user==>",user);
+				// console.log("in user==>",user);
 				var pwd = user.services.password.bcrypt;
 				if (pwd) {
-				console.log("in pwd==>",pwd);
+				// console.log("in pwd==>",pwd);
 
 					bcrypt.compare(req.body.password, pwd, (err, result) => {
 						if (err) {
@@ -1537,7 +1538,7 @@ exports.user_otpverification_forgotpassword = (req, res, next) => {
 
 				var forgotuserotp = {
 
-					// emailOTP : req.body.emailOTP,
+					
 					mobileOTP: req.body.mobileOTP,
 					emailId: req.body.emailId,
 					mobileNumber: req.body.mobileNumber,
@@ -1580,10 +1581,10 @@ exports.user_otpverification_forgotpassword = (req, res, next) => {
 
 
 				// console.log('Plivo Client = ',forgotuserotp.mobileNumber);
-				const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
-				// const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');
-				const sourceMobile = "+919983196932";
+				// const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
+				const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
 				// const sourceMobile = "+919923393733";
+				const sourceMobile = "+919983196932";
 				var text = "Dear User," + '\n' + "Your account verification code is " + forgotuserotp.mobileOTP + "\nRegards,\nTeam Coffic"
 				console.log('client =========>>>', client);
 				console.log('text =========>>>', text);
