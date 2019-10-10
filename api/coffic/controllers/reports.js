@@ -174,7 +174,7 @@ exports.dailyOrder_Report = (req, res, next) => {
 						returnData.push({
 							"UserName": name,
 							"Item": data[i].item,
-							"OrderedAt": data[i].orderedAt,
+							"OrderedAt": data[i].date,
 							"isDelivered": data[i].isDelivered,
 							"data": data[i]
 						});
