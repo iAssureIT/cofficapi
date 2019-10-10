@@ -116,7 +116,7 @@ exports.alllist_workspace = (req,res,next)=>{
                 "location"        : data[k].location,
                 "numberOfSeats"   : data[k].numberOfSeats,
                 // "name"            : data[k].name,
-                // "email"           : data[k].email,
+                "email"           : data[k].email,
                 // "facilities"      : data[k].facilities,
                 // "cost"            : data[k].cost,
                 "openingtime"     : data[k].openingtime,
