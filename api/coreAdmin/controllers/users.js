@@ -159,17 +159,16 @@ exports.user_signupadmin = (req, res, next) => {
 };
 
 exports.user_otpverification = (req, res, next) => {
+	console.log("Inside User Notifiction = ", req.body);
 	var newUser = {
-
-		// emailOTP		: req.body.emailOTP,
 		mobileOTP: req.body.mobileOTP,
 		firstName: req.body.firstName,
 		emailId: req.body.emailId,
 		mobileNumber: req.body.mobileNumber,
-
 	};
 
 	if (newUser) {
+		console.log("plivosecret",plivosecret);
 		// request({
 
 		// 	"method"    : "POST",
@@ -197,7 +196,7 @@ exports.user_otpverification = (req, res, next) => {
 		// });    
 
 		
-			console.log("plivosecret",plivosecret);
+		console.log("plivosecret",plivosecret);
 		// const client = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
 		const client = new plivo.Client('MANJFLZDG4MDEWNDBIND', 'NGExNzQ3ZjFmZDM4ZmVmMjBjNmY4ZjM0M2VmMWIw');   // Vowels LLP
 		// const sourceMobile = "+919923393733";
