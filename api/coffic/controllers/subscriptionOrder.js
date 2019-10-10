@@ -11,8 +11,6 @@ exports.submit_subscriptionOrder = (req, res, next) => {
     SubscriptionPlan.find({ _id: req.body.plan_id })
         .exec()
         .then(plan => {
-
-
             SubscriptionOrder.find({
                 user_id    : req.body.user_id,
                 id         : req.body.id,
