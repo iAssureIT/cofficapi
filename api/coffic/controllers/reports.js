@@ -13,6 +13,7 @@ const SubscriptionPlan = require("../models//subscriptionPlan.js");
 exports.loginuserlist = (req,res,next) =>{
 	console.log("loginuserlist");
 	MenuOrder.find({workSpace_id : req.params.workspace_ID, orderedAt : req.params.today})
+			 .sort({date:-1})
 			 .exec()
 			 .then(data=>{
 			 	if(data.length > 0){
