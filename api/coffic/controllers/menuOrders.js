@@ -5,10 +5,11 @@ const WorkspaceDetails = require('../models/workspaceDetails');
 
 exports.update_isDelivered = (req,res,next)=>{
        Menuorders.updateOne(
-            { _id:req.body.ordersID},  
+            { _id:req.params.ordersID},  
             {
                 $set:{
-                    isDelivered                :  req.body.checked,
+                    isDelivered  :  true,
+                    // isDelivered  :  req.body.checked,
                 }
             }
         )
