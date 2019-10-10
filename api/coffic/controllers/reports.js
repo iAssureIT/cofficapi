@@ -313,7 +313,10 @@ exports.dashboardBlock = (req, res, next) => {
 	getData();
 	async function getData() {
 		var year = new Date().getFullYear();
+		console.log("dashboardBlock year ",year);
+
 		var month = new Date().getMonth() + 1;
+		console.log("dashboardBlock month ",month);
 		var yearStartDate = new Date(year + "-01-01");
 		var monthStartDate = new Date(year + "-" + month + "-01");
 		var userInfo = await getUserCount("user");
