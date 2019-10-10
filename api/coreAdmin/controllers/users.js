@@ -810,9 +810,13 @@ exports.user_loginwithvendor = (req, res, next) => {
 	User.findOne({ emails: { $elemMatch: { address: req.body.email } }, roles: "vendor", emailId: req.body.emailId })
 		.exec()
 		.then(user => {
+			console.log("users==>",user);
 			if (user) {
+				console.log("in user==>",user);
 				var pwd = user.services.password.bcrypt;
 				if (pwd) {
+				console.log("in pwd==>",pwd);
+
 					bcrypt.compare(req.body.password, pwd, (err, result) => {
 						if (err) {
 							return res.status(401).json({
