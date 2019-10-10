@@ -690,7 +690,7 @@ exports.vendor_monthly = (req, res, next) => {
 function countPlan(plan_ID, startDate, endDate) {
 	return new Promise(function (resolve, reject) {
 		SubscriptionOrder.find({
-			"plan_ID": String(plan_ID),
+			"plan_id": String(plan_ID),
 			"createdAt": { $gte: startDate, $lte: endDate }
 		})
 			.exec()
