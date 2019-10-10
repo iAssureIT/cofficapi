@@ -22,6 +22,7 @@ exports.loginuserlist = (req,res,next) =>{
 					 	var i = 0;
 					 	var returnData = [];
 					 	for(i = 0 ; i < data.length; i++){
+				 			console.log("i = ",data[i]);
 					 		var usrName = "User Not Found";
 					 		var userInfor = await getuserDetails(data[i].user_id);
 							if (userInfor && userInfor.profile && userInfor.profile.fullName) {
