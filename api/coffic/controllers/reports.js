@@ -36,7 +36,8 @@ exports.loginuserlist = (req,res,next) =>{
 					 			checked		: data[i].isDelivered
 					 		});
 					 	}
-					 	if(i > data.length){
+					 	if(i >= data.length){
+				 			console.log("returnData = ",returnData);
 					 		res.status(200).json(returnData);
 					 	}
 				 	}
